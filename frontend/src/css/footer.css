@@ -1,0 +1,31 @@
+.logo{
+    width:50px;
+    padding: 2%;
+}
+.contact{
+    font-weight: bolder;
+    font-size: 20px;
+}
+.foot{
+    padding-top:10%;
+    padding-bottom: 2%;
+}
+@media only screen and (max-width: 600px) {
+    .foot{
+        padding-top:10%;
+        padding-bottom: 2%;
+    }
+    .social{
+        padding-left: 0%;
+    }
+    .logo{
+        width:40px;
+        padding: 2%;
+    }
+    .gridcontact{
+        padding-left: 17%;
+    }
+    .copy{
+        padding-bottom: 5%;
+    }
+}
