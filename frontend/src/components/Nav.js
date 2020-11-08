@@ -79,8 +79,8 @@ function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <MenuItem onClick={handleMenuClose}>Login</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
+      <MenuItem onClick={handleMenuClose}>Product</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Information</MenuItem>
     </Menu>
   );
 
@@ -146,7 +146,7 @@ function Nav() {
       <AppBar position="static" style={show==false?{backgroundColor:"transparent",boxShadow:"none",position:"fixed",transition:"0.2s ease-out"}:{backgroundColor:"rgb(7, 54, 64)",position:"fixed",transition:"0.2s ease-in"}}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            CodeCompiler
+            GeekyBits
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>

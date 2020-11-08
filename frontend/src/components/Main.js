@@ -4,6 +4,7 @@ import Nav from './Nav';
 import Flow from './Flow';
 import Gridblock from './Gridblock';
 import Logoblock from './Logoblock';
+import Footer from "./Footer";
 function Main() {
     return (
         <div>
@@ -12,6 +13,7 @@ function Main() {
             <Flow/>
             <Logoblock/>
             <Gridblock/>
+            <Footer/>
         </div>
     )
 }

@@ -10,7 +10,7 @@ function Banner() {
             <div className="banner_content">
                 <h1 className="title">Learn tech skills from scratch</h1>
                 <div className="description">
-                    <h1>CodeCompiler is the world’s fastest, most efficient way to master the skills tech companies want. 100% online, part-time & self-paced.</h1>
+                    <h1>GeekyBits is the world’s fastest, most efficient way to master the skills tech companies want. 100% online, part-time & self-paced.We make learning fun.</h1>
                 </div>
                 <div className="banner__buttons">
                 <button className="banner__button">Courses</button>
