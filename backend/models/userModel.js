@@ -37,7 +37,7 @@ const userSchema=new mongoose.Schema({
         ref:'Course'
     }],
     profileShortLink:{
-        type:String,
+        type:String,        
         default:v4
     },
     passwordChangedAt:Date,

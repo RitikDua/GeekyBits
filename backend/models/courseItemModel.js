@@ -1,13 +1,9 @@
 const mongoose=require('mongoose');
 const courseItemSchema=new mongoose.Schema({
-    itemTitle:{
-        type:String,
-        required:[true,"Please provide course item Title"]
-    },
+    itemTitle:String,
     subItems:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'CourseSubItem',
-        required:[true,"Please provide course subItems"]
+        ref:'CourseSubItem'
     }],
 });
 module.exports=mongoose.model('CourseItem',courseItemSchema);
