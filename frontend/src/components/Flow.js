@@ -51,7 +51,7 @@ function Flow() {
         </TimelineSeparator>
         <TimelineContent>
           <Paper elevation={3} className={classes.paper}>
-            <Typography className={classes.title}>Learn why CodeCompiler is best</Typography>
+            <Typography className={classes.title}>Learn why GeekyBits is best</Typography>
           </Paper>
         </TimelineContent>
       </TimelineItem>
