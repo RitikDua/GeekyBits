@@ -1,6 +1,5 @@
 [
     {
-        "_id":0,
         "problemTitle":"Hello%20GeekyBytes",
         "problemStatement":"Write%20a%20program%20to%20print%20%E2%80%9CHello%20GeekyBytes%E2%80%9D.",
         "testCases":[""],
