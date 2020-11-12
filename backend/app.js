@@ -1,11 +1,19 @@
 const express = require('express');
 const app = express();
+const cors=require('cors');
 const morgan = require('morgan');
-
+const tutorialRouter=require(`${__dirname}/routes/tutorialRoutes`);
+const mcqRouter=require(`${__dirname}/routes/mcqRoutes`);
+const codingProblemRouter=require(`${__dirname}/routes/codingProblemRoutes`);
 //Adding middlewares
 if(process.env.NODE_ENV === 'DEVELOPMENT')
     app.use(morgan('dev'));
+app.use(cors());
 app.use(express.json());
+app.use('/tutorials',tutorialRouter);
+app.use('/mcqs',mcqRouter);
+app.use('/codingproblems',codingProblemRouter);
+
 //mounting api endpoints
 app.route('/')
 .get((request, response) => {

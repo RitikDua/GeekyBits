@@ -1,5 +1,17 @@
 [
-    {"mcqTitle":"Intro. 1","mcqStatement":"A __________ is a set of instructions that a computer follows to perform a task.","options":["Compiler","Program","Interpreter","Programming language"],"answer":"Program"},
-    {"mcqTitle":"Intro. 2 ","mcqStatement":"The __________ translates an assembly language program to a machine language program.","options":["Assembler","Compiler","Interpreter","Translator"],"answer":"Assembler"},
-    {"mcqTitle":"Intro. 3 ","mcqStatement":"What is a lint?","options":["C compiler","Interactive debugger","Analyzing tool","C interpreter"],"answer":"Analyzing tool"}
+    {
+        "_id":0,
+        "mcqTitle":"Introduction to Programming - 1",
+        "mcqStatement":"A%20__________%20is%20a%20set%20of%20instructions%20that%20a%20computer%20follows%20to%20perform%20a%20task.",
+        "options":["Compiler","Program","Interpreter","Programming Language"],
+        "answer":"Program"
+    },
+    {
+        "_id":1,
+        "mcqTitle":"Introduction to Programming - 2",
+        "mcqStatement":"The%20__________%20translates%20an%20assembly%20language%20program%20to%20",
+        "options":["Assembler","Compiler","Translator","Interpreter"],
+        "answer":"Assembler"
+    }
+
 ]
