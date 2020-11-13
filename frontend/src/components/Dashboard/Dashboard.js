@@ -6,13 +6,11 @@ import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
+import Rating from '@material-ui/lab/Rating';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-
-
+import './dashboard.css';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -24,11 +22,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-const drawerWidth = 200;
+import { Chip, Grid } from '@material-ui/core';
+const drawerWidth = 230;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+  },
+  chip: {
+    margin: theme.spacing(0.5),
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -71,20 +73,28 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-const icons=[<DashboardIcon />,<BarChartIcon />,<AssignmentIcon />,<SupervisorAccountIcon />];
+// const icons=[<DashboardIcon />,<BarChartIcon />,<AssignmentIcon />,<SupervisorAccountIcon />];
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <Divider />
+      
       <List>
-        {['Dashboard', 'Rank', 'Attempts', 'Contest'].map((text, index) => (
-          <ListItem button key={text}>
-            { icons[index] }
-           &nbsp;&nbsp;
+        <div>
+      <ListItem button key="Dashboard" style={{height:"160px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem>
+      <ListItem button key="Rank" style={{height:"160px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Rank" /></ListItem>
+      <ListItem button key="Attempts" style={{height:"160px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem>
+      <ListItem button key="Contest" style={{height:"160px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem>
+      </div>
+        {/* {['Dashboard', 'Rank', 'Attempts', 'Contest'].map((text, index) => (
+          <div style={{textAlign:"center"}}>
+          <ListItem button key={text} style={{height:"160px",width:"100%",textAlign:"center"}}>
+            <span style={{width:"40px",fontSize:"30px"}}>{ icons[index] }</span>
+           
             <ListItemText primary={text} />
           
-          </ListItem>
-        ))}
+          </ListItem></div>
+        ))} */}
       </List>
       <Divider />
     </div>
@@ -152,29 +162,44 @@ const icons=[<DashboardIcon />,<BarChartIcon />,<AssignmentIcon />,<SupervisorAc
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <Grid container style={{paddingTop:"2%"}}>
+          <Grid item xs={4} className="course" style={{paddingBottom:"2%"}}>
+            <Grid container style={{height:"300px",width:"400px",borderRadius:"15px",boxShadow: "0px 0px 25px 0px #111"}}>
+              <Grid item xs={12} style={{height:"160px",backgroundSize:"cover",backgroundImage:`url(${process.env.PUBLIC_URL + `/image/c-lang.png`})`,borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}>
+              </Grid>
+              <Grid item xs={12} style={{height:"120px",paddingTop:"2%",paddingLeft:"2%"}}>
+                <div >
+                  <span style={{fontWeight:"bold",fontSize:"17px"}}>C Programming course - Master the C Language</span><br/>
+                    <Rating name="read-only" value={4} readOnly /><br/><Chip label="COURSE" size="small" className={classes.chip}/>
+                </div>
+              </Grid>
+            </Grid>                    
+          </Grid>
+          <Grid item xs={4} style={{paddingBottom:"2%"}}>
+            <Grid container style={{height:"300px",width:"400px",borderRadius:"15px",boxShadow: "0px 0px 25px 0px #111"}}>
+              <Grid item xs={12} style={{height:"160px",backgroundSize:"cover",backgroundImage:`url(${process.env.PUBLIC_URL + `/image/c-lang.png`})`,borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}>
+              </Grid>
+              <Grid item xs={12} style={{height:"120px",paddingTop:"2%",paddingLeft:"2%"}}>
+                <div >
+                  <span style={{fontWeight:"bold",fontSize:"17px"}}>C Programming course - Master the C Language</span><br/>
+                    <Rating name="read-only" value={4} readOnly /><br/><Chip label="COURSE" size="small" className={classes.chip}/>
+                </div>
+              </Grid>
+            </Grid>                    
+          </Grid>
+          <Grid item xs={4} style={{paddingBottom:"2%"}}>
+            <Grid container style={{height:"300px",width:"400px",borderRadius:"15px",boxShadow: "0px 0px 25px 0px #111"}}>
+              <Grid item xs={12} style={{height:"160px",backgroundSize:"cover",backgroundImage:`url(${process.env.PUBLIC_URL + `/image/c-lang.png`})`,borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}>
+              </Grid>
+              <Grid item xs={12} style={{height:"120px",paddingTop:"2%",paddingLeft:"2%"}}>
+                <div >
+                  <span style={{fontWeight:"bold",fontSize:"17px"}}>C Programming course - Master the C Language</span><br/>
+                    <Rating name="read-only" value={4} readOnly /><br/><Chip label="COURSE" size="small" className={classes.chip}/>
+                </div>
+              </Grid>
+            </Grid>                    
+          </Grid>          
+        </Grid>
       </main>
     </div>
   );
