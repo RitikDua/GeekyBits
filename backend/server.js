@@ -7,7 +7,7 @@ process.on('uncaughtException',error=>{
 const app=require(`${__dirname}/app`);
 // const url= process.env.DB.replace('<PASSWORD>', process.env.DB_PASSWD);
 // mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Connection to DB is successful'));
-const port=process.env.PORT||3000;
+const port=process.env.PORT||4000;
 const server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
 
 process.on('unhandledRejection',err=>{
