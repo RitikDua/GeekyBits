@@ -132,12 +132,7 @@ function Nav() {
   });
   return()=>{
       window.removeEventListener("scroll",()=>{
-        if(window.scrollY> 50){
-            setshow(true);
-        }
-        else{
             setshow(false);
-        }
         });
       }
   }, [])
@@ -146,7 +141,7 @@ function Nav() {
       <AppBar position="static" style={show==false?{backgroundColor:"transparent",boxShadow:"none",position:"fixed",transition:"0.2s ease-out"}:{backgroundColor:"rgb(7, 54, 64)",position:"fixed",transition:"0.2s ease-in"}}>
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            GeekyBits
+            <span>GeekyBits</span>
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
