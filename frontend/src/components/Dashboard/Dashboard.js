@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './dashboard.css';
+
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -11,7 +13,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import './dashboard.css';
+
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -24,9 +26,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { Chip, Grid } from '@material-ui/core';
-const drawerWidth = 230;
 
-const useStyles = makeStyles((theme) => ({
+import { Route, Switch,Link } from 'react-router-dom';
+import DashboardRoutes from '../../routes/DashboardRoutes';
+
+const drawerWidth = 230;
+export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
@@ -38,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
       width: drawerWidth,
       flexShrink: 0,
     },
+    overflowY:'hidden',
   },
   appBar: {
      zIndex: theme.zIndex.drawer + 1,
@@ -74,28 +80,18 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-// const icons=[<DashboardIcon />,<BarChartIcon />,<AssignmentIcon />,<SupervisorAccountIcon />];
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <Divider />
       
       <List>
-        <div>
-      <ListItem button key="Dashboard" style={{height:"160px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem>
-      <ListItem button key="Rank" style={{height:"160px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Rank" /></ListItem>
-      <ListItem button key="Attempts" style={{height:"160px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem>
-      <ListItem button key="Contest" style={{height:"160px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem>
-      </div>
-        {/* {['Dashboard', 'Rank', 'Attempts', 'Contest'].map((text, index) => (
-          <div style={{textAlign:"center"}}>
-          <ListItem button key={text} style={{height:"160px",width:"100%",textAlign:"center"}}>
-            <span style={{width:"40px",fontSize:"30px"}}>{ icons[index] }</span>
-           
-            <ListItemText primary={text} />
-          
-          </ListItem></div>
-        ))} */}
+        
+          <Link to={`/dashboard`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Dashboard" style={{height:"160px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem></Link>
+          <Link to={`/rank`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Rank" style={{height:"160px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Rank" /></ListItem></Link>
+         <Link to={`/attempts`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Attempts" style={{height:"160px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem></Link>
+         <Link to={`/contest`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Contest" style={{height:"160px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem></Link>
       </List>
       <Divider />
     </div>
@@ -107,6 +103,7 @@ function ResponsiveDrawer(props) {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
+        
         <Toolbar>
           <IconButton
             color="inherit"
@@ -127,8 +124,8 @@ function ResponsiveDrawer(props) {
           <Typography variant="p" noWrap>
             &nbsp; {myName}
           </Typography>
-          
         </Toolbar>
+
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -162,45 +159,16 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Grid container style={{paddingTop:"2%"}}>
-          <Grid item xs={4} className="course" style={{paddingBottom:"2%"}}>
-            <Grid container style={{height:"300px",width:"400px",borderRadius:"15px",boxShadow: "0px 0px 25px 0px #111"}}>
-              <Grid item xs={12} style={{height:"160px",backgroundSize:"cover",backgroundImage:`url(${process.env.PUBLIC_URL + `/image/c-lang.png`})`,borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}>
-              </Grid>
-              <Grid item xs={12} style={{height:"120px",paddingTop:"2%",paddingLeft:"2%"}}>
-                <div >
-                  <span style={{fontWeight:"bold",fontSize:"17px"}}>C Programming course - Master the C Language</span><br/>
-                    <Rating name="read-only" value={4} readOnly /><br/><Chip label="COURSE" size="small" className={classes.chip}/>
-                </div>
-              </Grid>
-            </Grid>                    
-          </Grid>
-          <Grid item xs={4} style={{paddingBottom:"2%"}}>
-            <Grid container style={{height:"300px",width:"400px",borderRadius:"15px",boxShadow: "0px 0px 25px 0px #111"}}>
-              <Grid item xs={12} style={{height:"160px",backgroundSize:"cover",backgroundImage:`url(${process.env.PUBLIC_URL + `/image/c-lang.png`})`,borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}>
-              </Grid>
-              <Grid item xs={12} style={{height:"120px",paddingTop:"2%",paddingLeft:"2%"}}>
-                <div >
-                  <span style={{fontWeight:"bold",fontSize:"17px"}}>C Programming course - Master the C Language</span><br/>
-                    <Rating name="read-only" value={4} readOnly /><br/><Chip label="COURSE" size="small" className={classes.chip}/>
-                </div>
-              </Grid>
-            </Grid>                    
-          </Grid>
-          <Grid item xs={4} style={{paddingBottom:"2%"}}>
-            <Grid container style={{height:"300px",width:"400px",borderRadius:"15px",boxShadow: "0px 0px 25px 0px #111"}}>
-              <Grid item xs={12} style={{height:"160px",backgroundSize:"cover",backgroundImage:`url(${process.env.PUBLIC_URL + `/image/c-lang.png`})`,borderTopLeftRadius:"15px",borderTopRightRadius:"15px"}}>
-              </Grid>
-              <Grid item xs={12} style={{height:"120px",paddingTop:"2%",paddingLeft:"2%"}}>
-                <div >
-                  <span style={{fontWeight:"bold",fontSize:"17px"}}>C Programming course - Master the C Language</span><br/>
-                    <Rating name="read-only" value={4} readOnly /><br/><Chip label="COURSE" size="small" className={classes.chip}/>
-                </div>
-              </Grid>
-            </Grid>                    
-          </Grid>          
-        </Grid>
+           <Switch>
+            {DashboardRoutes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                children={<route.main />}
+              />
+            ))}
+          </Switch>
       </main>
     </div>
   );
