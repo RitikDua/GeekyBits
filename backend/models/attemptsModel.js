@@ -17,5 +17,5 @@ const attemptSchema=new mongoose.Schema({
         ref:'User'
     },
     attemptedAt:Date
-});
+},{timestamps:true});
 module.exports=mongoose.model('Attempt',attemptSchema);

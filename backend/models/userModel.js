@@ -42,6 +42,10 @@ const userSchema=new mongoose.Schema({
     },
     passwordChangedAt:Date,
     passwordResetToken:String,
-    passwordResetExpire:Date
-});
+    passwordResetExpire:Date,
+    createdAt:{
+        type:Date,
+        default:Date.now()
+    }
+},{timestamps:true});
 module.exports=mongoose.model('User',userSchema);
