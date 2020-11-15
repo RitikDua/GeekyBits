@@ -4,5 +4,5 @@ const codingproblemSchema=new mongoose.Schema({
     problemStatement:String,
     testCases:[String],
     correctOutput:[String]
-});
+},{timestamps:true});
 module.exports=mongoose.model('CodingProblem',codingproblemSchema);

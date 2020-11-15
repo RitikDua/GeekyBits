@@ -6,6 +6,9 @@ import {createMuiTheme} from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import { BrowserRouter } from 'react-router-dom';
+
+import Tutorial from './components/Content/Tutorial/Tutorial';
 //To Change Default Material UI Theme
 const theme=createMuiTheme({
 	palette:{
@@ -19,12 +22,16 @@ const theme=createMuiTheme({
 
 function App() {
   return (
+    <BrowserRouter>
     <ThemeProvider theme={theme}>
     	<CssBaseline />
     <div className="App">
-      <Dashboard/>{/* Testing */}
+      <Tutorial />
+      {/*<Dashboard/>{/* Testing */}
     </div>
     </ThemeProvider>
+
+    </BrowserRouter>
   );
 }
 
