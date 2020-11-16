@@ -4,5 +4,5 @@ const mcqSchema=new mongoose.Schema({
     mcqStatement:String,
     options:[String],
     answer:String
-});
+},{timestamps:true});
 module.exports=mongoose.model('MCQ',mcqSchema);

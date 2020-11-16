@@ -5,5 +5,5 @@ const courseItemSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'CourseSubItem'
     }],
-});
+},{timestamps:true});
 module.exports=mongoose.model('CourseItem',courseItemSchema);

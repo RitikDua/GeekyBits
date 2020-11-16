@@ -9,6 +9,6 @@ const courseSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'        
     }]
-});
+},{timestamps:true});
 
-exports.Course=mongoose.model('Course',courseSchema);
+module.exports=mongoose.model('Course',courseSchema);
