@@ -1,5 +1,6 @@
 import './App.css';
 import Main from './components/Main';
+// import Login from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import {createMuiTheme} from '@material-ui/core/styles';
 
@@ -27,7 +28,6 @@ function App() {
     	<CssBaseline />
     <div className="App">
       <Tutorial />
-      {/*<Dashboard/>{/* Testing */}
     </div>
     </ThemeProvider>
 

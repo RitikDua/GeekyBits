@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {GetData} from '../../../Services/contentService';
+// import {GetData} from '../../../Services/contentService';
 import axios from 'axios';
 export default function Tutorial(props) {
 	const [data, setData] = useState({});
