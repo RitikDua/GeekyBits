@@ -10,7 +10,7 @@ const attemptSchema=new mongoose.Schema({
     attemptResultDetails:attemptResultSchema,
     problem:{
         type:mongoose.Schema.Types.ObjectId,
-        refPath:'attemptType'
+        ref:`${this.attemptType}`
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
