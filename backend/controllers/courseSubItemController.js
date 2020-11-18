@@ -1,7 +1,7 @@
 const CourseSubItems=require(`${__dirname}/../models/courseSubItemModel`);
 exports.getAllCourseSubItems=async (request,response)=>{
     try{        
-        const courseSubItems=await CourseSubItems.find().populate('subItem');
+        const courseSubItems=await CourseSubItems.find();
         response.status(200).json({
             status:'success',
             data:{

@@ -26,8 +26,9 @@ function App() {
     <ThemeProvider theme={theme}>
     	<CssBaseline />
     <div className="App">
-      <MCQ />
-      {/*<Dashboard/>{/* Testing */}
+     <Main/>
+{/* <MCQ />*/}
+      {/*<Dashboard/> Testing */}
     </div>
     </ThemeProvider>
 
