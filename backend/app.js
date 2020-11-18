@@ -8,6 +8,8 @@ const codingProblemRouter=require(`${__dirname}/routes/codingProblemRoutes`);
 const courseSubItemRouter=require(`${__dirname}/routes/courseSubItemRoutes`);
 const courseItemRouter=require(`${__dirname}/routes/courseItemRoutes`);
 const courseRouter=require(`${__dirname}/routes/courseRoutes`);
+const attemptsRouter=require(`${__dirname}/routes/attemptsRoutes`);
+
 //Adding middlewares
 if(process.env.NODE_ENV === 'DEVELOPMENT')
     app.use(morgan('dev'));
@@ -19,6 +21,7 @@ app.use('/codingproblems',codingProblemRouter);
 app.use('/courseSubItems',courseSubItemRouter);
 app.use('/courseItems',courseItemRouter);
 app.use('/courses',courseRouter);
+app.use('/attempts',attemptsRouter);
 
 //mounting api endpoints
 app.route('/')
