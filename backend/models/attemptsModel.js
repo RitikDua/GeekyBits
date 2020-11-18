@@ -10,12 +10,11 @@ const attemptSchema=new mongoose.Schema({
     attemptResultDetails:attemptResultSchema,
     problem:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:`${this.attemptType}`
+        refPath:'attemptType'
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
-    },
-    attemptedAt:Date
+    }
 },{timestamps:true});
 module.exports=mongoose.model('Attempt',attemptSchema);
