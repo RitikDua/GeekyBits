@@ -6,8 +6,8 @@ process.on('uncaughtException',error=>{
     process.exit(1);
 });
 const app=require(`${__dirname}/app`);
-// const url= process.env.DB_CLOUD;
-mongoose.connect("mongodb+srv://geekybytes:geekyBytes@cluster0.iq5d4.mongodb.net/geekybytes?retryWrites=true", { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Successfully Connected to Cloud'));
+const url= process.env.DB_CLOUD;
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Successfully Connected to Cloud'));
 const port=process.env.PORT||4000;
 const server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
 
