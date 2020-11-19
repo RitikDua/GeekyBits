@@ -7,7 +7,9 @@ import 'codemirror/addon/comment/comment';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
-
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import './tut.css'
+import { Chip } from '@material-ui/core';
 export default class Tutorial extends React.Component {
 	constructor(props){
 		super(props);
@@ -62,18 +64,20 @@ export default class Tutorial extends React.Component {
 			console.log(data.codes);
 			for(let i=0;data.codes&&i<data.codes.length;i++)
 			{	
-				data.content=data.content.replace("#$codes["+i+"]#$",`<div id='code[${i}]'></div>`);
-				console.log(data.content);
+				data.content=data.content.replace("#$codes["+i+"]#$",`<div style="padding-top:2%;padding-bottom:1%" id='code[${i}]'></div>`);
+				// console.log(data.content);
 			}
 			return data.content;
 		}
 	render() {
 		return (
 		<div>
-		<h1>{this.state.title}</h1>
-			
-			<div dangerouslySetInnerHTML={{__html: this.hulala(this.state)}} />
-		
+		{/* <Navacc/> */}
+		<div style={{paddingTop:"5%"}}>
+		<span className="title">{this.state.title}</span><br/>
+		<div style={{paddingBottom:"1%",paddingTop:"1%"}}><Chip icon={<MenuBookIcon/>} label="Tutorial"/></div>
+			<div className="page" dangerouslySetInnerHTML={{__html: this.hulala(this.state)}} />
+		</div>
 		</div>
 	)
 	}
