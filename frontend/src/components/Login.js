@@ -54,13 +54,9 @@ function Login() {
         .then((res)=>{
             console.log(res.data.data.token);
             window.localStorage.setItem('login', res.data.data.token)
-            // setlogpass("");
-            // setlogname("");
-            // setlogemail("");
-            // if(getToken()){
-            //     console.log("hel");
-            //     return <Dashboard/>
-            // }
+            setlogpass("");
+            setlogname("");
+            setlogemail("");
         })
         .then(()=>window.location.href="/")
         .catch((res)=>{
