@@ -7,9 +7,11 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import '../css/login.css'
 function Login() {
-    const [loguser, setloguser] = useState("");
+    const [logname, setlogname] = useState("");
+    const [logemail, setlogemail] = useState("");
     const [logpass, setlogpass] = useState("");
-    const [user, setuser] = useState("");
+    const [name, setname] = useState("");
+    const [email, setemail] = useState("");
     const [pass, setpass] = useState("");
     const [values, setValues] = React.useState({
         showPassword: false,
@@ -27,8 +29,19 @@ function Login() {
       const handleMouseDownPassword = (event) => {
         event.preventDefault();
       };
-    async function handleLogin(e){
+      async function handleLogin(e){
         e.preventDefault();
+        await Axios.post("/login",{name:logname,email:logemail,password:logpass})
+        .then((res)=>{
+            setlogpass("");
+            setlogname("");
+            setlogemail("");
+        })
+        .catch((res)=>{
+            setlogpass("");
+            setlogname("");
+            setlogemail("");
+        });
     }
     const [isFlipped, setisFlipped] = useState(false)
     return (
@@ -41,7 +54,8 @@ function Login() {
                           <div className="logon">
                         <form noValidate autoComplete="off" onSubmit={(e)=>(handleLogin(e))} >
                             <h1 className="log">Log-In <LockOpenIcon style={{fontSize:"25px"}}/></h1><br/>
-                            <TextField id="outlined-basic" label="Username*" variant="outlined" value={loguser} name="username" onChange={(e)=>setloguser(e.target.value)} style={{width:"300px"}}/><br/><br/>
+                            <TextField id="outlined-basic" label="Name*" variant="outlined" value={logname} name="name" onChange={(e)=>setlogname(e.target.value)} style={{width:"300px"}}/><br/><br/>
+                            <TextField id="outlined-basic" label="Email*" variant="outlined" value={logemail} name="email" onChange={(e)=>setlogemail(e.target.value)} style={{width:"300px"}}/><br/><br/>
                             <FormControl variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Password*</InputLabel>
                             <OutlinedInput
@@ -64,14 +78,15 @@ function Login() {
                             />
                             </FormControl><br/><br/>
                             <div style={{textAlign:"justify",paddingTop:"3%"}}>
-                            <Button disabled={!loguser || !logpass} type="submit" variant="contained" color="primary" >LogIn<Icon style={{padding:"2%"}}/>
+                            <Button disabled={!logemail || !logpass} type="submit" variant="contained" color="primary" >LogIn<Icon style={{padding:"2%"}}/>
                             </Button><span style={{color:"red",paddingLeft:"20%"}} onClick={()=>setisFlipped(!isFlipped)}>Not Registered Yet?</span></div>
                             </form>
                             </div>
                             <div className="logon">
                     <form noValidate autoComplete="off" onSubmit={(e)=>handleSignup(e)}>
                         <h1 className="sign" style={{color:"black"}}>Sign-Up <ExitToAppIcon style={{fontSize:"25px",color:"black"}}/></h1><br/>
-                    <TextField id="outlined-basic" label="Username*" variant="outlined" value={user} name="username" onChange={(e)=>setuser(e.target.value)} style={{width:"300px"}}/><br/><br/>
+                    <TextField id="outlined-basic" label="Name*" variant="outlined" value={name} name="name" onChange={(e)=>setname(e.target.value)} style={{width:"300px"}}/><br/><br/>
+                    <TextField id="outlined-basic" label="Email*" variant="outlined" value={email} name="email" onChange={(e)=>setemail(e.target.value)} style={{width:"300px"}}/><br/><br/>
                     <FormControl variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Password*</InputLabel>
                             <OutlinedInput
@@ -94,7 +109,7 @@ function Login() {
                             />
                             </FormControl><br/><br/>
                             <div style={{textAlign:"justify",paddingTop:"3%"}}>
-                    <Button disabled={!user || !pass} type="submit" variant="contained" color="primary" >SignUp<Icon style={{padding:"2%"}}/></Button>
+                    <Button disabled={!email || !pass} type="submit" variant="contained" color="primary" >SignUp<Icon style={{padding:"2%"}}/></Button>
                     <span style={{color:"red",paddingLeft:"18%"}} onClick={()=>setisFlipped(!isFlipped)}>Already Registered?</span></div>
                     </form></div></ReactCardFlip></Grid>
                     <Grid item xs={6}></Grid>
