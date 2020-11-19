@@ -5,7 +5,9 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
+import Dashboard from './Dashboard/Dashboard';
 import '../css/login.css'
+import Axios from 'axios';
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
@@ -13,12 +15,29 @@ function Login() {
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [pass, setpass] = useState("");
+    let storage=localStorage;
+    const  getToken=()=>{
+        return storage.getItem("login");
+    }
+    const  saveToken=(token)=>{
+        storage.setItem('login',token); 
+    }
     const [values, setValues] = React.useState({
         showPassword: false,
       });
       const [values1, setValues1] = React.useState({
         showPassword1: false,
       });
+    function isLoggedIn(){
+        const token=getToken();
+        if(token){
+              const payload=JSON.parse(atob(token.split('.')[1]));     
+          return ((Date.now()/1000)-payload.iat)<6.048e+8;
+        }
+        else{
+          return false;
+        }
+    }
     function handleSignup(e){
         e.preventDefault();
     }
@@ -31,19 +50,28 @@ function Login() {
       };
       async function handleLogin(e){
         e.preventDefault();
-        await Axios.post("/login",{name:logname,email:logemail,password:logpass})
+        await Axios.post("/users/login",{email:logemail,password:logpass})
         .then((res)=>{
-            setlogpass("");
-            setlogname("");
-            setlogemail("");
+            console.log(res.data.data.token);
+            window.localStorage.setItem('login', res.data.data.token)
+            // setlogpass("");
+            // setlogname("");
+            // setlogemail("");
+            // if(getToken()){
+            //     console.log("hel");
+            //     return <Dashboard/>
+            // }
         })
+        .then(()=>window.location.href="/")
         .catch((res)=>{
+            console.log(res);
             setlogpass("");
             setlogname("");
             setlogemail("");
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
+    if(isLoggedIn()) return <Dashboard />
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}
