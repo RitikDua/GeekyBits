@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose=require('mongoose');
 process.on('uncaughtException',error=>{
-    console.log(`UNCAUGHT_EXCEPTION...\n${error.name}:${error.message}\nShutting down the app`);
+    console.log(`UNCAUGHT_EXCEPTION...\n${error.name}:${error.message}\nerror:- ${error.stack}\nShutting down the app`);
     process.exit(1);
 });
 const app=require(`${__dirname}/app`);
@@ -10,8 +10,8 @@ mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndM
 
 const server=app.listen(4000,()=>{console.log('Server running on port:4000')});
 
-process.on('unhandledRejection',err=>{
-    console.log(`UNHANDLED REJECTION ...\n${err.name} : ${err.message}\nShutting down the app`);    
+process.on('unhandledRejection',error=>{
+    console.log(`UNHANDLED_REJECTION...\n${error.name}:${error.message}\nerror:- ${error}\nShutting down the app`);
     server.close(()=>{
         process.exit(1);
     });
