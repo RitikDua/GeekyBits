@@ -4,18 +4,20 @@ require('dotenv').config();
 const Tutorial=require(`${__dirname}/../models/tutorialModel`);
 const MCQ=require(`${__dirname}/../models/mcqModel`);
 const CodingProblem=require(`${__dirname}/../models/codingproblemModel`);
+const User=require(`${__dirname}/../models/userModel`);
 mongoose.connect(process.env.DB_CLOUD,{useNewUrlParser:true,useCreateIndex:true,useFindAndModify:false,useUnifiedTopology:true}).then(()=>console.log('Connected to Database successfully')).catch(err=>console.log('Some error occured while connecting to DB...'));
-let tutorials,mcqs,codingProblems;
+let tutorials,mcqs,codingProblems,users;
 const fetchJsons=async ()=>{
-    let data=await Promise.all([fs.readFile(`${__dirname}/../dev-data/tutorials.json`),fs.readFile(`${__dirname}/../dev-data/mcqs.json`),fs.readFile(`${__dirname}/../dev-data/codingProblems.json`)]);
+    let data=await Promise.all([fs.readFile(`${__dirname}/../dev-data/tutorials.json`),fs.readFile(`${__dirname}/../dev-data/mcqs.json`),fs.readFile(`${__dirname}/../dev-data/codingProblems.json`),fs.readFile(`${__dirname}/../dev-data/users.json`)]);
     tutorials=JSON.parse(data[0]);
     mcqs=JSON.parse(data[1]);
     codingProblems=JSON.parse(data[2]);
+    users=JSON.parse(data[3]);
     // console.log(tutorials,mcqs,codingProblems);
 };
 const importData=async()=>{
     try{
-        await Promise.all([Tutorial.create(tutorials),MCQ.create(mcqs),CodingProblem.create(codingProblems)]);
+        await Promise.all([Tutorial.create(tutorials),MCQ.create(mcqs),CodingProblem.create(codingProblems),User.create(users)]);
         console.log('Data loaded successfully');
     }    
     catch(err){
@@ -25,7 +27,7 @@ const importData=async()=>{
 };
 const deleteData=async()=>{
     try{
-        await Promise.all([Tutorial.deleteMany(),MCQ.deleteMany(),CodingProblem.deleteMany()])
+        await Promise.all([Tutorial.deleteMany(),MCQ.deleteMany(),CodingProblem.deleteMany(),User.deleteMany()])
         console.log('Data deleted successfully');
     }    
     catch(err){
