@@ -6,6 +6,9 @@ const tutorialRouter=require(`${__dirname}/routes/tutorialRoutes`);
 const mcqRouter=require(`${__dirname}/routes/mcqRoutes`);
 const codingProblemRouter=require(`${__dirname}/routes/codingProblemRoutes`);
 const attemptsRouter=require(`${__dirname}/routes/attemptsRoutes`);
+const executeRouter=require(`${__dirname}/routes/codeExecuteRoutes`);
+const codeSubmitRouter=require(`${__dirname}/routes/codeSubmitRoutes`);
+
 
 //Adding middlewares
 if(process.env.NODE_ENV === 'DEVELOPMENT')
@@ -16,6 +19,8 @@ app.use('/tutorials',tutorialRouter);
 app.use('/mcqs',mcqRouter);
 app.use('/codingproblems',codingProblemRouter);
 app.use('/attempts',attemptsRouter);
+app.use('/execute',executeRouter);
+app.use('/submit',codeSubmitRouter);
 
 //mounting api endpoints
 app.route('/')

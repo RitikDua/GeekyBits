@@ -5,8 +5,8 @@ process.on('uncaughtException',error=>{
     process.exit(1);
 });
 const app=require(`${__dirname}/app`);
-// const url= process.env.DB.replace('<PASSWORD>', process.env.DB_PASSWD);
-// mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Connection to DB is successful'));
+const url= process.env.DB_CLOUD;
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Connection to DB is successful'));
 
 const server=app.listen(4000,()=>{console.log('Server running on port:4000')});
 
