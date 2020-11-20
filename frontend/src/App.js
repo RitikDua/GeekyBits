@@ -10,6 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter } from 'react-router-dom';
 import CodingProblem from './components/Content/Tutorial/CodingProblem';
 import MCQ from './components/Content/Tutorial/MCQ';
+import CodeEditor from './components/Content/Tutorial/CodeEditor';
 //To Change Default Material UI Theme
 const theme=createMuiTheme({
 	palette:{
@@ -28,7 +29,8 @@ function App() {
     	<CssBaseline />
     <div className="App">
      {/* <Main/> */}
-     <Login/>
+     {/* <Login/> */}
+     <CodeEditor/>
 {/* <MCQ />*/}
       {/*<Dashboard/> Testing */}
     </div>
