@@ -38,8 +38,25 @@ function Login() {
           return false;
         }
     }
-    function handleSignup(e){
+    async function handleSignup(e){
         e.preventDefault();
+       console.log(pass);
+        await Axios.post("/users/signup",{email:email,name:name,password:pass})
+         .then((res)=>{
+            console.log(res.data.data.token);
+            window.localStorage.setItem('login', res.data.data.token)
+            setlogpass("");
+            setlogname("");
+            setlogemail("");
+        })
+        .then(()=>window.location.href="/")
+        .catch((res)=>{
+            console.log(res);
+            setlogpass("");
+            setlogname("");
+            setlogemail("");
+        });
+
     }
     const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
