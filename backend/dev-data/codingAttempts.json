@@ -1,0 +1,22 @@
+[
+    {
+        "userId":"0",
+        "problemId":"0",
+        "attemptType":"CodingProblem",
+        "attemptString":"%23include%3Cstdio.h%3E%0Aint%20main()%7B%0A%20%20%20%20int%20a%2Cb%3B%0A%20%20%20%20scanf(%22%25d%20%25d%20%22%2C%26a%2C%26b)%3B%0A%20%20%20%20printf(%22%25d%22%2Ca%2Bb)%3B%0A%7D",
+        "testCases":["1 2","10 20","34 40"],
+        "userOutputs":["3","30","74"],
+        "correctOutputs":["3","30","74"],
+        "testCasesPassed":[true,true,true]
+    },
+    {
+        "userId":"0",
+        "problemId":"5fad8f085503d91a5f6bd39c",
+        "attemptType":"CodingProblem",
+        "attemptString":"%%23include%3Cstdio.h%3E%0Aint%20main()%7B%0A%20%20%20%20printf(%22Hello%20GeekyBits%22)%3B%0A%7D",
+        "testCases":[""],
+        "userOutputs":["Hello GeekyBits"],
+        "correctOutputs":["Hello GeekyBits"],
+        "testCasesPassed":[true]
+    }
+]
