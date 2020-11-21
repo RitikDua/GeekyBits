@@ -105,18 +105,33 @@ function ResponsiveDrawer(props) {
     </div>
   );
 
-const showAccordianDataUtil=async (val)=>{
-    
+
+const showSubItemsData=(index)=>{
+  if(!subItems[index]) return "loading...";
+  else
+  {
+    let temp="";
+    for(let i of subItems[index]){
+      temp+="*"+i.subItemType+"\n";
+    }
+    // temp+="</ul>";
+    return temp;
+  }
 }
 const showAccordianData=async (index,value)=>{
-// await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
-//       .then((res)=>{
-//         console.log("setSubItems");
-//         let indexStr=""+index;
-//           setSubItems({...subItems,...{"value":{indexStr:{res.data.courseItem.subItems}}})
-//         console.log(subItems)
-//         })
-//       .catch((err)=>console.log(err));
+await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
+      .then((res)=>{
+        console.log("setSubItems");
+        let indexStr=""+index;
+        console.log(res.data.data.courseItem.subItems);  
+        // setSubItems({...subItems,...{"value":{indexStr:{res.data.courseItem.subItems}}})
+        let items=Object.assign({},subItems);
+        items[index]=res.data.data.courseItem.subItems;
+        setSubItems(items);
+        console.log(subItems);
+        })
+      .catch((err)=>console.log(err));
+
 }
   const container = window !== undefined ? () => window().document.body : undefined;
 
@@ -193,9 +208,8 @@ const showAccordianData=async (index,value)=>{
             <Typography className={classes.heading}>{value.itemTitle}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-            loading...
-            </Typography>
+            {showSubItemsData(index)}
+            
           </AccordionDetails>
         </Accordion>)
           })
