@@ -6,6 +6,5 @@ router.use(authController.protect);
 router.route('/')
 .get(courseSubItemController.getCourseSubItems);
 router.route('/:courseSubItemId')
-.get(courseSubItemController.getCourseSubItemById)
-.patch(courseSubItemController.update);
+.get(courseSubItemController.getCourseSubItemById);
 module.exports=router;
