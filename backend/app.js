@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const cors=require('cors');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 // const tutorialRouter=require(`${__dirname}/routes/tutorialRoutes`);
@@ -12,8 +11,14 @@ const courseRouter=require(`${__dirname}/routes/courseRoutes`);
 const userRouter=require(`${__dirname}/routes/userRoutes`);
 const attemptRouter=require(`${__dirname}/routes/attemptRoutes`);
 //Adding middlewares
-app.use(cors({origin:'http://localhost:3000/'}));
-app.options('*',cors({origin:'http://localhost:3000/'}));
+app.use((request,response,next)=>{
+	response.header("Access-Control-Allow-Origin", "http://localhost:3000");
+	response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	response.header("Access-Control-Allow-Credentials", "true");
+	if(request.method==='OPTIONS')
+		return response.status(200).json({status:'success'});
+	next();
+});
 if(process.env.NODE_ENV === 'DEVELOPMENT')
     app.use(morgan('dev'));
 app.use(express.json());
