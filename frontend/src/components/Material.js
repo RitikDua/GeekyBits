@@ -66,7 +66,9 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState('panel1');
-  const [course, setcourse] = useState([]);
+  const [data, setData] = useState({})
+  const [course, setcourse] = useState(["asd"]);
+  const [subItems, setSubItems] = useState({})
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -75,15 +77,19 @@ function ResponsiveDrawer(props) {
   };
   useEffect(() => {
      async function fun(){
-        const val=(await Axios.get(`/courses/`, {withCredentials: true}));
-        setcourse(val.data.data.courses);
+      await Axios.get(`/courses/5fb01e55e8d9acbadcd66bff`, {withCredentials: true})
+      .then((res)=>{
+        console.log(res.data.data.course);
+        setData(res.data.data.course);
+         })
+      .catch((err)=>console.log(err));
      }
      fun();
   }, []);
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-  <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"18px"}}>{course[0].courseTitle}</span></div><br/>
+  <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"18px"}}>{data?data.courseTitle:"loading...."}</span></div><br/>
         <Accordion  square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
@@ -99,6 +105,19 @@ function ResponsiveDrawer(props) {
     </div>
   );
 
+const showAccordianDataUtil=async (val)=>{
+    
+}
+const showAccordianData=async (index,value)=>{
+// await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
+//       .then((res)=>{
+//         console.log("setSubItems");
+//         let indexStr=""+index;
+//           setSubItems({...subItems,...{"value":{indexStr:{res.data.courseItem.subItems}}})
+//         console.log(subItems)
+//         })
+//       .catch((err)=>console.log(err));
+}
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
@@ -158,22 +177,30 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content} style={{paddingTop:"5%"}}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Accordion 1</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-            sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      </main>
+     
+        {
+         data&& data.courseItems&&data.courseItems.map((value,index)=>{
+          
+          return (<Accordion key={index}
+
+            >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            onClick={(e)=>showAccordianData(index,value)}
+          >
+            <Typography className={classes.heading}>{value.itemTitle}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+            loading...
+            </Typography>
+          </AccordionDetails>
+        </Accordion>)
+          })
+        }
+        </main>
     </div>
   );
 }
