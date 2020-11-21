@@ -6,7 +6,6 @@ const attemptResultSchema=new mongoose.Schema({
 const attemptSchema=new mongoose.Schema({
     attemptType:String,
     attemptString:String,
-    attemptResult:String,
     attemptResultDetails:attemptResultSchema,
     problem:{
         type:mongoose.Schema.Types.ObjectId,
