@@ -10,25 +10,27 @@ const courseSubItemRouter=require(`${__dirname}/routes/courseSubItemRoutes`);
 const courseItemRouter=require(`${__dirname}/routes/courseItemRoutes`);
 const courseRouter=require(`${__dirname}/routes/courseRoutes`);
 const userRouter=require(`${__dirname}/routes/userRoutes`);
+const attemptRouter=require(`${__dirname}/routes/attemptRoutes`);
 //Adding middlewares
+app.use(cors({origin:'http://localhost:3000/'}));
+app.options('*',cors({origin:'http://localhost:3000/'}));
 if(process.env.NODE_ENV === 'DEVELOPMENT')
     app.use(morgan('dev'));
-app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 // app.use('/tutorials',tutorialRouter);
 // app.use('/mcqs',mcqRouter);
 // app.use('/codingproblems',codingProblemRouter);
-app.use('/courseSubItems',courseSubItemRouter);
-app.use('/courseItems',courseItemRouter);
-app.use('/courses',courseRouter);
 app.use('/users',userRouter);
+app.use('/courses',courseRouter);
+app.use('/courseItems',courseItemRouter);
+app.use('/courseSubItems',courseSubItemRouter);
+app.use('/attempts',attemptRouter);
 //mounting api endpoints
-app.route('/')
-.get((request, response) => {
+app.get('/',(request, response) => {
     response.status(200).json({
         status: 'success',
-        message: 'Server is running'
+        message: 'Welcome to GeekyBits..'
     });
 });
 module.exports =app;
