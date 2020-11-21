@@ -5802,7 +5802,10 @@ hex-color-regex@^1.1.0:
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 965b68f780e9f40b80c385a8cccc7bcbf0e1263f
 highlight.js@^9.11.0:
   version "9.18.3"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.3.tgz#a1a0a2028d5e3149e2380f8a865ee8516703d634"
@@ -9631,9 +9634,12 @@ react-error-overlay@^6.0.8:
   integrity sha512-HvPuUQnLp5H7TouGq3kzBeioJmXms1wHy9EGjz2OURWBp4qZO6AfGEcnxts1D/CbwPLRAgTMPCEgYhA3sEM4vw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 react-is@^16.7.0, react-is@^16.8.0, react-is@^16.8.1:
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> 965b68f780e9f40b80c385a8cccc7bcbf0e1263f
 =======
 react-highlight@^0.12.0:
   version "0.12.0"

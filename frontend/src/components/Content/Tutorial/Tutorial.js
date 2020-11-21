@@ -20,7 +20,7 @@ export default class Tutorial extends React.Component {
 	}	
 	componentDidMount(){
 		axios.get(
-		`http://localhost:4000/tutorials/0`
+		`http://localhost:4000/tutorials/`
 		)
 		.then( async(res)=>{
 			this.setState(
