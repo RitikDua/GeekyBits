@@ -5,7 +5,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
-import Dashboard from './Dashboard/Dashboard';
+import Material from './Material';
 import '../css/login.css'
 import Axios from 'axios';
 function Login() {
@@ -84,7 +84,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Dashboard />
+    if(isLoggedIn()) return <Material/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}

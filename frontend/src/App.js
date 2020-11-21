@@ -2,6 +2,8 @@ import './App.css';
 import Main from './components/Main';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard/Dashboard';
+import Material from './components/Material';
+import Course from './components/Course';
 import {createMuiTheme} from '@material-ui/core/styles';
 
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -28,11 +30,13 @@ function App() {
     <ThemeProvider theme={theme}>
     	<CssBaseline />
     <div className="App">
+      {/* <Course/> */}
+      {/* <Material/> */}
      {/* <Main/> */}
      {/* <Login/> */}
-     <CodeEditor/>
+     {/* <CodeEditor/> */}
 {/* <MCQ />*/}
-      {/*<Dashboard/> Testing */}
+      <Dashboard/>
     </div>
     </ThemeProvider>
 
