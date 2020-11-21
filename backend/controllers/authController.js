@@ -19,7 +19,7 @@ const sendToken=(id,user,statusCode,request,response)=>{
     });
 };
 exports.protect=async (request,response,next)=>{
-    let token;    
+    let token;
     //Get Token and check if it's there
     if(request.headers.authorization&&request.headers.authorization.startsWith('Bearer'))
         token=request.headers.authorization.split(' ')[1]; 
