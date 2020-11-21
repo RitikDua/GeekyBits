@@ -1,0 +1,16 @@
+[
+    {
+        "userId":"5fb55ea6c61a49e17396693f",
+        "problemId":"5fad8f085503d91a5f6bd39a",
+        "attemptType":"MCQ",
+        "attemptString":"Program"        
+    },
+    {
+        "userId":"5fb55ea6c61a49e17396693f",
+        "problemId":"5fad8f085503d91a5f6bd39c",
+        "attemptType":"CodingProblem",
+        "attemptString":"%%23include%3Cstdio.h%3E%0Aint%20main()%7B%0A%20%20%20%20printf(%22Hello%20GeekyBits%22)%3B%0A%7D",        
+        "testCasesUserOutputs":["Hello%20GeekyBits"],        
+        "testCasesPassed":[true]
+    }
+]

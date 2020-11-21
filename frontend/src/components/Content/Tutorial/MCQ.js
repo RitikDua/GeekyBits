@@ -27,8 +27,7 @@ export default function ErrorRadios(props) {
   const [data, setData] = useState({})	
 
   useEffect(() => {
-  	return async () => {
-  		await axios.get(
+  		 axios.get(
 		`http://localhost:4000/mcqs/0`
 		)
 		.then((res)=>{
@@ -44,7 +43,6 @@ export default function ErrorRadios(props) {
 		)
 		.catch((err)=>console.error(err));
 
-  	};
   }, [props])
   const handleRadioChange = (event) => {
     setValue(event.target.value);
@@ -78,7 +76,7 @@ export default function ErrorRadios(props) {
         <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
           {
           	data.options.map((value,index)=>{
-         		return <FormControlLabel value={value} control={<Radio />} label={value} /> 		
+         		return <FormControlLabel key={index} value={value} control={<Radio />} label={value} /> 		
           	})
           }
           {/*<FormControlLabel value="worst" control={<Radio />} label="The worst." />*/}

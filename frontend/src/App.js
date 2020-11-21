@@ -10,6 +10,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { BrowserRouter } from 'react-router-dom';
+import CodingProblem from './components/Content/Tutorial/CodingProblem';
 import MCQ from './components/Content/Tutorial/MCQ';
 import CodeEditor from './components/Content/Tutorial/CodeEditor';
 //To Change Default Material UI Theme
@@ -31,6 +32,7 @@ function App() {
     <div className="App">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <MCQ />
       {/*<Dashboard/>{/* Testing */}
 =======
@@ -40,14 +42,20 @@ function App() {
       {/*<Dashboard/> Testing */}
 >>>>>>> 6240b4a3f4779ee9ffd8ce38c4da93bc7873e5fc
 =======
+=======
+>>>>>>> b4db7de702b4153ba8d70d69739c5676d5dcae69
       {/* <Course/> */}
       {/* <Material/> */}
      {/* <Main/> */}
-     {/* <Login/> */}
+      <Login/> 
      {/* <CodeEditor/> */}
 {/* <MCQ />*/}
+<<<<<<< HEAD
       <Dashboard/>
 >>>>>>> 965b68f780e9f40b80c385a8cccc7bcbf0e1263f
+=======
+      {/*<Dashboard/>*/}
+>>>>>>> b4db7de702b4153ba8d70d69739c5676d5dcae69
     </div>
     </ThemeProvider>
 

@@ -1,15 +1,7 @@
 const Courses=require(`${__dirname}/../models/courseModel`);
-exports.getAllCourses=async (request,response)=>{
+exports.getCourses=async (request,response)=>{
     try{
-        const courses=await Courses.find().populate({
-            path:'courseItems',
-            populate:{
-                path:'subItems',
-                populate:{
-                    path:'subItem'
-                }
-            }
-        });
+        const courses=await Courses.find();
         response.status(200).json({
             status:'success',
             data:{
@@ -31,15 +23,7 @@ exports.getAllCourses=async (request,response)=>{
 exports.getCourseById=async (request,response)=>{
     try{
         const courseId = request.params.courseId;
-        const course=await Courses.findById(courseId).populate({
-            path:'courseItems',
-            populate:{
-                path:'subItems',
-                populate:{
-                    path:'subItem'
-                }
-            }
-        });
+        const course=await Courses.findById(courseId).populate('courseItems');
         response.status(200).json({
             status:'success',
             data:{

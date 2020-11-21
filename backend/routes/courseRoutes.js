@@ -4,7 +4,7 @@ const authController=require(`${__dirname}/../controllers/authController`);
 const courseController=require(`${__dirname}/../controllers/courseController`);
 router.use(authController.protect);
 router.route('/')
-.get(courseController.getAllCourses);
+.get(courseController.getCourses);
 router.route('/:courseId')
 .get(courseController.getCourseById);
 module.exports=router;

@@ -6,9 +6,9 @@ process.on('uncaughtException',error=>{
 });
 const app=require(`${__dirname}/app`);
 const url= process.env.DB_CLOUD;
-mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Connection to DB is successful'));
-
-const server=app.listen(4000,()=>{console.log('Server running on port:4000')});
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Successfully Connected to Cloud'));
+const port=process.env.PORT||4000;
+const server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
 
 process.on('unhandledRejection',error=>{
     console.log(`UNHANDLED_REJECTION...\n${error.name}:${error.message}\nerror:- ${error}\nShutting down the app`);
