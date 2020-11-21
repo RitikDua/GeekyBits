@@ -1,5 +1,5 @@
 const Courses=require(`${__dirname}/../models/courseModel`);
-exports.getAllCourses=async (request,response)=>{
+exports.getCourses=async (request,response)=>{
     try{
         const courses=await Courses.find();
         response.status(200).json({
