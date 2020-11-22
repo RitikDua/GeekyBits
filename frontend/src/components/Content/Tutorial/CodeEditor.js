@@ -10,6 +10,7 @@ export default function CodeEditor() {
 	const [code, setCode] = useState("print('hello')");
 	const [lang,setLang]=useState("python");
 	const [output, setOutput] = useState("")
+	const [stdin,setStdin] = useState("")
 	const getDefaultCode=()=>{
 		switch(lang){
 			case 'C':
@@ -89,6 +90,10 @@ await axios.request(options).then(async function (response) {
 								{getOutput()}
 							</p>
 						</div>
+					</div>
+
+					<div className="stdin">
+						<textarea onChange={(e)=>setStdin(e.target.value)}></textarea>
 					</div>
 					<div className="row">
 						<button onClick={()=>executeCode()}>Execute</button>
