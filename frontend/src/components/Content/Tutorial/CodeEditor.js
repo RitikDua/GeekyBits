@@ -19,24 +19,27 @@ export default function CodeEditor(props) {
 				return decodeURIComponent("%23include%3Cstdio.h%3E%20%20int%20main()%20%7B%20%20%20%7D");
 		}
 	}
+// 	#include<stdio.h>
+// int main(){
+// int t;
+// scanf("%d",&t);
+// printf("hello %d",t);
+// }
 	// const problemId=request.body.problemId;
 	// const userId=request.body.userId;
 	// const problemType=request.body.problemType;
 	// const code=request.body.code;
 	// const lang=request.body.lang;
 	
-	const executeCode=async (check,input)=>{
-		// const code = request.body.code
-	 //    const input = request.body.input
-	 //    const lang = request.body.lang
-	 console.log(code);
+	const executeCode=async ()=>{
+	 console.log(parseInt(stdin));
 	 const options = {
 		  method: 'POST',
 		  url: '/compile',
 		  data: {
 		    lang: "C",
 		    code: code,
-		    input: input
+		    input: (stdin)
 		  }
 		};
 		await axios.request(options)
@@ -74,7 +77,7 @@ export default function CodeEditor(props) {
 						<textarea onChange={(e)=>setStdin(e.target.value)}></textarea>
 					</div>
 					<div className="row">
-						<button onClick={()=>executeCode(false,"asd")}>Execute</button>
+						<button onClick={()=>executeCode()}>Execute</button>
 						<button onClick={()=>submitCode()}>Submit</button>
 						
 					</div>
