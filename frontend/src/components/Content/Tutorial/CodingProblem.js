@@ -18,24 +18,25 @@ export default function FullWidthGrid(props) {
   const [data, setData] = useState({})
   const classes = useStyles();
    useEffect(() => {
-  	return async () => {
+  	const fun= async () => {
   		await axios.get(
-		`http://localhost:4000/codingProblems/0`
+		`/courseSubItems/5fafeec106ccb1909bbc2bb0`
 		)
 		.then((res)=>{
-			console.log(res);
+			console.log(res.data.data);
 			setData(
 				{
-				"content":decodeURIComponent(res.data.problemStatement).replace(/\n/gmi,"<br />")
-				,"title":decodeURIComponent(res.data.problemTitle),
-				"testCases":res.data.testCases,
-				"correctOutput":res.data.correctOutput
+				"content":decodeURIComponent(res.data.data.courseSubItem.subItem.problemStatement).replace(/\n/gmi,"<br />")
+				,"title":decodeURIComponent(res.data.data.courseSubItem.subItem.problemTitle),
+				"testCases":res.data.data.courseSubItem.subItem.testCases,
+				"correctOutput":res.data.data.courseSubItem.subItem.correctOutput
 				}
 			);}
 		)
 		.catch((err)=>console.error(err));
 
   	};
+    fun();
   }, [])
  if(!data.content) return "loading...";
   return (
@@ -50,7 +51,7 @@ export default function FullWidthGrid(props) {
           		<div className="jumbotron">
           		
           			{
-          				data.testCases.map((value,index)=>{
+          				data&&data.testCases&&data.testCases.map((value,index)=>{
           					return (
           							<p key={index}>
           							{decodeURIComponent(value)}<br />
@@ -63,7 +64,7 @@ export default function FullWidthGrid(props) {
           		<div className="jumbotron">
           		
           			{
-          				data.correctOutput.map((value,index)=>{
+          				data&&data.correctOutput&&data.correctOutput.map((value,index)=>{
           					return (
           							<p key={index}>
           							{decodeURIComponent(value)}<br />
