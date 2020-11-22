@@ -7,8 +7,8 @@ import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 import axios from 'axios';
 export default function CodeEditor(props) {
-	const [code, setCode] = useState("print('hello')");
-	const [lang,setLang]=useState("python");
+	const [code, setCode] = useState("");
+	const [lang,setLang]=useState("C");
 	const [output, setOutput] = useState("")
 	const [stdin,setStdin] = useState("")
 	const [submitExecution,setSubmitExec]=useState(false);
@@ -19,9 +19,31 @@ export default function CodeEditor(props) {
 				return decodeURIComponent("%23include%3Cstdio.h%3E%20%20int%20main()%20%7B%20%20%20%7D");
 		}
 	}
+	// const problemId=request.body.problemId;
+	// const userId=request.body.userId;
+	// const problemType=request.body.problemType;
+	// const code=request.body.code;
+	// const lang=request.body.lang;
 	
-	const executeCode= (check,input)=>{
-
+	const executeCode=async (check,input)=>{
+		// const code = request.body.code
+	 //    const input = request.body.input
+	 //    const lang = request.body.lang
+	 console.log(code);
+	 const options = {
+		  method: 'POST',
+		  url: '/compile',
+		  data: {
+		    lang: "C",
+		    code: code,
+		    input: input
+		  }
+		};
+		await axios.request(options)
+			.then((res)=>{
+				setOutput(res.data.output);
+			})
+			.catch((err)=>console.error(err));
 	}
 
 
@@ -34,15 +56,11 @@ export default function CodeEditor(props) {
 	}
 	return (
 		<div>
-				<CodeMirror
-					  value={code}
-					  options={{
-					    theme: 'monokai',
-					    keyMap: 'sublime',
-					    mode: lang,
-					    smartIndent:true,
-					    lineNumbers:20
+				<textarea
+					   onChange={(e) => {
+					  	setCode(e.target.value);
 					  }}
+
 					/>
 					<div className="output" >
 						<div style={{color:'white',width:"100%",backgroundColor:"black",height:"30vh"}} className="code-output">
