@@ -19,7 +19,7 @@ const sendToken=(id,user,statusCode,request,response)=>{
     });
 };
 exports.protect=async (request,response,next)=>{
-    let token;       
+    let token;
     //Get Token and check if it's there
     if(request.headers.authorization&&request.headers.authorization.startsWith('Bearer'))
         token=request.headers.authorization.split(' ')[1]; 
@@ -32,7 +32,7 @@ exports.protect=async (request,response,next)=>{
     try{
         decoded=await promisify(jwt.verify)(token,process.env.JWT_SECRET_KEY);    
     }    
-    catch(err){return response.status(500).json({status:'error',err});}
+    catch(err){return response.status(500).json({status:'error',err:err.message});}
     //decoded:-this will return the payload of user to whom the token was alloted which contains the user's id.
     //Now,Check if user still exists or not 
     const currentUser=await Users.findById(decoded.id);
@@ -54,7 +54,7 @@ exports.login = async (request,response)=>{
             return response.status(401).json({status:'error',message:'Incorrect email or password'});        
         return sendToken(user._id,user,200,request,response);
     }
-    catch(err){response.status(500).json({status:'error',err});}
+    catch(err){response.status(500).json({status:'error',err:err.message});}
 };
 exports.logout = async (request,response)=>{
     try{
@@ -76,5 +76,5 @@ exports.signup = async (request,response)=>{
         const user=await Users.create(userDetails);        
         return sendToken(user._id,user,201,request,response);
     }
-    catch(err){response.status(500).json({status:'error',err});}
+    catch(err){response.status(500).json({status:'error',err:err.message});}
 };
