@@ -25,11 +25,6 @@ export default function CodeEditor(props) {
 // scanf("%d",&t);
 // printf("hello %d",t);
 // }
-	// const problemId=request.body.problemId;
-	// const userId=request.body.userId;
-	// const problemType=request.body.problemType;
-	// const code=request.body.code;
-	// const lang=request.body.lang;
 	
 	const executeCode=async ()=>{
 	 console.log(parseInt(stdin));
@@ -49,9 +44,32 @@ export default function CodeEditor(props) {
 			.catch((err)=>console.error(err));
 	}
 
-
+// const problemId=request.body.problemId;
+	// const userId=request.body.userId;
+	// const problemType=request.body.problemType;
+	// const code=request.body.code;
+	// const lang=request.body.lang;
+	
 	const submitCode=async ()=>{
-
+	 	console.log(props);
+	 	const options = {
+			  method: 'POST',
+			  url: '/submit',
+			  data: {
+			    lang: "C",
+			    code: code,
+			    userId:localStorage.getItem("userId"),
+			    problemType:"code",
+			    problemId:props.data.id
+			  }
+			};
+			await axios.request(options)
+				.then((res)=>{
+					console.log(res.data.data.attempt);
+					// setOutput(res.data.output);
+				})
+				.catch((err)=>console.error(err));
+		
 	}
 	const getOutput=()=>{
 		if(output!=='') return output;
