@@ -10,6 +10,8 @@ const courseSubItemRouter=require(`${__dirname}/routes/courseSubItemRoutes`);
 const courseItemRouter=require(`${__dirname}/routes/courseItemRoutes`);
 const courseRouter=require(`${__dirname}/routes/courseRoutes`);
 const userRouter=require(`${__dirname}/routes/userRoutes`);
+const profileRouter=require(`${__dirname}/routes/profileRoutes`);
+
 //Adding middlewares
 if(process.env.NODE_ENV === 'DEVELOPMENT')
     app.use(morgan('dev'));
@@ -23,6 +25,8 @@ app.use('/courseSubItems',courseSubItemRouter);
 app.use('/courseItems',courseItemRouter);
 app.use('/courses',courseRouter);
 app.use('/users',userRouter);
+app.use('/profile',profileRouter);
+
 //mounting api endpoints
 app.route('/')
 .get((request, response) => {
