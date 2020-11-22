@@ -23,16 +23,16 @@ exports.compileCode=async (request,response)=>{
                         console.log("SUCCESSFULL PROMISE " + data)
                         console.log("SENDING " + data)
                         response.json(data)
-                        // deleteFile(path.join(__dirname, '../input.txt'))
-                        // deleteFile(path.join(__dirname, '../test.c'))
-                        // deleteFile(path.join(__dirname, '../a.out'))
+                        deleteFile(path.join(__dirname, '../input.txt'))
+                        deleteFile(path.join(__dirname, '../test.c'))
+                        deleteFile(path.join(__dirname, '../a.out'))
 
                     })
                     .catch(err => {
                         console.log("ERROR PROMISE " + err)
-                        // deleteFile(path.join(__dirname, '../input.txt'))
-                        // deleteFile(path.join(__dirname, '../test.c'))
-                        // deleteFile(path.join(__dirname, '../a.out'))
+                        deleteFile(path.join(__dirname, '../input.txt'))
+                        deleteFile(path.join(__dirname, '../test.c'))
+                        deleteFile(path.join(__dirname, '../a.out'))
             })
 
 }
