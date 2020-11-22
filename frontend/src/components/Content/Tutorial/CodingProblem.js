@@ -30,7 +30,7 @@ export default function FullWidthGrid(props) {
 				,"title":decodeURIComponent(res.data.data.courseSubItem.subItem.problemTitle),
 				"testCases":res.data.data.courseSubItem.subItem.testCases,
 				"correctOutput":res.data.data.courseSubItem.subItem.correctOutput
-				}
+				,"id":res.data.data.courseSubItem.subItem._id}
 			);}
 		)
 		.catch((err)=>console.error(err));
@@ -78,7 +78,7 @@ export default function FullWidthGrid(props) {
         <Grid item xs={6} sm={6}>
           <Paper style={{"height":"80vh"}} className={classes.paper}>
 
-          	<CodeEditor />
+          	<CodeEditor data={data} />
           </Paper>
         </Grid>
         
