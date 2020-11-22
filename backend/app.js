@@ -10,12 +10,11 @@ const courseSubItemRouter=require(`${__dirname}/routes/courseSubItemRoutes`);
 const courseItemRouter=require(`${__dirname}/routes/courseItemRoutes`);
 const courseRouter=require(`${__dirname}/routes/courseRoutes`);
 const userRouter=require(`${__dirname}/routes/userRoutes`);
-<<<<<<< HEAD
 const profileRouter=require(`${__dirname}/routes/profileRoutes`);
 
-=======
 const attemptRouter=require(`${__dirname}/routes/attemptRoutes`);
->>>>>>> ba6e778f51cf875bdee85e5fdf3e33bb564b8e81
+const compileCodeRouter=require(`${__dirname}/routes/compileCodeRoutes`);
+
 //Adding middlewares
 app.use(cors({origin:'http://localhost:3000/'}));
 app.options('*',cors({origin:'http://localhost:3000/'}));
@@ -33,6 +32,7 @@ app.use('/courses',courseRouter);
 app.use('/courseItems',courseItemRouter);
 app.use('/courseSubItems',courseSubItemRouter);
 app.use('/attempts',attemptRouter);
+app.use("/compile",compileCodeRouter);
 //mounting api endpoints
 app.get('/',(request, response) => {
     response.status(200).json({
