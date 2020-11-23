@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const execute = require('../middlewares/CompileCode')
-console.log(execute);
 const deleteFile = (filename) => {
     fs.unlink(filename, function (err) {
         if (err) {

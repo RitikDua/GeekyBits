@@ -1,4 +1,16 @@
+const fs = require('fs');
+const executeCode = require("../middlewares/CompileCode");
+const CodingProblems = require(`${__dirname}/../models/codingProblemModel`);
 const Attempts=require(`${__dirname}/../models/attemptModel`);
+const deleteFile = (filename) => {
+    fs.unlink(filename, function (err) {
+        if (err) {
+            console.log("SORRY NOT DELETED")
+        };
+        // if no error, file has been deleted successfully
+        console.log('File deleted!');
+    }); 
+}
 exports.getAttempts=async (request,response)=>{
     try{
         const attempts=await Attempts.find();
@@ -30,21 +42,49 @@ exports.getAttemptById=async (request,response)=>{
         });
     }
 };
-exports.submitAttempt=async (request,response)=>{
-    const attemptObj={
-        attemptType: request.body.attemptType,
-        attemptString: request.body.attemptString,
-        testCasesPassed: request.body.testCasesPassed,
-        testCasesUserOutputs: request.body.testCasesUserOutputs,
-        problem: request.body.problemId,
-        user: request.body.userId,
-      };
-    const attempt=await Attempts.create(attemptObj);
-    response.status(201).json({
-        status:'success',
-        data:{attempt}
-    });
-};
+exports.submitAttempt=async (request, response) => {
+    try{
+        const { problemId, userId, attemptType, attemptString, lang } = request.body;//.problemId;
+        const attemptObj = {attemptType,attemptString,problem: problemId,user: userId};
+        if (attemptType === "CodingProblem") {
+            const codingProblem = await CodingProblems.findById(problemId);
+            const { testCases, correctOutput } = codingProblem;
+            let arr = [];
+            testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
+            //    for(let i of testCases){
+            // 	arr.push(executeCode.executeCode(code,i));
+            // }
+            const result = await Promise.all(arr);
+            // console.log(codingProblem);
+            arr = [];
+            let checkTestCases = [];
+            for (let i = 0; i < result.length; i++) {
+                checkTestCases.push(result[i].output === decodeURIComponent(correctOutput[i]));
+                arr.push(result[i].output);
+            }
+            attemptObj.testCasesPassed=checkTestCases;
+            attemptObj.testCasesUserOutputs=arr;
+            attemptObj.attemptLanguage=lang;
+            deleteFile(`${__dirname}/../input.txt`);
+            deleteFile(`${__dirname}/../test.c`);
+            deleteFile(`${__dirname}/../a.out`);             
+        }	
+        const attempt = await Attempts.create(attemptObj);        
+        response.status(201).json({
+            status: "success",
+            data: { attempt }
+        });           
+    }
+    catch (err){        
+        response.status(500).json({
+            status: "error",
+            error: err.message
+        });     
+        deleteFile(`${__dirname}/../input.txt`);
+        deleteFile(`${__dirname}/../test.c`);
+        deleteFile(`${__dirname}/../a.out`);   
+    }
+}
 exports.deleteAttempt=async (request,response)=>{
     const attemptId=request.params.attemptId
     await Attempts.findByIdAndDelete(attemptId);
