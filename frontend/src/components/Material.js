@@ -71,6 +71,7 @@ function ResponsiveDrawer(props) {
   const [course, setcourse] = useState(["asd"]);
   const [subItems, setSubItems] = useState({})
   const [item, setitem] = useState([])
+  const [currIndex, setCurrIndex] = useState("")
   const [currComponent, setCurrComponent] = useState({}) 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -117,7 +118,8 @@ function ResponsiveDrawer(props) {
   
   }
   const changeMainComponent=(parentIndex,index)=>{
-    setCurrComponent(subItems[parentIndex][index]);
+    const fun=async()=>setCurrComponent(subItems[parentIndex][index]);
+    fun().then(()=>setCurrIndex(parentIndex+" "+index));
     console.log(currComponent);
   }
   const check=(index)=>{
@@ -184,7 +186,24 @@ function ResponsiveDrawer(props) {
     }
   }
   const container = window !== undefined ? () => window().document.body : undefined;
-
+  const paginationUtil=()=>{
+    let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
+    console.log(indexes);
+    indexes[1]+=1;
+    let fun=async ()=> setCurrIndex(indexes[0]+" "+indexes[1]);
+    fun().then(()=>changeMainComponent(indexes[0],indexes[1]))
+  
+  }
+  const pagination=()=>{
+    if(!currComponent||currIndex.length===0) return "loading...";
+     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
+      
+    if(subItems[indexes[0]].length-1===indexes[1])
+      return '';
+    return (
+        <button onClick={()=>paginationUtil()} >next</button>
+      )
+    }
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -243,6 +262,7 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content} style={{paddingTop:"5%"}}>
          {getDefaultComponent()}
+         {pagination()}
         </main>
     </div>
   );
