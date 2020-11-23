@@ -19,7 +19,9 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Axios from 'axios';
-
+import CodingProblem from './Content/Tutorial/CodingProblem';
+import Tutorial from './Content/Tutorial/Tutorial';
+import MCQ from './Content/Tutorial/MCQ';
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,6 +71,7 @@ function ResponsiveDrawer(props) {
   const [course, setcourse] = useState(["asd"]);
   const [subItems, setSubItems] = useState({})
   const [item, setitem] = useState([])
+  const [currComponent, setCurrComponent] = useState({}) 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -94,7 +97,7 @@ function ResponsiveDrawer(props) {
       for(let i of subItems[index]){
         temp+="*"+i.subItemType+"\n";
       }
-      // temp+="</ul>";
+
       return temp;
     }
   }
@@ -113,6 +116,10 @@ function ResponsiveDrawer(props) {
         .catch((err)=>console.log(err));
   
   }
+  const changeMainComponent=(parentIndex,index)=>{
+    setCurrComponent(subItems[parentIndex][index]);
+    console.log(currComponent);
+  }
   const check=(index)=>{
     if(subItems[index]) return true;
     return 
@@ -120,30 +127,62 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-  <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:"loading...."} </span></div><br/>
+    <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:"loading...."} </span></div><br/>
         <Accordion  square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
         </AccordionSummary>
         <AccordionDetails>
         <List component="nav" aria-label="secondary mailbox folders">
-          {data&& data.courseItems&&data.courseItems.map((value,index)=>{
-          console.log(value.itemTitle);
-          return (
-              <ListItem button>
-                <ListItemText primary={value.itemTitle} />
-              </ListItem>)
-            
-            // <Typography className={classes.heading}></Typography>)
-          })
+          {
+
+         data&& data.courseItems&&data.courseItems.map((parentValue,parentIndex)=>{
           
+          return (<Accordion key={parentIndex}
+
+            >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+            onClick={(e)=>showAccordianData(parentIndex,parentValue)}
+          >
+            <Typography style={{fontWeight:"bold",fontSize:"15px"}} className={classes.heading}>{parentValue.itemTitle}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+          <List>
+           {
+             subItems[parentIndex]?(subItems[parentIndex].map((val,index)=>{
+              // console.log(subItems);
+              return (
+                <ListItem style={{width:"1200px"}} key={index} button  onClick={(e)=>changeMainComponent(parentIndex,index)}>
+                  <span>{val.subItemType=='Tutorial'?<MenuBookIcon/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</span>
+                </ListItem>)              
+             })):"loading..."
+           }
+           </List>
+            
+          </AccordionDetails>
+        </Accordion>)
+          })
         }
+        
         </List>
         </AccordionDetails>
       </Accordion>
     </div>
   );
-
+  const getDefaultComponent=()=>{
+    if(!currComponent) return "loading...";
+    switch(currComponent.subItemType){
+      case "Tutorial":
+        return <Tutorial queryId={currComponent._id} />
+      case "MCQ":
+        return <MCQ queryId={currComponent._id} />
+      case "CodingProblem":
+        return <CodingProblem queryId={currComponent._id} />
+    }
+  }
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
@@ -203,37 +242,7 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content} style={{paddingTop:"5%"}}>
-     
-        {
-         data&& data.courseItems&&data.courseItems.map((value,index)=>{
-          
-          return (<Accordion key={index}
-
-            >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-            onClick={(e)=>showAccordianData(index,value)}
-          >
-            <Typography style={{fontWeight:"bold",fontSize:"15px"}} className={classes.heading}>{value.itemTitle}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-          <List>
-           {
-             subItems[index]?(subItems[index].map((val,index)=>{
-              return (
-                <ListItem style={{width:"1200px"}} key={index} button>
-                  <span>{val.subItemType=='Tutorial'?<MenuBookIcon/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</span>
-                </ListItem>)              
-             })):"loading..."
-           }
-           </List>
-            
-          </AccordionDetails>
-        </Accordion>)
-          })
-        }
+         {getDefaultComponent()}
         </main>
     </div>
   );
