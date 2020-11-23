@@ -7,6 +7,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import Material from './Material';
 import '../css/login.css'
+import CodingProblem from './Content/Tutorial/CodingProblem';
+
 import Axios from 'axios';
 function Login() {
     const [logname, setlogname] = useState("");
@@ -69,8 +71,10 @@ function Login() {
         e.preventDefault();
         await Axios.post("/users/login",{email:logemail,password:logpass})
         .then((res)=>{
-            console.log(res.data.data.token);
+            console.log(res.data.data);
             window.localStorage.setItem('login', res.data.data.token)
+            window.localStorage.setItem('userId', res.data.data.user._id)
+            
             setlogpass("");
             setlogname("");
             setlogemail("");
@@ -84,7 +88,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Material/>
+    if(isLoggedIn()) return <CodingProblem/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}
