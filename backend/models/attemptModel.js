@@ -4,6 +4,7 @@ const CodingProblem=require(`${__dirname}/codingProblemModel`);
 const attemptSchema=new mongoose.Schema({
     attemptType:String,
     attemptString:String,
+    attemptLanguage:String,
     testCasesPassed:[Boolean],
     testCasesUserOutputs:[String],
     problem:{
