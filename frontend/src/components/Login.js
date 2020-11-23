@@ -8,6 +8,8 @@ import ReactCardFlip from 'react-card-flip';
 import CodingProblem from './Content/Tutorial/CodingProblem.js';
 import Material from './Material';
 import '../css/login.css'
+import CodingProblem from './Content/Tutorial/CodingProblem';
+
 import Axios from 'axios';
 function Login() {
     const [logname, setlogname] = useState("");
@@ -70,8 +72,10 @@ function Login() {
         e.preventDefault();
         await Axios.post("/users/login",{email:logemail,password:logpass})
         .then((res)=>{
-            console.log(res.data.data.token);
+            console.log(res.data.data);
             window.localStorage.setItem('login', res.data.data.token)
+            window.localStorage.setItem('userId', res.data.data.user._id)
+            
             setlogpass("");
             setlogname("");
             setlogemail("");
