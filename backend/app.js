@@ -13,7 +13,6 @@ const profileRouter=require(`${__dirname}/routes/profileRoutes`);
 
 const attemptRouter=require(`${__dirname}/routes/attemptRoutes`);
 const compileCodeRouter=require(`${__dirname}/routes/compileCodeRoutes`);
-const submitRouter=require(`${__dirname}/routes/submitRoutes`);
 
 //Adding middlewares
 app.use((request,response,next)=>{
@@ -39,7 +38,6 @@ app.use('/courseItems',courseItemRouter);
 app.use('/courseSubItems',courseSubItemRouter);
 app.use('/attempts',attemptRouter);
 app.use("/compile",compileCodeRouter);
-app.use("/submit",submitRouter);
 //mounting api endpoints
 app.get('/',(request, response) => {
     response.status(200).json({

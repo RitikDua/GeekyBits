@@ -11,7 +11,7 @@ const port=process.env.PORT||4000;
 const server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
 
 process.on('unhandledRejection',error=>{
-    console.log(`UNHANDLED_REJECTION...\n${error.name}:${error.message}\nerror:- ${error}\nShutting down the app`);
+    console.log(`UNHANDLED_REJECTION...\n${error.name}:${error.message}\nerror:- ${error.stack}\nShutting down the app`);
     server.close(()=>{
         process.exit(1);
     });
