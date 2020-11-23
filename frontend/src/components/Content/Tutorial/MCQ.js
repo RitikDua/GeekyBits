@@ -26,23 +26,23 @@ export default function ErrorRadios(props) {
   const [helperText, setHelperText] = React.useState('Choose wisely');
   const [data, setData] = useState({})	
 
-  useEffect(() => {
-  		 axios.get(
-		`http://localhost:4000/mcqs/0`
+  useEffect( () => {
+  		const fetchData=async()=>await  axios.get(
+		`/courseSubItems/${props.queryId}`
 		)
 		.then((res)=>{
 			console.log(res);
 			setData(
 				{
-				"content":decodeURIComponent(res.data.mcqStatement).replace(/\n/gmi,"<br />")
-				,"title":res.data.mcqTitle,
-				"options":res.data.options,
-				'answer':res.data.answer
+				"content":decodeURIComponent(res.data.data.courseSubItem.subItem.mcqStatement).replace(/\n/gmi,"<br />")
+				,"title":res.data.data.courseSubItem.subItem.mcqTitle,
+				"options":res.data.data.courseSubItem.subItem.options,
+				'answer':res.data.data.courseSubItem.subItem.answer
 				}
 			);}
 		)
 		.catch((err)=>console.error(err));
-
+    fetchData();
   }, [props])
   const handleRadioChange = (event) => {
     setValue(event.target.value);
