@@ -14,11 +14,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Divider, List, ListItem, ListItemText } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import { Box, List, ListItem, ListItemText } from '@material-ui/core';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import Axios from 'axios';
 
 const drawerWidth = 240;
@@ -69,6 +68,7 @@ function ResponsiveDrawer(props) {
   const [data, setData] = useState({})
   const [course, setcourse] = useState(["asd"]);
   const [subItems, setSubItems] = useState({})
+  const [item, setitem] = useState([])
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -79,60 +79,71 @@ function ResponsiveDrawer(props) {
      async function fun(){
       await Axios.get(`/courses/5fb01e55e8d9acbadcd66bff`, {withCredentials: true})
       .then((res)=>{
-        console.log(res.data.data.course);
+        console.log(res.data.data.course.courseItems);
         setData(res.data.data.course);
          })
       .catch((err)=>console.log(err));
      }
      fun();
   }, []);
+  const showSubItemsData=(index)=>{
+    if(!subItems[index]) return "loading...";
+    else
+    {
+      let temp="";
+      for(let i of subItems[index]){
+        temp+="*"+i.subItemType+"\n";
+      }
+      // temp+="</ul>";
+      return temp;
+    }
+  }
+  const showAccordianData=async (index,value)=>{
+  await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
+        .then((res)=>{
+          console.log("setSubItems");
+          let indexStr=""+index;
+          console.log(res.data.data.courseItem.subItems);  
+          // setSubItems({...subItems,...{"value":{indexStr:{res.data.courseItem.subItems}}})
+          let items=Object.assign({},subItems);
+          items[index]=res.data.data.courseItem.subItems;
+          setSubItems(items);
+          console.log(subItems);
+          })
+        .catch((err)=>console.log(err));
+  
+  }
+  const check=(index)=>{
+    if(subItems[index]) return true;
+    return 
+  }
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-  <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"18px"}}>{data?data.courseTitle:"loading...."}</span></div><br/>
+  <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:"loading...."} </span></div><br/>
         <Accordion  square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
         </AccordionSummary>
         <AccordionDetails>
-        <List component="nav" style={{width:"100%"}}>
-          <ListItem button>
-            <ListItemText primary="Trash" />
-          </ListItem>
+        <List component="nav" aria-label="secondary mailbox folders">
+          {data&& data.courseItems&&data.courseItems.map((value,index)=>{
+          console.log(value.itemTitle);
+          return (
+              <ListItem button>
+                <ListItemText primary={value.itemTitle} />
+              </ListItem>)
+            
+            // <Typography className={classes.heading}></Typography>)
+          })
+          
+        }
         </List>
         </AccordionDetails>
       </Accordion>
     </div>
   );
 
-
-const showSubItemsData=(index)=>{
-  if(!subItems[index]) return "loading...";
-  else
-  {
-    let temp="";
-    for(let i of subItems[index]){
-      temp+="*"+i.subItemType+"\n";
-    }
-    // temp+="</ul>";
-    return temp;
-  }
-}
-const showAccordianData=async (index,value)=>{
-await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
-      .then((res)=>{
-        console.log("setSubItems");
-        let indexStr=""+index;
-        console.log(res.data.data.courseItem.subItems);  
-        // setSubItems({...subItems,...{"value":{indexStr:{res.data.courseItem.subItems}}})
-        let items=Object.assign({},subItems);
-        items[index]=res.data.data.courseItem.subItems;
-        setSubItems(items);
-        console.log(subItems);
-        })
-      .catch((err)=>console.log(err));
-
-}
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
@@ -205,10 +216,19 @@ await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
             id="panel1a-header"
             onClick={(e)=>showAccordianData(index,value)}
           >
-            <Typography className={classes.heading}>{value.itemTitle}</Typography>
+            <Typography style={{fontWeight:"bold",fontSize:"15px"}} className={classes.heading}>{value.itemTitle}</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {showSubItemsData(index)}
+          <List>
+           {
+             subItems[index]?(subItems[index].map((val,index)=>{
+              return (
+                <ListItem style={{width:"1200px"}} key={index} button>
+                  <span>{val.subItemType=='Tutorial'?<MenuBookIcon/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</span>
+                </ListItem>)              
+             })):"loading..."
+           }
+           </List>
             
           </AccordionDetails>
         </Accordion>)
