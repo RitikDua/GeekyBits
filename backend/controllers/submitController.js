@@ -24,7 +24,7 @@ exports.submit=async (request,response)=>{
        	let checkArr=[];
        	for(let i=0;i<result.length;i++)
        	{
-       		checkArr.push(result[i].output===decodeURIComponent(result[i]));
+       		checkArr.push(result[i].output===decodeURIComponent(correctOutput[i]));
        		arr.push(result[i].output);	
        	}
 
