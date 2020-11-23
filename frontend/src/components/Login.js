@@ -5,6 +5,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
+import CodingProblem from './Content/Tutorial/CodingProblem.js';
 import Material from './Material';
 import '../css/login.css'
 import CodingProblem from './Content/Tutorial/CodingProblem';

@@ -25,14 +25,14 @@ exports.compileCode=async (request,response)=>{
                         response.json(data)
                         deleteFile(path.join(__dirname, '../input.txt'))
                         deleteFile(path.join(__dirname, '../test.c'))
-                        deleteFile(path.join(__dirname, '../a.out'))
+                        deleteFile(path.join(__dirname, '../a.exe'))
 
                     })
                     .catch(err => {
                         console.log("ERROR PROMISE " + err)
                         deleteFile(path.join(__dirname, '../input.txt'))
                         deleteFile(path.join(__dirname, '../test.c'))
-                        deleteFile(path.join(__dirname, '../a.out'))
+                        deleteFile(path.join(__dirname, '../a.exe'))
             })
 
 }

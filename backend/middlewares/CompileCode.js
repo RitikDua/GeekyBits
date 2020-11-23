@@ -36,7 +36,7 @@ const executeCode=(data,input)=>{
 
 
             const filePath = path.join(__dirname,"../test.c")
-              exec('gcc '+filePath, (err, stdout, stderr) => {
+              exec('gcc '+filePath+' -o a', (err, stdout, stderr) => {
                 if (err) {
                   // IF COMPILATION ERROR
                   console.error(`exec error: ${err}`);
@@ -49,7 +49,7 @@ const executeCode=(data,input)=>{
                 
                 // SUCCESSFULL COMPILATION EXECUTING
                 console.log("SUCCESSFULLY COMPILED")
-                exec('./a.out < '+__dirname+'/../input.txt', (err, stdout, stderr) => {
+                exec('./a.exe < '+__dirname+'/../input.txt', (err, stdout, stderr) => {
                   if(err){
                     console.log("ERROR "+err)
                     resolve({
