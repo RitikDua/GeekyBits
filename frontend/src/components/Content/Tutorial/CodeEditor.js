@@ -57,9 +57,9 @@ export default function CodeEditor(props) {
 			  url: '/submit',
 			  data: {
 			    lang: "C",
-			    code: code,
+			    attemptString: code,
 			    userId:localStorage.getItem("userId"),
-			    problemType:"code",
+			    attemptType:"CodingProblem",
 			    problemId:props.data.id
 			  }
 			};
