@@ -16,4 +16,5 @@ const attemptSchema=new mongoose.Schema({
         ref:'User'
     }
 },{timestamps:true});
+attemptSchema.index({user:1,problem:1});
 module.exports=mongoose.model('Attempt',attemptSchema);
