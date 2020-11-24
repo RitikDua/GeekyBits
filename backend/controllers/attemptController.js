@@ -13,7 +13,12 @@ const deleteFile = (filename) => {
 }
 exports.getAttempts=async (request,response)=>{
     try{
-        const attempts=await Attempts.find();
+        let filterObj={};
+        if(request.user.role==='admin')            
+            filterObj=request.body;
+        else
+            filterObj.user=request.user._id;
+        const attempts=await Attempts.find(filterObj);        
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -26,13 +31,15 @@ exports.getAttempts=async (request,response)=>{
         });
     }
 };
-exports.getAttemptById=async (request,response)=>{
+exports.getAttemptsByProblemId=async (request,response)=>{
     try{
-        const attemptId=request.params.attemptId;
-        const attempt=await Attempts.findById(attemptId).populate('problem');
+        const filterObj={problem: request.params.problemId};
+        if(request.user.role==='user')
+            filterObj.user=request.user._id;
+        const attempts=await Attempts.find(filterObj).populate('problem');
         response.status(200).json({
             status:'success',
-            data:{attempt}
+            data:{attempts}
         });
     }
     catch (err){
@@ -85,11 +92,13 @@ exports.submitAttempt=async (request, response) => {
         deleteFile(`${__dirname}/../a.out`);   
     }
 }
-exports.deleteAttempt=async (request,response)=>{
-    const attemptId=request.params.attemptId
-    await Attempts.findByIdAndDelete(attemptId);
+exports.deleteAttempts=async (request,response)=>{
+    if(request.user.role!=='admin')
+        return response.status(403).json({status:'error',message:'You are not authorized for this action'});
+    const attemptDetails=request.body;
+    await Attempts.deleteMany(attemptDetails);
     response.status(204).json({
         status:'success',
-        message:'Attempt deleted'
+        message:'Attempts deleted'
     });
 };
