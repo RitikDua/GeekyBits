@@ -54,6 +54,7 @@ userSchema.pre('save',async function(next){
         return next();
     this.passwordChangedAt=Date.now()-1000;
 });
+userSchema.index({profileShortLink:1});
 userSchema.methods.isPasswordValid=async function(inputPassword,dbHash){return await bcrypt.compare(inputPassword,dbHash);}
 userSchema.methods.isPasswordChanged=function(JWTTimeStamp){
     if(this.passwordChangedAt){        

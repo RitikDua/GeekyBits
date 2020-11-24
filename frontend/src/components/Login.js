@@ -5,7 +5,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
-import CodingProblem from './Content/Tutorial/CodingProblem.js';
+// import CodingProblem from './Content/Tutorial/CodingProblem.js';
 import Material from './Material';
 import '../css/login.css'
 // import CodingProblem from './Content/Tutorial/CodingProblem';
@@ -89,7 +89,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <CodingProblem/>
+    if(isLoggedIn()) return <Material/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}

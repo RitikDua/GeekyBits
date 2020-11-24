@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import IconButton from '@material-ui/core/IconButton';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -19,42 +22,64 @@ import MenuBookIcon from '@material-ui/icons/MenuBook';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import Axios from 'axios';
-
-const drawerWidth = 240;
+import CodingProblem from './Content/Tutorial/CodingProblem';
+import Tutorial from './Content/Tutorial/Tutorial';
+import MCQ from './Content/Tutorial/MCQ';
+const drawerWidth = 350;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
   appBar: {
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up('sm')]: {
-      display: 'none',
-    },
   },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
   drawerPaper: {
     width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: -drawerWidth,
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: 0,
   },
 }));
 
@@ -69,11 +94,18 @@ function ResponsiveDrawer(props) {
   const [course, setcourse] = useState(["asd"]);
   const [subItems, setSubItems] = useState({})
   const [item, setitem] = useState([])
+  const [currIndex, setCurrIndex] = useState("")
+  const [currComponent, setCurrComponent] = useState({}) 
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
   useEffect(() => {
      async function fun(){
@@ -94,7 +126,7 @@ function ResponsiveDrawer(props) {
       for(let i of subItems[index]){
         temp+="*"+i.subItemType+"\n";
       }
-      // temp+="</ul>";
+
       return temp;
     }
   }
@@ -113,6 +145,11 @@ function ResponsiveDrawer(props) {
         .catch((err)=>console.log(err));
   
   }
+  const changeMainComponent=(parentIndex,index)=>{
+    const fun=async()=>setCurrComponent(subItems[parentIndex][index]);
+    fun().then(()=>setCurrIndex(parentIndex+" "+index));
+    console.log(currComponent);
+  }
   const check=(index)=>{
     if(subItems[index]) return true;
     return 
@@ -120,110 +157,36 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-  <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:"loading...."} </span></div><br/>
-        <Accordion  square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+    <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:"loading...."} </span></div><br/>
+        <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
         </AccordionSummary>
         <AccordionDetails>
         <List component="nav" aria-label="secondary mailbox folders">
-          {data&& data.courseItems&&data.courseItems.map((value,index)=>{
-          console.log(value.itemTitle);
-          return (
-              <ListItem button>
-                <ListItemText primary={value.itemTitle} />
-              </ListItem>)
-            
-            // <Typography className={classes.heading}></Typography>)
-          })
+          {
+
+         data&& data.courseItems&&data.courseItems.map((parentValue,parentIndex)=>{
           
-        }
-        </List>
-        </AccordionDetails>
-      </Accordion>
-    </div>
-  );
-
-  const container = window !== undefined ? () => window().document.body : undefined;
-
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box display="flex" flexGrow={1}>
-          <Typography variant="h5" noWrap>
-            GeekyBits
-          </Typography>
-          </Box>
-          <PermIdentityIcon />
-          <Typography variant="p" noWrap>
-            &nbsp; {myName}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-      <main className={classes.content} style={{paddingTop:"5%"}}>
-     
-        {
-         data&& data.courseItems&&data.courseItems.map((value,index)=>{
-          
-          return (<Accordion key={index}
-
+          return (<Accordion key={parentIndex}
+              style={{width:"320px",overflow:"hidden"}}
             >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            onClick={(e)=>showAccordianData(index,value)}
+            onClick={(e)=>showAccordianData(parentIndex,parentValue)}
+            style={{overflowX:"hidden"}}
           >
-            <Typography style={{fontWeight:"bold",fontSize:"15px"}} className={classes.heading}>{value.itemTitle}</Typography>
+            <Typography style={{fontWeight:"bold",fontSize:"15px"}} className={classes.heading}>{parentValue.itemTitle}</Typography>
           </AccordionSummary>
           <AccordionDetails>
           <List>
            {
-             subItems[index]?(subItems[index].map((val,index)=>{
+             subItems[parentIndex]?(subItems[parentIndex].map((val,index)=>{
+              // console.log(subItems);
               return (
-                <ListItem style={{width:"1200px"}} key={index} button>
+                <ListItem style={{width:"1200px"}} key={index} button  onClick={(e)=>changeMainComponent(parentIndex,index)}>
                   <span>{val.subItemType=='Tutorial'?<MenuBookIcon/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</span>
                 </ListItem>)              
              })):"loading..."
@@ -234,7 +197,91 @@ function ResponsiveDrawer(props) {
         </Accordion>)
           })
         }
-        </main>
+        
+        </List>
+        </AccordionDetails>
+      </Accordion>
+    </div>
+  );
+  const getDefaultComponent=()=>{
+    if(!currComponent) return "loading...";
+    switch(currComponent.subItemType){
+      case "Tutorial":
+        return <Tutorial queryId={currComponent._id} />
+      case "MCQ":
+        return <MCQ queryId={currComponent._id} />
+      case "CodingProblem":
+        return <CodingProblem queryId={currComponent._id} />
+    }
+  }
+  const container = window !== undefined ? () => window().document.body : undefined;
+  const paginationUtil=()=>{
+    let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
+    console.log(indexes);
+    indexes[1]+=1;
+    let fun=async ()=> setCurrIndex(indexes[0]+" "+indexes[1]);
+    fun().then(()=>changeMainComponent(indexes[0],indexes[1]))
+  
+  }
+  const pagination=()=>{
+    if(!currComponent||currIndex.length===0) return "loading...";
+     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
+      
+    if(subItems[indexes[0]].length-1===indexes[1])
+      return '';
+    return (
+        <button onClick={()=>paginationUtil()} >next</button>
+      )
+    }
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            Persistent drawer
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </div>
+        {drawer}
+      </Drawer>
+      <main
+        className={clsx(classes.content, {
+          [classes.contentShift]: open,
+        })}
+      >
+        <div className={classes.drawerHeader} />
+        {getDefaultComponent()}
+         {pagination()}
+      </main>
     </div>
   );
 }

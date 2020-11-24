@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
     
   },
 }));
-
+// 5fafeec106ccb1909bbc2bb0
 export default function FullWidthGrid(props) {
   const [data, setData] = useState({})
   const classes = useStyles();
    useEffect(() => {
   	const fun= async () => {
   		await axios.get(
-		`/courseSubItems/5fafeec106ccb1909bbc2bb0`
+		`/courseSubItems/${props.queryId}`
 		)
 		.then((res)=>{
 			console.log(res.data.data);

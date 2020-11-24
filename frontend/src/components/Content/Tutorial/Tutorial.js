@@ -18,20 +18,20 @@ export default class Tutorial extends React.Component {
 			
 		}
 	}	
-	componentDidMount(){
-		axios.get(
-		`http://localhost:4000/tutorials/`
+	async componentDidMount(){
+		await axios.get(
+		`/courseSubItems/${this.props.queryId}`
 		)
 		.then( async(res)=>{
+			console.log(res);
 			this.setState(
 				{
-				"content":decodeURIComponent(res.data.content).replace(/\n/gmi,"<br />")
-				,"title":res.data.tutorialTitle,
-				"codes":res.data.codes
+				"content":decodeURIComponent(res.data.data.courseSubItem.subItem.content).replace(/\n/gmi,"<br />")
+				,"title":res.data.data.courseSubItem.subItem.tutorialTitle,
+				"codes":res.data.data.courseSubItem.subItem.codes
 				}
 			);}
 		)
-		.then(()=>console.log("as"))
 		.catch((err)=>console.error(err));
 
 	}
@@ -73,7 +73,7 @@ export default class Tutorial extends React.Component {
 		return (
 		<div>
 		{/* <Navacc/> */}
-		<div style={{paddingTop:"5%"}}>
+		<div>
 		<span className="title">{this.state.title}</span><br/>
 		<div style={{paddingBottom:"1%",paddingTop:"1%"}}><Chip icon={<MenuBookIcon/>} label="Tutorial"/></div>
 			<div className="page" dangerouslySetInnerHTML={{__html: this.hulala(this.state)}} />
