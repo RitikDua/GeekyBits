@@ -33,9 +33,9 @@ function App() {
       {/* <Course/> */}
       {/* <Material/> */}
      {/* <Main/> */}
-       <Login/>
-    {/* <CodeEditor/> */}
-{/* <MCQ />*/}
+      <Login/> 
+    {/*<CodingProblem/> */}
+    {/* <MCQ />*/}
       {/*<Dashboard/>*/}
     </div>
     </ThemeProvider>
