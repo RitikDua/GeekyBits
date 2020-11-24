@@ -49,7 +49,7 @@ const executeCode=(data,input)=>{
                 
                 // SUCCESSFULL COMPILATION EXECUTING
                 console.log("SUCCESSFULLY COMPILED")
-                exec('./a.exe < '+__dirname+'/../input.txt', (err, stdout, stderr) => {
+                exec('a.exe < '+path.join(__dirname,"../input.txt"), (err, stdout, stderr) => {
                   if(err){
                     console.log("ERROR "+err)
                     resolve({

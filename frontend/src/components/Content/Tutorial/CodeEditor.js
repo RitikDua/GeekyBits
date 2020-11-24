@@ -39,8 +39,12 @@ export default function CodeEditor(props) {
 		};
 		await axios.request(options)
 			.then((res)=>{
+				console.log(res.data);
+				if(res.data.err){
+					setOutput(res.data.error);
+				}else
 				setOutput(res.data.output);
-			})
+				})
 			.catch((err)=>console.error(err));
 	}
 
@@ -65,8 +69,11 @@ export default function CodeEditor(props) {
 			};
 			await axios.request(options)
 				.then((res)=>{
-					console.log(res.data.data.attempt);
-					// setOutput(res.data.output);
+					console.log(res.data);
+					if(res.data.data.attempt.err){
+						setOutput(res.data.data.attempt.error);
+					}else
+					setOutput(res.data.output);
 				})
 				.catch((err)=>console.error(err));
 		
