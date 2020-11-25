@@ -35,7 +35,23 @@ export default class Tutorial extends React.Component {
 		.catch((err)=>console.error(err));
 
 	}
+	async componentWillReceiveProps(){
+		await axios.get(
+		`/courseSubItems/${this.props.queryId}`
+		)
+		.then( async(res)=>{
+			console.log(res);
+			this.setState(
+				{
+				"content":decodeURIComponent(res.data.data.courseSubItem.subItem.content).replace(/\n/gmi,"<br />")
+				,"title":res.data.data.courseSubItem.subItem.tutorialTitle,
+				"codes":res.data.data.courseSubItem.subItem.codes
+				}
+			);}
+		)
+		.catch((err)=>console.error(err));
 
+	}
 	fun=(code)=>{
 			return (  
 				<CodeMirror

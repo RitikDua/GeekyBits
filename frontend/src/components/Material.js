@@ -205,6 +205,7 @@ function ResponsiveDrawer(props) {
   );
   const getDefaultComponent=()=>{
     if(!currComponent) return "loading...";
+    console.log(currComponent);
     switch(currComponent.subItemType){
       case "Tutorial":
         return <Tutorial queryId={currComponent._id} />

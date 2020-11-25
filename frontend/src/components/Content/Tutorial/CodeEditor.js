@@ -7,6 +7,7 @@ import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
 import axios from 'axios';
 import MonacoEditor from 'react-monaco-editor';
+import Button from '@material-ui/core/Button';
 import {cod} from './defaultCode'
 export default function CodeEditor(props) {
 	const [code, setCode] = useState("");
@@ -129,9 +130,17 @@ export default function CodeEditor(props) {
                             <option value="java">Java</option>
                             <option value="python">Python</option>
                         </select></div>
-					<div style={{overflow:'hidden'}}>
+					<div style={{overflow:"hidden"}}>
 						<div><span style={{fontSize:"20px"}}>Code your code here</span></div>
-					<MonacoEditor
+						<CodeMirror
+					  value={val}
+					  options={{
+					    theme: 'monokai',
+					    keyMap: 'sublime',
+					    mode: 'jsx'
+					  }}
+					/>
+					{/* <MonacoEditor
                                 width="100%"
                                 height="35vh"
                                 language="c"
@@ -140,7 +149,7 @@ export default function CodeEditor(props) {
                                 options={options}
                                 onChange={(code,e)=>changedata(code,e)}
 								editorDidMount={(e)=>editorDidMount(e)}
-                            />
+                            /> */}
 							</div>
 					<div className="output" >
 						<div style={{color:'white',width:"100%",backgroundColor:"black",height:"10vh"}} className="code-output">
@@ -155,8 +164,10 @@ export default function CodeEditor(props) {
 						<textarea style={{width:"100%",resize:"none",height:"15vh"}} onChange={(e)=>setStdin(e.target.value)}></textarea>
 					</div>
 					<div className="row">
-						<button onClick={()=>executeCode()}>Execute</button>
-						<button onClick={()=>submitCode()}>Submit</button>
+					<Button onClick={()=>executeCode()} style={{color:"#0275d8",borderColor:"#0275d8"}} variant="outlined" color="primary">Execute</Button>
+						{/* <button>Execute</button> */}&nbsp;&nbsp;
+					<Button onClick={()=>submitCode()} style={{color:"green",borderColor:"green"}} variant="outlined">Submit</Button>
+					 {/* <button onClick={()=>submitCode()}>Submit</button> */}
 						
 					</div>
 					
