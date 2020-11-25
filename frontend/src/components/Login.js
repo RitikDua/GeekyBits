@@ -8,7 +8,7 @@ import ReactCardFlip from 'react-card-flip';
 // import CodingProblem from './Content/Tutorial/CodingProblem.js';
 import Material from './Material';
 import '../css/login.css'
-import CodingProblem from './Content/Tutorial/CodingProblem';
+// import CodingProblem from './Content/Tutorial/CodingProblem';
 
 import Axios from 'axios';
 function Login() {
