@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const CourseSubItem=require(`${__dirname}/courseSubItem`);
+const CourseSubItem=require(`${__dirname}/courseSubItemModel`);
 const attemptSchema=new mongoose.Schema({
     attemptType:String,
     attemptTitle:String,
