@@ -252,8 +252,14 @@ function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Persistent drawer
+          <Box display="flex" flexGrow={1}>
+          <Typography variant="h5" noWrap>
+            GeekyBits
+          </Typography>
+          </Box>
+          <PermIdentityIcon />
+          <Typography variant="p" noWrap>
+            &nbsp; {myName}
           </Typography>
         </Toolbar>
       </AppBar>
