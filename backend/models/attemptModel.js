@@ -1,15 +1,15 @@
 const mongoose=require('mongoose');
-const MCQ=require(`${__dirname}/mcqModel`);
-const CodingProblem=require(`${__dirname}/codingProblemModel`);
+const CourseSubItem=require(`${__dirname}/courseSubItem`);
 const attemptSchema=new mongoose.Schema({
     attemptType:String,
+    attemptTitle:String,
     attemptString:String,
     attemptLanguage:String,
     testCasesPassed:[Boolean],
     testCasesUserOutputs:[String],
     problem:{
         type:mongoose.Schema.Types.ObjectId,
-        refPath:'attemptType'
+        ref:'CourseSubItem'
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
