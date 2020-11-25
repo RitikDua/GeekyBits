@@ -140,6 +140,7 @@ export default function CodeEditor(props) {
 					    mode: 'jsx'
 					  }}
 					/>
+					{/*  */}
 					{/* <MonacoEditor
                                 width="100%"
                                 height="35vh"
