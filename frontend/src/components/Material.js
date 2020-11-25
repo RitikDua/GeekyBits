@@ -205,6 +205,7 @@ function ResponsiveDrawer(props) {
   );
   const getDefaultComponent=()=>{
     if(!currComponent) return "loading...";
+    console.log(currComponent);
     switch(currComponent.subItemType){
       case "Tutorial":
         return <Tutorial queryId={currComponent._id} />
@@ -252,8 +253,14 @@ function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
-            Persistent drawer
+          <Box display="flex" flexGrow={1}>
+          <Typography variant="h5" noWrap>
+            GeekyBits
+          </Typography>
+          </Box>
+          <PermIdentityIcon />
+          <Typography variant="p" noWrap>
+            &nbsp; {myName}
           </Typography>
         </Toolbar>
       </AppBar>
