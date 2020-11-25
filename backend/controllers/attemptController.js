@@ -51,18 +51,15 @@ exports.getAttemptsByProblemId=async (request,response)=>{
 };
 exports.submitAttempt=async (request, response) => {
     try{
-        const { problemId, userId, attemptType, attemptString, lang } = request.body;//.problemId;
+        const { problemId, userId, attemptType, attemptString, attemptLanguage,attemptTitle } = request.body;//.problemId;
         const attemptObj = {attemptType,attemptString,problem: problemId,user: userId};
         if (attemptType === "CodingProblem") {
             const codingProblem = await CodingProblems.findById(problemId);
             const { testCases, correctOutput } = codingProblem;
             let arr = [];
             testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
-            //    for(let i of testCases){
-            // 	arr.push(executeCode.executeCode(code,i));
-            // }
+            
             const result = await Promise.all(arr);
-            // console.log(codingProblem);
             arr = [];
             let checkTestCases = [];
             for (let i = 0; i < result.length; i++) {
@@ -71,7 +68,8 @@ exports.submitAttempt=async (request, response) => {
             }
             attemptObj.testCasesPassed=checkTestCases;
             attemptObj.testCasesUserOutputs=arr;
-            attemptObj.attemptLanguage=lang;
+            attemptObj.attemptLanguage=attemptLanguage;
+            attemptObj.attemptTitle=attemptTitle;
             deleteFile(`${__dirname}/../input.txt`);
             deleteFile(`${__dirname}/../test.c`);
             deleteFile(`${__dirname}/../a.out`);             
