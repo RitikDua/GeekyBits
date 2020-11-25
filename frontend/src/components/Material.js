@@ -25,7 +25,7 @@ import Axios from 'axios';
 import CodingProblem from './Content/Tutorial/CodingProblem';
 import Tutorial from './Content/Tutorial/Tutorial';
 import MCQ from './Content/Tutorial/MCQ';
-const drawerWidth = 350;
+const drawerWidth = 370;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -169,7 +169,7 @@ function ResponsiveDrawer(props) {
          data&& data.courseItems&&data.courseItems.map((parentValue,parentIndex)=>{
           
           return (<Accordion key={parentIndex}
-              style={{width:"320px",overflow:"hidden"}}
+              style={{width:"340px",overflow:"hidden"}}
             >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -187,7 +187,7 @@ function ResponsiveDrawer(props) {
               // console.log(subItems);
               return (
                 <ListItem style={{width:"1200px"}} key={index} button  onClick={(e)=>changeMainComponent(parentIndex,index)}>
-                  <span>{val.subItemType=='Tutorial'?<MenuBookIcon/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</span>
+                  <div style={{fontSize:"17px",padding:"1%"}}>{val.subItemType=='Tutorial'?<MenuBookIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</div>
                 </ListItem>)              
              })):"loading..."
            }

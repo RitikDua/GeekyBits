@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import CodeEditor from './CodeEditor';
+import './tut.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -61,7 +62,7 @@ export default function FullWidthGrid(props) {
           			}
           		</div>
           		<p><b>Output:</b></p>
-          		<div className="jumbotron">
+          		<div className="jumbotron" style={{backgroundColor:"#eee",padding:"1%"}}>
           		
           			{
           				data&&data.correctOutput&&data.correctOutput.map((value,index)=>{
