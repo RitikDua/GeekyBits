@@ -42,9 +42,9 @@ export default function Attempts(props) {
   const showAttempt=(index)=>{
   	if(index===-1) return "loading...";
   	console.log(index);
-  	if(data[index].attemptType==="code"){
+  	if(data[index].attemptType==="CodingProblem"){
   		console.log("asd");
-  		return <CodingProblem attempt="true"  queryId={data[index].problem} attemptData={data}/>
+  		return <CodingProblem attempt="true"  queryId={data[index].problem} attemptData={data[index]}/>
   	}
   	else
   	{}
@@ -70,7 +70,7 @@ export default function Attempts(props) {
 			{
 				data&&data.map((value,index)=>{
 					
-					return (<li key={index} onClick={toggleDrawer(anchor, true,index)}>{value.attemptString}</li>)
+					return (<li key={index} onClick={toggleDrawer(anchor, true,index)}>{value.attemptTitle}</li>)
 				})
 			}
 		</ul>	

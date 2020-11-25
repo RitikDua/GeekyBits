@@ -19,6 +19,7 @@ export default function FullWidthGrid(props) {
   const [data, setData] = useState({})
   const classes = useStyles();
    useEffect(() => {
+    console.log(props);
   	const fun= async () => {
   		await axios.get(
 		`/courseSubItems/${props.queryId}`
