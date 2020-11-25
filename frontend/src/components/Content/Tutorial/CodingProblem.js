@@ -43,10 +43,10 @@ export default function FullWidthGrid(props) {
  
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         
         <Grid item xs={6} sm={5}>
-          <Paper style={{"height":"80vh"}} className={classes.paper}>
+          <Paper style={{"height":"85vh"}} className={classes.paper}>
           	<h1>{data.title}</h1>
           	<p>{data.content}</p>
   			<p><b>Input:</b></p>
@@ -77,8 +77,8 @@ export default function FullWidthGrid(props) {
           		</div>
           </Paper>
         </Grid>
-        <Grid item xs={6} sm={6}>
-          <Paper style={{"height":"80vh"}} className={classes.paper}>
+        <Grid item xs={7} sm={7}>
+          <Paper style={{"height":"85vh"}} className={classes.paper}>
 
           	<CodeEditor data={data} />
           </Paper>
