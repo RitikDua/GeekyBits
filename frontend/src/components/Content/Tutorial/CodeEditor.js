@@ -1,12 +1,15 @@
 import React,{useState,useEffect} from 'react'
-import CodeMirror from '@uiw/react-codemirror';
 import 'codemirror/addon/display/autorefresh';
 import 'codemirror/addon/comment/comment';
 import 'codemirror/addon/edit/matchbrackets';
 import 'codemirror/keymap/sublime';
 import 'codemirror/theme/monokai.css';
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/theme-monokai";
 import axios from 'axios';
-import MonacoEditor from 'react-monaco-editor';
 import Button from '@material-ui/core/Button';
 import {cod} from './defaultCode'
 export default function CodeEditor(props) {
@@ -17,7 +20,7 @@ export default function CodeEditor(props) {
 	const [submitExecution,setSubmitExec]=useState(false);
 	const [check, setCheck] = useState([])
 	const [val, setval] = useState(cod["cpp"]);
-	const [codelang, setcodelang] = useState(cod.cpp);
+	const [codelang, setcodelang] = useState("c_cpp");
 	const getDefaultCode=()=>{
 		switch(lang){
 			case 'C':
@@ -38,7 +41,7 @@ export default function CodeEditor(props) {
 		  url: '/compile',
 		  data: {
 		    lang: "C",
-		    code: code,
+		    code: val,
 		    input: (stdin)
 		  }
 		};
@@ -66,7 +69,7 @@ export default function CodeEditor(props) {
 			  url: '/submit',
 			  data: {
 			    lang: "C",
-			    attemptString: code,
+			    attemptString: val,
 			    userId:localStorage.getItem("userId"),
 			    attemptType:"CodingProblem",
 			    problemId:props.data.id
@@ -91,12 +94,21 @@ export default function CodeEditor(props) {
         console.log("EDITOR MOUNTED")
 	}
 	const changedata=(code,e)=>{
-		setCode(code);
+		// setCode(code);
 		setval(code);
 	}
 	const onLangSelectHandler = (e) => {
 		console.log(e.target.value);
-        const lang = e.target.value
+		const lang = e.target.value
+		if(lang==="java"){
+			setcodelang("java");
+		}
+		else if(lang==="c" || lang==="cpp"){
+			setcodelang("c_cpp")
+		}
+		else if(lang==="python"){
+			setcodelang("python");
+		}
         // this.setState({
         //     lang,
         //     code: code[lang]
@@ -132,25 +144,16 @@ export default function CodeEditor(props) {
                         </select></div>
 					<div style={{overflow:"hidden"}}>
 						<div><span style={{fontSize:"20px"}}>Code your code here</span></div>
-						<CodeMirror
-					  value={val}
-					  options={{
-					    theme: 'monokai',
-					    keyMap: 'sublime',
-					    mode: 'jsx'
-					  }}
+					<AceEditor
+						width="100%"
+						height="35vh"
+						mode={codelang}
+						theme="monokai"
+						value={val}
+						onChange={(code,e)=>changedata(code,e)}
+						name="UNIQUE_ID_OF_DIV"
+						editorProps={{ $blockScrolling: true }}
 					/>
-					{/*  */}
-					{/* <MonacoEditor
-                                width="100%"
-                                height="35vh"
-                                language="c"
-                                theme="vs-dark"
-                                value={val}
-                                options={options}
-                                onChange={(code,e)=>changedata(code,e)}
-								editorDidMount={(e)=>editorDidMount(e)}
-                            /> */}
 							</div>
 					<div className="output" >
 						<div style={{color:'white',width:"100%",backgroundColor:"black",height:"10vh"}} className="code-output">
