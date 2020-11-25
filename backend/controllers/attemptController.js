@@ -36,7 +36,7 @@ exports.getAttemptsByProblemId=async (request,response)=>{
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj).populate('problem');
+        const attempts=await Attempts.find(filterObj);
         response.status(200).json({
             status:'success',
             data:{attempts}
