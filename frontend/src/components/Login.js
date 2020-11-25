@@ -9,7 +9,7 @@ import ReactCardFlip from 'react-card-flip';
 import Material from './Material';
 import '../css/login.css'
 import CodingProblem from './Content/Tutorial/CodingProblem';
-
+import Attempts from './Attempts/Attempts';
 import Axios from 'axios';
 function Login() {
     const [logname, setlogname] = useState("");
@@ -89,7 +89,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Material/>
+    if(isLoggedIn()) return <Attempts/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}

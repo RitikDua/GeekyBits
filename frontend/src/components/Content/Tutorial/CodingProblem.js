@@ -18,9 +18,10 @@ export default function FullWidthGrid(props) {
   const [data, setData] = useState({})
   const classes = useStyles();
    useEffect(() => {
+     console.log(props);
   	const fun= async () => {
   		await axios.get(
-		`/courseSubItems/${props.queryId}`
+		`/courseSubItems/5fafeec106ccb1909bbc2bb0`
 		)
 		.then((res)=>{
 			console.log(res.data.data);
@@ -39,6 +40,7 @@ export default function FullWidthGrid(props) {
     fun();
   }, [])
  if(!data.content) return "loading...";
+ 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
