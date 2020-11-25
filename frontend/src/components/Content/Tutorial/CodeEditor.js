@@ -66,12 +66,13 @@ export default function CodeEditor(props) {
 	 	console.log(props);
 	 	const options = {
 			  method: 'POST',
-			  url: '/submit',
+			  url: '/attempts',
 			  data: {
-			    lang: "C",
+			  	attemptType:"CodingProblem",
+			    attemptLanguage: "C",
 			    attemptString: val,
+			    attemptTitle:props.data.title,
 			    userId:localStorage.getItem("userId"),
-			    attemptType:"CodingProblem",
 			    problemId:props.data.id
 			  }
 			};
