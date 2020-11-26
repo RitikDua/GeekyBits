@@ -19,7 +19,7 @@ export default function CodeEditor(props) {
 	const [stdin,setStdin] = useState("")
 	const [submitExecution,setSubmitExec]=useState(false);
 	const [check, setCheck] = useState([])
-	const [val, setval] = useState(cod["cpp"]);
+	const [val, setval] = useState(props.attempt?props.attemptData.attemptString:cod["cpp"]);
 	const [codelang, setcodelang] = useState("c_cpp");
 	const getDefaultCode=()=>{
 		switch(lang){
@@ -73,7 +73,7 @@ export default function CodeEditor(props) {
 			    attemptString: val,
 			    attemptTitle:props.data.title,
 			    userId:localStorage.getItem("userId"),
-			    problemId:props.data.id
+			    problemId:props.data.id,subItemId:props.data.subItemId
 			  }
 			};
 			await axios.request(options)

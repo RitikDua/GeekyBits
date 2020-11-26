@@ -27,6 +27,8 @@ export default function ErrorRadios(props) {
   const [data, setData] = useState({})	
 
   useEffect( () => {
+
+    console.log(props);
   		const fetchData=async()=>await  axios.get(
 		`/courseSubItems/${props.queryId}`
 		)
@@ -38,30 +40,56 @@ export default function ErrorRadios(props) {
 				,"title":res.data.data.courseSubItem.subItem.mcqTitle,
 				"options":res.data.data.courseSubItem.subItem.options,
 				'answer':res.data.data.courseSubItem.subItem.answer
-				}
-			);}
+				,id:res.data.data.courseSubItem._id,subItemId:res.data.data.courseSubItem.subItem._id}
+			);
+        if(props.attempt) checkAnswer();
+    }
+
 		)
 		.catch((err)=>console.error(err));
     fetchData();
   }, [props])
+
   const handleRadioChange = (event) => {
     setValue(event.target.value);
     setHelperText(' ');
     setError(false);
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (value === data.answer) {
+  const checkAnswer=async ()=>{
+    const checkVal=props.attempt?props.attemptData.attemptString:value;
+    if (checkVal === data.answer) {
       setHelperText('You got it!');
       setError(false);
-    } else if (value !== data.answer) {
+    } else if (checkVal !== data.answer) {
       setHelperText('Sorry, wrong answer!');
       setError(true);
     } else {
       setHelperText('Please select an option.');
       setError(true);
     }
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    checkAnswer().then(async ()=>{
+       const options = {
+       method: 'POST',
+        url: '/attempts',
+        data: {
+          attemptType:"MCQ",
+          attemptLanguage: "C",
+          attemptString: value,
+          attemptTitle:data.title,
+          userId:localStorage.getItem("userId"),
+          problemId:data.id,subItemId:data.subItemId
+        }
+    };
+    await axios.request(options)
+      .then((res)=>{
+        console.log(res.data);
+        })
+      .catch((err)=>console.error(err));
+
+    })
   };
   if(!data.options||data.options.length===0) return  "laoding...";
   return (
@@ -82,7 +110,7 @@ export default function ErrorRadios(props) {
           {/*<FormControlLabel value="worst" control={<Radio />} label="The worst." />*/}
         </RadioGroup>
         <FormHelperText>{helperText}</FormHelperText>
-        <Button type="submit" variant="outlined" color="primary" className={classes.button}>
+        <Button type="submit"  variant="outlined" color="primary" className={classes.button}>
           Check Answer
         </Button>
       </FormControl>

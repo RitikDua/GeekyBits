@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import Axios from 'axios';
 import CodingProblem from '../Content/Tutorial/CodingProblem';
+import MCQ from '../Content/Tutorial/MCQ';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -25,7 +26,7 @@ const anchor="right"
 export default function Attempts(props) {
 	const classes = useStyles();
   const [drawer, setDrawer] = useState(false);
-  const [runningIndex,setRunningIndex]=useState(-1);
+  const [runningIndex,setRunningIndex]=useState(0);
   const [data, setData] = useState([])
 	
   const toggleDrawer = (anchor, open,index) => (event) => {
@@ -40,14 +41,16 @@ export default function Attempts(props) {
     else setDrawer(open);
   };
   const showAttempt=(index)=>{
-  	if(index===-1) return "loading...";
-  	console.log(index);
-  	if(data[index].attemptType==="CodingProblem"){
+	console.log(runningIndex);  
+	if(!data||data.length<=runningIndex||!data[runningIndex]) return "loading...";
+  	
+  else 	if(data[runningIndex].attemptType==="CodingProblem"){
   		console.log("asd");
-  		return <CodingProblem attempt="true"  queryId={data[index].problem} attemptData={data[index]}/>
+  		return <CodingProblem attempt="true"  queryId={data[runningIndex].problem} attemptData={data[runningIndex]}/>
   	}
   	else
-  	{}
+  	{  return <MCQ attempt="true"  queryId={data[runningIndex].problem} attemptData={data[runningIndex]}/>
+    }
   	console.log(data[index]);
   }
   	useEffect(() => {

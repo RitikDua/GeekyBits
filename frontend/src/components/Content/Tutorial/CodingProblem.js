@@ -32,14 +32,14 @@ export default function FullWidthGrid(props) {
 				,"title":decodeURIComponent(res.data.data.courseSubItem.subItem.problemTitle),
 				"testCases":res.data.data.courseSubItem.subItem.testCases,
 				"correctOutput":res.data.data.courseSubItem.subItem.correctOutput
-				,"id":res.data.data.courseSubItem.subItem._id}
+				,"id":res.data.data.courseSubItem._id,subItemId:res.data.data.courseSubItem.subItem._id}
 			);}
 		)
 		.catch((err)=>console.error(err));
 
   	};
     fun();
-  }, [])
+  }, [props])
  if(!data.content) return "loading...";
   return (
     <div className={classes.root}>
@@ -80,7 +80,7 @@ export default function FullWidthGrid(props) {
         <Grid item xs={7} sm={7}>
           <Paper style={{"height":"85vh"}} className={classes.paper}>
 
-          	<CodeEditor data={data} />
+          	<CodeEditor data={data} attempt={props.attempt} attemptData={props.attemptData} />
           </Paper>
         </Grid>
         

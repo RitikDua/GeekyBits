@@ -57,6 +57,7 @@ exports.submitAttempt=async (request, response) => {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
             let arr = [];
+
             testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
             
             const result = await Promise.all(arr);
@@ -82,6 +83,7 @@ exports.submitAttempt=async (request, response) => {
         });           
     }
     catch (err){        
+        console.log(err);
         response.status(500).json({
             status: "error",
             error: err.message
