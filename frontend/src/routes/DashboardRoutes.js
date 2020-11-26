@@ -19,14 +19,12 @@ const DashboardRoutes = [
     
     {
       path: "/attempts",
-      exact:true,
       sidebar: () => <div>home</div>,
       main: () => <Attempts />
     },
     
     {
       path: "/contest",
-      exact:true,
       sidebar: () => <div>home</div>,
       main: () => <div>Contest</div>
     },
