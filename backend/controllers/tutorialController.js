@@ -33,4 +33,23 @@ exports.getTutorialById=async (request,response)=>{
             err
         });
     }
+};
+exports.createTutorial=async (request,response)=>{
+    try {
+        const tutorialDetails=request.body;
+        if(!tutorialDetails)
+            throw new Error('Please provide tutorial details');
+        const tutorial=await Tutorials.create(tutorialDetails);
+        response.status(201).json({
+            status:'success',
+            data:{tutorial}
+        }); 
+    }
+    catch (err){
+        response.status(500).json({
+            status:'error',
+            message:err.message,
+            err
+        });
+    }
 }

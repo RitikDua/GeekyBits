@@ -13,12 +13,10 @@ const deleteFile = (filename) => {
 }
 exports.getAttempts=async (request,response)=>{
     try{
-        let filterObj={};
-        if(request.user.role==='admin')            
-            filterObj=request.body;
-        else
+        let filterObj={...request.query};
+        if(request.user.role==='user')                        
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj);        
+        const attempts=await Attempts.find(filterObj).sort();        
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -36,7 +34,7 @@ exports.getAttemptsByProblemId=async (request,response)=>{
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj);
+        const attempts=await Attempts.find(filterObj).sort();
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -57,7 +55,6 @@ exports.submitAttempt=async (request, response) => {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
             let arr = [];
-
             testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
             
             const result = await Promise.all(arr);
