@@ -11,6 +11,7 @@ import '../css/login.css'
 // import CodingProblem from './Content/Tutorial/CodingProblem';
 import Attempts from './Attempts/Attempts'
 import Axios from 'axios';
+import Dashboard from './Dashboard/Dashboard';
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
@@ -89,7 +90,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Attempts/>
+    if(isLoggedIn()) return <Dashboard/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}
