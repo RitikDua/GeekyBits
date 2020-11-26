@@ -74,7 +74,7 @@ exports.submitAttempt=async (request, response) => {
             // attemptObj.subItemId=problemId;
             deleteFile(`${__dirname}/../input.txt`);
             deleteFile(`${__dirname}/../test.c`);
-            deleteFile(`${__dirname}/../a.out`);             
+            deleteFile(`${__dirname}/../a.exe`);             
         }	
         const attempt = await Attempts.create(attemptObj);        
         response.status(201).json({
@@ -90,7 +90,7 @@ exports.submitAttempt=async (request, response) => {
         });     
         deleteFile(`${__dirname}/../input.txt`);
         deleteFile(`${__dirname}/../test.c`);
-        deleteFile(`${__dirname}/../a.out`);   
+        deleteFile(`${__dirname}/../a.exe`);   
     }
 }
 exports.deleteAttempts=async (request,response)=>{

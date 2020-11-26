@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, List, ListItem, ListItemText } from '@material-ui/core';
+import { Box, Button, List, ListItem, ListItemText } from '@material-ui/core';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -231,7 +231,7 @@ function ResponsiveDrawer(props) {
     if(subItems[indexes[0]].length-1===indexes[1])
       return '';
     return (
-        <button onClick={()=>paginationUtil()} >next</button>
+        <div style={{float:"right"}}><Button style={{backgroundColor:"rgb(7, 54, 64)",color:"white"}} onClick={()=>paginationUtil()} >next</Button></div>
       )
     }
   return (
