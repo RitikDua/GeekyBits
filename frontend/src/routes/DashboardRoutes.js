@@ -1,6 +1,6 @@
 import DashboardMain from '../components/Dashboard/DashboardMain';
 import Attempts from '../components/Attempts/Attempts';
-
+import Profile from '../components/Profile';
 const DashboardRoutes = [
 
     {
@@ -11,10 +11,10 @@ const DashboardRoutes = [
     },
 
     {
-      path: "/rank",
+      path: "/profile",
       exact:true,
       sidebar: () => <div>home</div>,
-      main: () => <div><h1>Rank</h1></div>
+      main: () => <Profile />
     },
     
     {

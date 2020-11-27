@@ -13,10 +13,12 @@ const deleteFile = (filename) => {
 }
 exports.getAttempts=async (request,response)=>{
     try{
-        let filterObj={...request.query};
-        if(request.user.role==='user')                        
+        let filterObj={};
+        if(request.user.role==='admin')            
+            filterObj=request.body;
+        else
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj).sort();        
+        const attempts=await Attempts.find(filterObj);        
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -34,7 +36,7 @@ exports.getAttemptsByProblemId=async (request,response)=>{
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj).sort();
+        const attempts=await Attempts.find(filterObj);
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -55,6 +57,7 @@ exports.submitAttempt=async (request, response) => {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
             let arr = [];
+
             testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
             
             const result = await Promise.all(arr);
@@ -71,8 +74,8 @@ exports.submitAttempt=async (request, response) => {
             // attemptObj.subItemId=problemId;
             deleteFile(`${__dirname}/../input.txt`);
             deleteFile(`${__dirname}/../test.c`);
-            deleteFile(`${__dirname}/../a.exe`);             
-        }	
+            deleteFile(`${__dirname}/../a.out`);             
+        }    
         const attempt = await Attempts.create(attemptObj);        
         response.status(201).json({
             status: "success",
@@ -87,7 +90,7 @@ exports.submitAttempt=async (request, response) => {
         });     
         deleteFile(`${__dirname}/../input.txt`);
         deleteFile(`${__dirname}/../test.c`);
-        deleteFile(`${__dirname}/../a.exe`);   
+        deleteFile(`${__dirname}/../a.out`);   
     }
 }
 exports.deleteAttempts=async (request,response)=>{

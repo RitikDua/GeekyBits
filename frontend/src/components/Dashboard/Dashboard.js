@@ -93,7 +93,7 @@ function ResponsiveDrawer(props) {
       <List>
         
           <Link to={`/dashboard`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Dashboard" style={{height:"160px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem></Link>
-          <Link to={`/rank`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Rank" style={{height:"160px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Rank" /></ListItem></Link>
+          <Link to={`/profile`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Profile" style={{height:"160px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Profile" /></ListItem></Link>
          <Link to={`/attempts`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Attempts" style={{height:"160px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem></Link>
          <Link to={`/contest`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Contest" style={{height:"160px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem></Link>
       </List>

@@ -13,8 +13,6 @@ import '../css/login.css'
 import Attempts from './Attempts/Attempts'
 import Axios from 'axios';
 import Profile from './Profile';
-
-import Dashboard from './Dashboard/Dashboard';
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
