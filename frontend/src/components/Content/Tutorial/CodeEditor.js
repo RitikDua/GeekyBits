@@ -1,10 +1,6 @@
 import React,{useState,useEffect} from 'react'
-import 'codemirror/addon/display/autorefresh';
-import 'codemirror/addon/comment/comment';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/keymap/sublime';
-import 'codemirror/theme/monokai.css';
 import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/theme-xcode";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
@@ -12,6 +8,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import {cod} from './defaultCode'
+import { Switch } from '@material-ui/core';
 export default function CodeEditor(props) {
 	const [code, setCode] = useState("");
 	const [lang,setLang]=useState("C");
@@ -21,6 +18,16 @@ export default function CodeEditor(props) {
 	const [check, setCheck] = useState([])
 	const [val, setval] = useState(props.attempt?props.attemptData.attemptString:cod["cpp"]);
 	const [codelang, setcodelang] = useState("c_cpp");
+	const [state, setState] = React.useState({
+		checkedA: true,
+		checkedB: true,
+	  });
+	  const [swt, setswt] = useState(false);
+	
+	  const handleChange = (event) => {
+		setState({ ...state, [event.target.name]: event.target.checked });
+		setswt(!swt);
+	  };
 	const getDefaultCode=()=>{
 		switch(lang){
 			case 'C':
@@ -136,20 +143,28 @@ export default function CodeEditor(props) {
 					  }}
 
 					/> */}
-					<div  style={{paddingBottom:"5px"}} >
-					<select id="lang" onChange={(e) => onLangSelectHandler(e)}>
+					<div  style={{display:"flex",justifyContent:"space-between"}} >
+					<div><select id="lang" onChange={(e) => onLangSelectHandler(e)}>
                             <option value="cpp">C++</option>
                             <option value="c">C</option>
                             <option value="java">Java</option>
                             <option value="python">Python</option>
                         </select></div>
+						<Switch
+							checked={state.checkedA}
+							onChange={handleChange}
+							name="checkedA"
+							inputProps={{ 'aria-label': 'checkbox' }}
+							color="primary"
+						/>	
+					</div>
 					<div style={{overflow:"hidden"}}>
 						<div><span style={{fontSize:"20px"}}>Code your code here</span></div>
 					<AceEditor
 						width="100%"
-						height="35vh"
+						height="30vh"
 						mode={codelang}
-						theme="monokai"
+						theme={swt===false?"monokai":"xcode"}
 						value={val}
 						onChange={(code,e)=>changedata(code,e)}
 						name="UNIQUE_ID_OF_DIV"
