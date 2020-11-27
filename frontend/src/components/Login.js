@@ -7,12 +7,14 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import Dash from './Dashboard/Dashboard'
 // import CodingProblem from './Content/Tutorial/CodingProblem.js';
-import Material from './Material';
+import Main from './Main';
 import '../css/login.css'
 // import CodingProblem from './Content/Tutorial/CodingProblem';
 import Attempts from './Attempts/Attempts'
 import Axios from 'axios';
 import Profile from './Profile';
+
+import Dashboard from './Dashboard/Dashboard';
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
@@ -91,7 +93,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Profile/>
+    if(isLoggedIn()) return <Main/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}

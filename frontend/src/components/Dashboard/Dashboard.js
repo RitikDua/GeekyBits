@@ -24,7 +24,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
-import { Route, Switch,Link } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
 import DashboardRoutes from '../../routes/DashboardRoutes';
 
 const drawerWidth = 230;
@@ -66,6 +72,7 @@ export const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// const DashboardRoutes=[]
 function ResponsiveDrawer(props) {
   const myName=props.name?props.name:"username";
   const { window } = props;
@@ -97,6 +104,7 @@ function ResponsiveDrawer(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
+  <Router>
     <div className={classes.root} style={{overflowX:"hidden"}}>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
@@ -156,18 +164,19 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
+           <Route exact path="/" render={()=><Redirect to="/dashboard" />} />
            <Switch>
             {DashboardRoutes.map((route, index) => (
               <Route
                 key={index}
                 path={route.path}
-                exact={route.exact}
-                children={<route.main />}
+                render={()=><route.main />}
               />
             ))}
           </Switch>
       </main>
     </div>
+    </Router>
   );
 }
 

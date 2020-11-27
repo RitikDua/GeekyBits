@@ -1,4 +1,5 @@
 import DashboardMain from '../components/Dashboard/DashboardMain';
+import Attempts from '../components/Attempts/Attempts';
 
 const DashboardRoutes = [
 
@@ -18,14 +19,12 @@ const DashboardRoutes = [
     
     {
       path: "/attempts",
-      exact:true,
       sidebar: () => <div>home</div>,
-      main: () => <div>Attempts</div>
+      main: () => <Attempts />
     },
     
     {
       path: "/contest",
-      exact:true,
       sidebar: () => <div>home</div>,
       main: () => <div>Contest</div>
     },
