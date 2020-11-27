@@ -34,3 +34,23 @@ exports.getCodingProblemById=async (request,response)=>{
         });
     }
 }
+exports.createCodingProblem=async (request,response)=>{
+    try {
+        const codingProblemDetails=request.body;
+        // console.log(codingProblemDetails);
+        if(!codingProblemDetails)
+            throw new Error('Please provide a coding problem');
+        const codingProblem=await CodingProblems.create(codingProblemDetails);
+        response.status(201).json({
+            status:'success',
+            data:{codingProblem}
+        }); 
+    }
+    catch (err){
+        response.status(500).json({
+            status:'error',
+            message:err.message,
+            err
+        });
+    }
+}
