@@ -34,4 +34,35 @@ describe("Compile Code Middleware", () => {
       console.log(error.message);
     }
   });
+
+  it("should save the file", async () => {
+    try {
+      ccd.saveFile = jest.fn();
+
+      ccd.saveFile.mockResolvedValue("The file was saved!");
+
+      const result = await ccd.saveFile();
+      expect(result).toHaveBeenCalled();
+      expect(ccd.saveFile.mock.calls[0][0]).toBe("Hello World");
+      expect(ccd.saveFile.mock.calls[0][1]).toBe(1);
+    } catch (error) {
+      console.log("Something goes terribly wrong!");
+    }
+  });
+
+  it("should throw error for not saving file", async () => {
+    try {
+      ccd.saveFile = jest.fn();
+
+      ccd.saveFile.mockRejectedValue(new Error("Internal Server Error!"));
+
+      const result = await ccd.saveFile();
+
+      expect(result).toHaveBeenCalled();
+      expect(result).toThrow(Error);
+    } catch (error) {
+      console.log(error.message);
+    }
+  });
+
 });
