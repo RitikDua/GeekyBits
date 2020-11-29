@@ -36,7 +36,7 @@ exports.getAttemptsByProblemId=async (request,response)=>{
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj).populate('problem');
+        const attempts=await Attempts.find(filterObj);
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -51,18 +51,16 @@ exports.getAttemptsByProblemId=async (request,response)=>{
 };
 exports.submitAttempt=async (request, response) => {
     try{
-        const { problemId, userId, attemptType, attemptString, lang } = request.body;//.problemId;
-        const attemptObj = {attemptType,attemptString,problem: problemId,user: userId};
+        const { problemId, userId, attemptType, attemptString, attemptLanguage,attemptTitle,subItemId } = request.body;//.problemId;
+        const attemptObj = {attemptType,attemptString,problem: problemId,user: userId,subItem:subItemId,attemptTitle};
         if (attemptType === "CodingProblem") {
-            const codingProblem = await CodingProblems.findById(problemId);
+            const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
             let arr = [];
+
             testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
-            //    for(let i of testCases){
-            // 	arr.push(executeCode.executeCode(code,i));
-            // }
+            
             const result = await Promise.all(arr);
-            // console.log(codingProblem);
             arr = [];
             let checkTestCases = [];
             for (let i = 0; i < result.length; i++) {
@@ -71,11 +69,13 @@ exports.submitAttempt=async (request, response) => {
             }
             attemptObj.testCasesPassed=checkTestCases;
             attemptObj.testCasesUserOutputs=arr;
-            attemptObj.attemptLanguage=lang;
+            attemptObj.attemptLanguage=attemptLanguage;
+            // attemptObj.attemptTitle=attemptTitle;
+            // attemptObj.subItemId=problemId;
             deleteFile(`${__dirname}/../input.txt`);
             deleteFile(`${__dirname}/../test.c`);
             deleteFile(`${__dirname}/../a.out`);             
-        }	
+        }    
         const attempt = await Attempts.create(attemptObj);        
         response.status(201).json({
             status: "success",
@@ -83,6 +83,7 @@ exports.submitAttempt=async (request, response) => {
         });           
     }
     catch (err){        
+        console.log(err);
         response.status(500).json({
             status: "error",
             error: err.message

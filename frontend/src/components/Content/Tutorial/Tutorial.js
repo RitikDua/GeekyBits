@@ -1,12 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
 import {render} from 'react-dom';
-import CodeMirror from '@uiw/react-codemirror';
-import 'codemirror/addon/display/autorefresh';
-import 'codemirror/addon/comment/comment';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/keymap/sublime';
-import 'codemirror/theme/monokai.css';
+import "ace-builds/src-noconflict/mode-c_cpp";
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/theme-monokai";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import './tut.css'
 import { Chip } from '@material-ui/core';
@@ -35,16 +32,35 @@ export default class Tutorial extends React.Component {
 		.catch((err)=>console.error(err));
 
 	}
+	async componentWillReceiveProps(){
+		await axios.get(
+		`/courseSubItems/${this.props.queryId}`
+		)
+		.then( async(res)=>{
+			console.log(res);
+			this.setState(
+				{
+				"content":decodeURIComponent(res.data.data.courseSubItem.subItem.content).replace(/\n/gmi,"<br />")
+				,"title":res.data.data.courseSubItem.subItem.tutorialTitle,
+				"codes":res.data.data.courseSubItem.subItem.codes
+				}
+			);}
+		)
+		.catch((err)=>console.error(err));
 
+	}
 	fun=(code)=>{
 			return (  
-				<CodeMirror
-					  value={code}
-					  options={{
-					    theme: 'monokai',
-					    keyMap: 'sublime',
-					    mode: 'jsx',readOnly:"true"
-					  }}
+					<AceEditor
+						width="100%"
+						height="30vh"
+						fontSize="15px"
+						mode="c_cpp"
+						theme="monokai"
+						value={code}
+						readOnly="true"
+						name="UNIQUE_ID_OF_DIV"
+						editorProps={{ $blockScrolling: true }}
 					/>
 				);
 		}
@@ -73,7 +89,7 @@ export default class Tutorial extends React.Component {
 		return (
 		<div>
 		{/* <Navacc/> */}
-		<div style={{paddingTop:"5%"}}>
+		<div>
 		<span className="title">{this.state.title}</span><br/>
 		<div style={{paddingBottom:"1%",paddingTop:"1%"}}><Chip icon={<MenuBookIcon/>} label="Tutorial"/></div>
 			<div className="page" dangerouslySetInnerHTML={{__html: this.hulala(this.state)}} />

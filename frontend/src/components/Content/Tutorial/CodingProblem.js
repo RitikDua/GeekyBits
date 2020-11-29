@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import CodeEditor from './CodeEditor';
+import './tut.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -18,6 +19,7 @@ export default function FullWidthGrid(props) {
   const [data, setData] = useState({})
   const classes = useStyles();
    useEffect(() => {
+    console.log(props);
   	const fun= async () => {
   		await axios.get(
 		`/courseSubItems/${props.queryId}`
@@ -30,21 +32,21 @@ export default function FullWidthGrid(props) {
 				,"title":decodeURIComponent(res.data.data.courseSubItem.subItem.problemTitle),
 				"testCases":res.data.data.courseSubItem.subItem.testCases,
 				"correctOutput":res.data.data.courseSubItem.subItem.correctOutput
-				,"id":res.data.data.courseSubItem.subItem._id}
+				,"id":res.data.data.courseSubItem._id,subItemId:res.data.data.courseSubItem.subItem._id}
 			);}
 		)
 		.catch((err)=>console.error(err));
 
   	};
     fun();
-  }, [])
+  }, [props])
  if(!data.content) return "loading...";
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         
         <Grid item xs={6} sm={5}>
-          <Paper style={{"height":"80vh"}} className={classes.paper}>
+          <Paper style={{"height":"85vh"}} className={classes.paper}>
           	<h1>{data.title}</h1>
           	<p>{data.content}</p>
   			<p><b>Input:</b></p>
@@ -61,7 +63,7 @@ export default function FullWidthGrid(props) {
           			}
           		</div>
           		<p><b>Output:</b></p>
-          		<div className="jumbotron">
+          		<div className="jumbotron" style={{backgroundColor:"#eee",padding:"1%"}}>
           		
           			{
           				data&&data.correctOutput&&data.correctOutput.map((value,index)=>{
@@ -75,10 +77,10 @@ export default function FullWidthGrid(props) {
           		</div>
           </Paper>
         </Grid>
-        <Grid item xs={6} sm={6}>
-          <Paper style={{"height":"80vh"}} className={classes.paper}>
+        <Grid item xs={7} sm={7}>
+          <Paper style={{"height":"85vh"}} className={classes.paper}>
 
-          	<CodeEditor data={data} />
+          	<CodeEditor data={data} attempt={props.attempt} attemptData={props.attemptData} />
           </Paper>
         </Grid>
         

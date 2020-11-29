@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import Icon from '@material-ui/icons/Send';
 import { Button, FormControl, Grid, Hidden, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { Dashboard, Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
+import Dash from './Dashboard/Dashboard'
 // import CodingProblem from './Content/Tutorial/CodingProblem.js';
-import Material from './Material';
+import Main from './Main';
 import '../css/login.css'
-import CodingProblem from './Content/Tutorial/CodingProblem';
-
+// import CodingProblem from './Content/Tutorial/CodingProblem';
+import Attempts from './Attempts/Attempts'
 import Axios from 'axios';
+import Profile from './Profile';
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
@@ -89,7 +91,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Material/>
+    if(isLoggedIn()) return <Main/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}
