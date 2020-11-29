@@ -2,11 +2,10 @@ const request = require('supertest');
 
 let server;
 
-describe('/users', () => {
+describe('/HOME', () => {
     beforeEach(() => {server = require('../../server');});
     afterEach(() => {
         server.close();
-        // await Users.deleteMany({});
     });
 
     describe('GET /', () => {
