@@ -51,8 +51,8 @@ exports.getAttemptsByProblemId=async (request,response)=>{
 };
 exports.submitAttempt=async (request, response) => {
     try{
-        const { problemId, userId, attemptType, attemptString, attemptLanguage,attemptTitle,subItemId } = request.body;//.problemId;
-        const attemptObj = {attemptType,attemptString,problem: problemId,user: userId,subItem:subItemId,attemptTitle};
+        const { problemId, userId, attemptType, attemptString, attemptLanguage,attemptTitle,subItemId,attemptResult } = request.body;//.problemId;
+        const attemptObj = {attemptType,attemptString,problem: problemId,user: userId,subItem:subItemId,attemptTitle,attemptResult};
         if (attemptType === "CodingProblem") {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
@@ -63,15 +63,19 @@ exports.submitAttempt=async (request, response) => {
             const result = await Promise.all(arr);
             arr = [];
             let checkTestCases = [];
+            let checkStatus=0;
             for (let i = 0; i < result.length; i++) {
-                checkTestCases.push(result[i].output === decodeURIComponent(correctOutput[i]));
+                const outcome=(result[i].output === decodeURIComponent(correctOutput[i]));
+                checkStatus+=outcome;
+                checkTestCases.push(outcome);
                 arr.push(result[i].output);
             }
+            
+            attemptObj.attemptResult=(checkStatus===result.length)?"correct":"wrong";
             attemptObj.testCasesPassed=checkTestCases;
             attemptObj.testCasesUserOutputs=arr;
             attemptObj.attemptLanguage=attemptLanguage;
-            // attemptObj.attemptTitle=attemptTitle;
-            // attemptObj.subItemId=problemId;
+            
             deleteFile(`${__dirname}/../input.txt`);
             deleteFile(`${__dirname}/../test.c`);
             deleteFile(`${__dirname}/../a.out`);             
