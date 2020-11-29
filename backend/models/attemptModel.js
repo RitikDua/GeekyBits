@@ -7,6 +7,7 @@ const attemptSchema=new mongoose.Schema({
         type:String,
         enum:['MCQ','CodingProblem']
     },
+    attemptResult:String,
     attemptTitle:String,
     attemptString:String,
     attemptLanguage:String,

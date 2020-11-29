@@ -11,6 +11,7 @@ const contestSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'User'
     }],
+    startedAt:Date,
     endedAt:Date,
     winner:{
         type:mongoose.Schema.Types.ObjectId,
