@@ -81,6 +81,7 @@ exports.submitAttempt=async (request, response) => {
             deleteFile(`${__dirname}/../a.out`);             
         }    
         const attempt = await Attempts.create(attemptObj);        
+        console.log(attempt);
         response.status(201).json({
             status: "success",
             data: { attempt }
