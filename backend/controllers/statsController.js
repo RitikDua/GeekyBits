@@ -1,13 +1,22 @@
-
-
 const Attempts=require("../models/attemptModel");
+
+
+/**Here field can be
+		-- "user" as String or id 
+		-- "subitem" as String or id
+		-- "problem" as String or id
+		as String means /stats/count?field="user"&status="wrong"
+		as String means /stats/count?field="problem"&status="correct"
+		as id means /stats/count?field="5asd5as6asdax7s"&status="correct"
+**/
 
 exports.countAttempts=async (req,res,next)=>{
 	try{
 		console.log(req.query);
 		const {field,status}=req.query;
-		const unique="$"+field;//it can be "user" as a string or "`5fb6353bb0354e4ea8176a4c` as userId"
- 		const count=await Attempts.aggregate([
+		const unique="$"+field;
+
+		const count=await Attempts.aggregate([
 			{$match:{attemptResult:status}},
 			{
 				$group:{
@@ -27,3 +36,5 @@ exports.countAttempts=async (req,res,next)=>{
         })
 	}
 }
+
+
