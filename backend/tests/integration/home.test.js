@@ -1,4 +1,7 @@
 const request = require('supertest');
+
+let server;
+
 describe('/users', () => {
     beforeEach(() => {server = require('../../server');});
     afterEach(() => {
