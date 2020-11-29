@@ -83,6 +83,7 @@ export default function ErrorRadios(props) {
           attemptType:"MCQ",
           attemptLanguage: "C",
           attemptString: value,
+          attemptResult:(error?"correct":"wrong"),
           attemptTitle:data.title,
           userId:localStorage.getItem("userId"),
           problemId:data.id,subItemId:data.subItemId
