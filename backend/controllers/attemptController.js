@@ -51,8 +51,9 @@ exports.getAttemptsByProblemId=async (request,response)=>{
 };
 exports.submitAttempt=async (request, response) => {
     try{
-        const { problemId, userId, attemptType, attemptString, attemptLanguage,attemptTitle,subItemId,attemptResult } = request.body;//.problemId;
-        const attemptObj = {attemptType,attemptString,problem: problemId,user: userId,subItem:subItemId,attemptTitle,attemptResult};
+        const { problemId,  attemptType, attemptString, attemptLanguage,attemptTitle,subItemId,attemptResult } = request.body;//.problemId;
+        const attemptObj = {attemptType,attemptString,problem: problemId,user:request.user._id,subItem:subItemId,attemptTitle,attemptResult};
+        
         if (attemptType === "CodingProblem") {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
