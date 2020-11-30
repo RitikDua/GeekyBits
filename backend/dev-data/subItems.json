@@ -24,7 +24,23 @@
         "subItem":"3"
     },
     {
+        "subItemType":"MCQ",
+        "subItem":"3a"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"3b"
+    },
+    {
         "subItemType":"Tutorial",
         "subItem":"4"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"4a"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"4b"
     }
 ]
