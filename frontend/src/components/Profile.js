@@ -24,9 +24,12 @@ function Profile(props) {
         }
         fun();
     }, [props])
+    const handleDelete=(e)=>{
+        e.preventDefault();
+    }
     const handlePassword=(e)=>{
         e.preventDefault();
-        Axios.post(`/users/changePassword`,{currentPassword:oldpass,newPassword:newpass})
+        Axios.patch(`/users/changePassword`,{currentPassword:oldpass,newPassword:newpass})
         .then((res)=>{
             console.log("updated");
         }).catch((err)=>console.log(err));
@@ -83,7 +86,7 @@ function Profile(props) {
                                     <br/>
                                     <div style={{lineHeight:"2"}}>
                                     <span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>Delete Account:</span><br/>
-                                    <Link to="#" style={{color:"red",textDecoration:"none"}}>Delete Me</Link></div>
+                                    <Link to="#" onClick={()=>handleDelete()} style={{color:"red",textDecoration:"none"}}>Delete Me</Link></div>
                             </Grid>
                         </Grid>
                     </Grid>
