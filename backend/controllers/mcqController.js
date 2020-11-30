@@ -33,4 +33,23 @@ exports.getMCQById=async (request,response)=>{
             err
         });
     }
+};
+exports.createMCQ=async (request,response)=>{
+    try {
+        const mcqDetails=request.body;
+        if(!mcqDetails)
+            throw new Error('Please provide mcq details');
+        const mcq=await MCQs.create(mcqDetails);
+        response.status(201).json({
+            status:'success',
+            data:{mcq}
+        }); 
+    }
+    catch (err){
+        response.status(500).json({
+            status:'error',
+            message:err.message,
+            err
+        });
+    }
 }

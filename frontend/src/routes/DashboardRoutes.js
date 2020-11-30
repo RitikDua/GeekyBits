@@ -1,7 +1,6 @@
 import DashboardMain from '../components/Dashboard/DashboardMain';
 import Attempts from '../components/Attempts/Attempts';
 import Profile from '../components/Profile';
-
 const DashboardRoutes = [
 
     {
@@ -15,19 +14,17 @@ const DashboardRoutes = [
       path: "/profile",
       exact:true,
       sidebar: () => <div>home</div>,
-      main: () => <div><Profile/></div>
+      main: () => <Profile />
     },
     
     {
       path: "/attempts",
-      exact:true,
       sidebar: () => <div>home</div>,
       main: () => <Attempts />
     },
     
     {
       path: "/contest",
-      exact:true,
       sidebar: () => <div>home</div>,
       main: () => <div>Contest</div>
     },
