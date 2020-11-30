@@ -76,6 +76,7 @@ export default function ErrorRadios(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     checkAnswer().then(async ()=>{
+      console.log(value===data.answer);
        const options = {
        method: 'POST',
         url: '/attempts',
@@ -83,6 +84,7 @@ export default function ErrorRadios(props) {
           attemptType:"MCQ",
           attemptLanguage: "C",
           attemptString: value,
+          attemptResult:((value===data.answer)?"correct":"wrong"),
           attemptTitle:data.title,
           userId:localStorage.getItem("userId"),
           problemId:data.id,subItemId:data.subItemId
