@@ -10,5 +10,18 @@
         "mcqStatement":"The%20__________%20translates%20an%20assembly%20language%20program%20to%20",
         "options":["Assembler","Compiler","Translator","Interpreter"],
         "answer":"Assembler"
+    },
+    {
+        "mcqTitle":"Variables and Identifiers - 1",
+        "mcqStatement":"Which%20of%20the%20following%20is%20a%20valid%20C%20identifier%3F1",
+        "options":["Income-Tax","-while","_sales12","7_xyz"],
+        "answer":"_sales12"
+    },
+    {
+        "mcqTitle":"Variables and Identifiers - 2",
+        "mcqStatement":"What%20will%20be%20the%20output%20of%20the%20following%20program%3A%0D%0A%0D%0A%0D%0A%0D%0A%23include%3Cstdio.h%3E%0D%0Aint%20main()%0D%0A%7B%0D%0A%20int%20var%20%3D%20062%3B%0D%0A%20printf(%22%25d%22%2C%20var)%3B%0D%0A%20return%200%3B%0D%0A%7D",
+        "options":["062","62","50","Does not compile"],
+        "answer":"50"
     }
+    
 ]
