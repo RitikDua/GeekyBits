@@ -1,4 +1,5 @@
 const Tutorials=require(`${__dirname}/../models/tutorialModel`);
+const { matchBodyWithSchema } = require("../utils/matchBodyWithSchema");
 exports.getTutorials=async (request,response)=>{
     try {
         const tutorials=await Tutorials.find();
@@ -37,8 +38,14 @@ exports.getTutorialById=async (request,response)=>{
 exports.createTutorial=async (request,response)=>{
     try {
         const tutorialDetails=request.body;
-        if(!tutorialDetails)
-            throw new Error('Please provide tutorial details');
+        if (
+            !matchBodyWithSchema(Object.keys(tutorialDetails), [
+                "tutorialTitle",
+                "content",
+                "codes"
+            ])
+          )
+            return response.status(400).send("Please provide valid Tutorial Details ");
         const tutorial=await Tutorials.create(tutorialDetails);
         response.status(201).json({
             status:'success',

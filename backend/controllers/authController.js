@@ -1,8 +1,9 @@
 const {promisify}=require('util');
 const jwt=require('jsonwebtoken');
 const Users= require(`${__dirname}/../models/userModel`);
-exports.sendToken=(id,user,statusCode,request,response)=>{
+exports.sendToken=(id,user,statusCode,request,response,isTest=false)=>{
     const token =jwt.sign({id},process.env.JWT_SECRET_KEY,{expiresIn:process.env.JWT_EXPIREIN});
+    if(isTest) return token;
     const cookieOptions={
         expires:new Date(Date.now()+process.env.COOKIE_EXPIRESIN*24*3600*1000),
         httpOnly:true,
