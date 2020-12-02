@@ -4,7 +4,8 @@ const authController=require(`${__dirname}/../controllers/authController`);
 const courseSubItemController=require(`${__dirname}/../controllers/courseSubItemController`);
 router.use(authController.protect);
 router.route('/')
-.get(courseSubItemController.getCourseSubItems);
+.get(courseSubItemController.getCourseSubItems)
+.post(courseSubItemController.createCourseSubItem);
 router.route('/:courseSubItemId')
 .get(courseSubItemController.getCourseSubItemById);
 module.exports=router;
