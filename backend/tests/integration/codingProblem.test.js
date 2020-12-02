@@ -145,5 +145,13 @@ describe("/codingProblems", () => {
 
       expect(res.body.data.codingProblem).toHaveProperty("_id");
     });
+
+    it('should return 400 if problem details are not valid',async () =>{
+      code=1234;
+
+      const res = await exec();
+
+      expect(res.status).toBe(400);
+    });
   });
 });
