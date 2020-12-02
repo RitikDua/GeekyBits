@@ -8,8 +8,9 @@ const app=require(`${__dirname}/app`);
 const url= process.env.DB_CLOUD;
 mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Successfully Connected to Cloud'));
 const port=process.env.PORT||4000;
-const server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
-
+server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
+const {startSocket}=require(`${__dirname}/socket-server`)
+startSocket(server);
 process.on('unhandledRejection',error=>{
     console.log(`UNHANDLED_REJECTION...\n${error.name}:${error.message}\nerror:- ${error.stack}\nShutting down the app`);
     server.close(()=>{
