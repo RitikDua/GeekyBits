@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Icon from '@material-ui/icons/Send';
 import { Button, FormControl, Grid, Hidden, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
-import { Dashboard, Visibility, VisibilityOff } from '@material-ui/icons';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';

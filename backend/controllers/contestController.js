@@ -91,13 +91,15 @@ exports.registerParticipant =async (request,response)=>{
 exports.startContest=async (request,response)=>{
     try{
         const contestId=request.params.contestId,contestUrl=request.params.contestUrl;
-        const contest=await Contest.findOne({contestUrl}).populate('problem');
+        const contest=await Contests.findOne({contestUrl}).populate('problem');
         if(!contest||contest.users.length==0)
             throw new Error('No such contest exists');
         else if(contest.users.length!=2)
             throw new Error('Can\'t start the contest without the other user');
         else if(!contest.users.includes(request.user._id))
             throw new Error('You are not allowed access this contest');
+        else if(Date.now()<contest.startedAt)
+            throw new Error('Contest hasn\'t started yet');
         response.status(200).json({
             status: 'success',
             data:{contest}

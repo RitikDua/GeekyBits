@@ -44,12 +44,15 @@ exports.changePassword=async (request,response)=>{
         const {currentPassword,newPassword} =request.body;
         const user=await Users.findById(request.user._id).select('+password');
         if(!user)
-            return response.status(401).json({status:'error',message:'User does\'nt exist'});
+            throw new Error('User does\'nt exist');
         if(!await user.isPasswordValid(currentPassword,user.password))
-            return response.status(401).json({status:'error',message:'Incorrect Password'});
+            throw new Error('Incorrect Password');
         user.password=newPassword;
         await user.save();
-        return sendToken(user._id,user,200,request,response);
+        response.status(200).json({
+            status:'success',
+            data:{message:'Password changed successfully'}
+        });
     }
     catch (err){
         response.status(500).json({
@@ -68,6 +71,9 @@ exports.updateMe=async (request,response)=>{
         response.status(500).json({status:'error',err:err.message});
     }
 };
+// exports.updateProgress=async (request,response)=>{
+//     const 
+// };
 exports.deleteMe=async (request,response)=>{
     try{
         await Users.findByIdAndDelete({_id:request.user._id});

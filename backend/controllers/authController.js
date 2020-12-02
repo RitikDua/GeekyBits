@@ -1,7 +1,7 @@
 const {promisify}=require('util');
 const jwt=require('jsonwebtoken');
 const Users= require(`${__dirname}/../models/userModel`);
-const sendToken=(id,user,statusCode,request,response)=>{
+exports.sendToken=(id,user,statusCode,request,response)=>{
     const token =jwt.sign({id},process.env.JWT_SECRET_KEY,{expiresIn:process.env.JWT_EXPIREIN});
     const cookieOptions={
         expires:new Date(Date.now()+process.env.COOKIE_EXPIRESIN*24*3600*1000),
@@ -39,8 +39,8 @@ exports.protect=async (request,response,next)=>{
     if(!currentUser)
         return response.status(401).json({status:'error',message:'The user belonging to this token does no longer exist.'});
     //Now,check if user changed his password after ...allotment of JWT or not...if yes..then deny the accesss     
-    if(currentUser.isPasswordChanged(decoded.iat*1000))
-        return response.status(401).json({status:'error',message:'User recently changed password! Please log in again.'});
+    // if(currentUser.isPasswordChanged(decoded.iat*1000))
+    //     return response.status(401).json({status:'error',message:'User recently changed password! Please log in again.'});
     request.user=currentUser;
     next();
 };
@@ -52,7 +52,7 @@ exports.login = async (request,response)=>{
         const user=await Users.findOne({email}).select('+password');
         if(!user||!await user.isPasswordValid(password,user.password))
             return response.status(401).json({status:'error',message:'Incorrect email or password'});        
-        return sendToken(user._id,user,200,request,response);
+        return exports.sendToken(user._id,user,200,request,response);
     }
     catch(err){response.status(500).json({status:'error',err:err.message});}
 };
@@ -74,7 +74,7 @@ exports.signup = async (request,response)=>{
             password:request.body.password
         }
         const user=await Users.create(userDetails);        
-        return sendToken(user._id,user,201,request,response);
+        return exports.sendToken(user._id,user,201,request,response);
     }
     catch(err){response.status(500).json({status:'error',err:err.message});}
 };
