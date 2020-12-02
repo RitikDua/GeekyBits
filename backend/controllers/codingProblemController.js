@@ -1,6 +1,6 @@
 const CodingProblems = require(`${__dirname}/../models/codingProblemModel`);
 const mongoose = require("mongoose");
-
+const {matchBodyWithSchema}=require("../utils/matchBodyWithSchema");
 exports.getCodingProblems = async (request, response) => {
   try {
     const codingProblems = await CodingProblems.find();
@@ -20,7 +20,6 @@ exports.getCodingProblemById = async (request, response) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(request.params.codingProblemId))
       return response.status(404).send("Invalid ID");
-
     const codingProblem = await CodingProblems.findById(
       request.params.codingProblemId
     );
@@ -43,9 +42,14 @@ exports.getCodingProblemById = async (request, response) => {
 exports.createCodingProblem = async (request, response) => {
   try {
     const codingProblemDetails = request.body;
-    // console.log(codingProblemDetails);
-    if (!codingProblemDetails)
-      throw new Error("Please provide a coding problem");
+    const status = matchBodyWithSchema(Object.keys(codingProblemDetails), [
+      "problemTitle",
+      "problemStatement",
+      "testCases",
+      "correctOutput",
+    ]);
+    if (!status)
+      return response.status(400).send("Please provide a coding problem");
     const codingProblem = await CodingProblems.create(codingProblemDetails);
     response.status(201).json({
       status: "success",
