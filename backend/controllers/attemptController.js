@@ -58,9 +58,24 @@ exports.submitAttempt=async (request, response) => {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;
             let arr = [];
+            let error="";
+            // testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
+           for(let i of testCases){
+               const x=executeCode.executeCode(attemptString,i);
+               
+               x.then((y)=>{
+                if(y.err){
+                     // console.log("asd");                   
+                   // console.log(JSON.stringify(y))
+                   error=y.output.cmd.startsWith("gcc")?"compiler error":"runtime error";
+               console.log(error);
+               }
+               
+               })
+               arr.push(x);
+           } 
 
-            testCases.forEach(testCase => arr.push(executeCode.executeCode(attemptString,testCase)));
-            
+           
             const result = await Promise.all(arr);
             arr = [];
             let checkTestCases = [];
@@ -72,7 +87,7 @@ exports.submitAttempt=async (request, response) => {
                 arr.push(result[i].output);
             }
             
-            attemptObj.attemptResult=(checkStatus===result.length)?"correct":"wrong";
+            attemptObj.attemptResult=error?error:(checkStatus===result.length)?"correct":"wrong";
             attemptObj.testCasesPassed=checkTestCases;
             attemptObj.testCasesUserOutputs=arr;
             attemptObj.attemptLanguage=attemptLanguage;
