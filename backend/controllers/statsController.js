@@ -1,5 +1,5 @@
 const Attempts=require("../models/attemptModel");
-
+var mongoose = require('mongoose');
 
 /**Here field can be
 		-- "user" as String or id 
@@ -38,3 +38,26 @@ exports.countAttempts=async (req,res,next)=>{
 }
 
 
+exports.getAttemptsAccuracy=async (req,res,next)=>{
+	try{
+
+		const count=await Attempts.aggregate([
+			{$match:{user:mongoose.Types.ObjectId(req.user._id)}},
+			{
+				$group:{
+					_id:"$attemptResult",
+					count:{$sum:1}
+				}
+			}
+		])
+		res.status(200).json({
+			count:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}
