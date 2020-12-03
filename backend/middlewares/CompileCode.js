@@ -1,4 +1,3 @@
-const router = require('express').Router()
 const fs = require('fs')
 const path = require('path')
 const { exec } = require('child_process');
@@ -42,6 +41,7 @@ const executeCode=(data,input)=>{
                   console.error(`exec error: ${err}`);
                   resolve({
                     err: true,
+                    errorType:'CompilationError',
                     output: err,
                     error: stderr
                   })
@@ -54,6 +54,7 @@ const executeCode=(data,input)=>{
                     console.log("ERROR "+err)
                     resolve({
                       err: true,
+                      errorType:'RuntimeError',
                       output: err,
                       error: stderr
                     })
