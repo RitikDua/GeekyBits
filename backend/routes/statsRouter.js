@@ -11,5 +11,6 @@ router.route("/user/accuracy")
 router.route("/user/month")
 	   .get(Stats.getMonthData);
 
-
+router.route("/user/dateRange")
+	   .get(Stats.getData)
 module.exports=router;

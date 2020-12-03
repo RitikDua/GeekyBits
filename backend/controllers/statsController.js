@@ -88,3 +88,29 @@ exports.getMonthData=async (req,res,next)=>{
         })
 	}	
 }
+
+exports.getData=async (req,res,next)=>{
+	try{
+		const fromDate=new Date(2020,1,1);
+		const toDate=new Date(2020,12,31);
+		const count=await Attempts.find({
+			
+				updatedAt : {
+				    '$gte': fromDate,
+				    '$lte': toDate
+				},
+				attemptResult:"correct"
+			
+		})
+		console.log(count);
+		res.status(200).json({
+			count:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}
