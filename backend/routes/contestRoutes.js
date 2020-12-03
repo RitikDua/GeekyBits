@@ -1,5 +1,4 @@
 const express = require('express');
-const { route } = require('../app');
 const router = express.Router();
 const authController=require(`${__dirname}/../controllers/authController`);
 const contestController=require(`${__dirname}/../controllers/contestController`);
