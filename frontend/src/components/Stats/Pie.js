@@ -4,12 +4,31 @@ import {
 } from 'recharts';
 import axios from 'axios';
 
-const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
-  { name: 'Group D', value: 200 },
-];
+// const data = [
+//   { name: 'Group A', value: 400 },
+//   { name: 'Group B', value: 300 },
+//   { name: 'Group C', value: 300 },
+//   { name: 'Group D', value: 200 },
+// ];
+
+export default function PieChartData(props)  {
+  const [data, setData] = useState([])
+  useEffect(() => {
+    const getData= () => {
+          axios.get(`/stats/user/accuracy`)
+                     .then((res)=>{
+                       console.log(res.data.count)
+                       setData(res.data.count);
+                       let arr=[];
+                       for(let i=0;i<res.data.count.length;i++)
+                       arr.push({"name":res.data.count[i]._id,"value":res.data.count[i].count})
+                       setData(arr);
+                       
+                     })
+                     .catch((err)=>console.log(err));
+    };
+    getData();
+  }, [props])
 
 const COLORS = [ '#FF8042','#0088FE', '#00C49F', '#FFBB28'];
 
@@ -20,27 +39,15 @@ const renderCustomizedLabel = ({
    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
+  console.log(data[index]);
   return (
     <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}%`}
+      {`${(percent * 100).toFixed(0)}% ${data[index].name}`}
     </text>
   );
 };
 
-export default function PieChartData(props)  {
-  // const [data, setData] = useState({})
-  useEffect(() => {
-    const getData=  () => {
-          axios.get(`/user/accuracy`)
-                     .then((res)=>{
-                       console.log(res)
-                     })
-                     .catch((err)=>console.log(err));
-    };
-    getData();
-  }, [props])
-
+  if(!data) return "loading...";
     return (
       <PieChart width={400} height={400}>
         <Pie
