@@ -1,5 +1,15 @@
 const Contests=require(`${__dirname}/../models/contestModel`);
+const Attempts=require(`${__dirname}/../models/attemptModel`); 
 const CodingProblem=require(`${__dirname}/../models/codingProblemModel`);
+const mongoose=require('mongoose');
+const getScore=testCasesPassed=>{
+    let totalScore=0;
+    testCasesPassed.forEach(testCasePassed=>{
+        if(testCasePassed)
+            totalScore++;
+    });
+    return totalScore;
+}
 exports.getContests=async (request,response)=>{
     try{
         let filterObj={...request.query};
@@ -55,7 +65,63 @@ exports.createContest=async (request,response)=>{
 };
 exports.updateContest=async (request,response)=>{
     try{
-
+        const contestId=request.params.contestId;
+        const {attemptId}=request.body;
+        const currentTime=Date.now();
+        const contest=await Contests.findById(contestId).populate({
+            path:'attempts',
+            select:'attemptResult testCasesPassed user'
+        });
+        if(!mongoose.Types.ObjectId.isValid(contestId))
+            throw new Error('Not a valid contest-id');
+        if(!contest||contest.users.length==0)
+            throw new Error('No such contest exist');
+        else if(!contest.users.includes(request.user._id))
+            throw new Error('You are not allowed access this contest');
+        else if(currentTime<contest.startedAt)
+            throw new Error('Contest hasn\'t started yet');
+        else if(currentTime>contest.endedAt)
+            throw new Error('Contest has already finished');
+        if(!attemptId){    
+            if(currentTime<(contest.startedAt.getTime()+30*60000)&&!contest.winner){
+                const attempts=contest.attempts;
+                for(const attempt of attempts){
+                    if(attempt.attemptResult==='Correct'){
+                            contest.winner=attempt.user;
+                            contest.endedAt=currentTime;
+                            break;
+                    }
+                }                
+            }
+            else if(currentTime>=(contest.startedAt.getTime()+30*60000)&&!contest.winner){
+                const attempts=contest.attempts;
+                let maxScore,maxScoreUserId;
+                for(const attempt of attempts){
+                    const score=getScore(attempt.testCasePassed);
+                    if(score>maxScore){
+                        maxScore=score;
+                        maxScoreUserId=attempt.user;
+                    }
+                    else if(score===maxScore){
+                        maxScoreUserId=attempt.user;
+                    }
+                }
+                if(maxScore>0){
+                    contest.winner=maxScoreUserId;                
+                    contest.endedAt=currentTime;
+                }                    
+            }
+        }
+        else if(!mongoose.Types.ObjectId.isValid(attemptId))
+            throw new Error('Invalid attempt-id');
+        else{
+            contest.attempts.push(attemptId);
+        }
+        await contest.save();
+        response.status(200).json({
+            status:'success',
+            data:{contest}
+        });
     }
     catch (err){
         response.status(500).json({
@@ -67,12 +133,14 @@ exports.updateContest=async (request,response)=>{
 exports.registerParticipant =async (request,response)=>{
     try{
         const contestId=request.params.contestId;
+        const newParticipant=request.body.userId;
         const contest=await Contests.findById(contestId);
         if(!contest||contest.users.length==0)
             throw new Error('No such contest exist');
         else if(contest.users.length>1)
             throw new Error('The Contest is already full');
-        const newParticipant=request.body.userId;
+        else if(contest.users.includes(newParticipant))
+            throw new Error('You already joined the contest');
         contest.users.push(newParticipant);
         contest.startedAt=new Date(new Date().getTime()+5*60000);
         await contest.save();
@@ -98,8 +166,8 @@ exports.startContest=async (request,response)=>{
             throw new Error('Can\'t start the contest without the other user');
         else if(!contest.users.includes(request.user._id))
             throw new Error('You are not allowed access this contest');
-        else if(Date.now()<contest.startedAt)
-            throw new Error('Contest hasn\'t started yet');
+        else if(Date.now()>contest.endedAt)
+            throw new Error('Contest is already finished');            
         response.status(200).json({
             status: 'success',
             data:{contest}
