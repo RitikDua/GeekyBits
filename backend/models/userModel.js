@@ -52,16 +52,16 @@ userSchema.pre('save',async function(next){
     this.password=await bcrypt.hash(this.password,10);
     if(this.isNew)
         return next();
-    this.passwordChangedAt=Date.now()-1000;
+    // this.passwordChangedAt=Date.now()-1000;
 });
 userSchema.index({profileShortLink:1});
 userSchema.methods.isPasswordValid=async function(inputPassword,dbHash){return await bcrypt.compare(inputPassword,dbHash);}
-userSchema.methods.isPasswordChanged=function(JWTTimeStamp){
-    if(this.passwordChangedAt){        
-        return JWTTimeStamp<this.passwordChangedAt.getTime();
-    }    
-    return false;
-}
+// userSchema.methods.isPasswordChanged=function(JWTTimeStamp){
+//     if(this.passwordChangedAt){        
+//         return JWTTimeStamp<this.passwordChangedAt.getTime();
+//     }    
+//     return false;
+// }
 userSchema.methods.createPasswordResetToken=async function(){
     const resetToken=crypto.randomBytes(32).toString('hex');
     this.passwordResetToken=crypto.createHash('sha256').update(resetToken).digest('hex');

@@ -14,7 +14,7 @@ const DashboardRoutes = [
       path: "/profile",
       exact:true,
       sidebar: () => <div>home</div>,
-      main: () => <Profile />
+      main: () => <div><Profile /></div>
     },
     
     {

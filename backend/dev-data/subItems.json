@@ -18,5 +18,29 @@
     {
         "subItemType":"CodingProblem",
         "subItem":"5fad8f085503d91a5f6bd39c"
+    },
+    {
+        "subItemType":"Tutorial",
+        "subItem":"5fc626015a90683134a7ffc3"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"5fc627792084bd2e24c27d42"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"5fc627792084bd2e24c27d43"
+    },
+    {
+        "subItemType":"Tutorial",
+        "subItem":"5fc626015a90683134a7ffc4"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"5fc627792084bd2e24c27d44"
+    },
+    {
+        "subItemType":"MCQ",
+        "subItem":"5fc627792084bd2e24c27d45"
     }
 ]
