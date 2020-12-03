@@ -25,7 +25,7 @@ exports.getUsers=async (request,response)=>{
 };
 exports.getUserById=async (request,response)=>{
     try{
-        const userId=request.params.userId;
+        const userId=request.user._id;
         const user=await Users.findById(userId);
         response.status(200).json({
             status:'success',

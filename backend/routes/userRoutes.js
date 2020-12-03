@@ -7,7 +7,9 @@ router.get('/logout',authController.logout);
 router.post('/signup',authController.signup);
 router.use(authController.protect);
 router.get('/',userController.getUsers);
-router.get('/:userId',userController.getUserById);
+
+router.get('/profile',userController.getUserById);
+
 router.patch('/changePassword',userController.changePassword);
 router.patch('/updateMe',userController.updateMe);
 router.delete('/deleteMe',userController.deleteMe);
