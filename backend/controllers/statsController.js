@@ -78,7 +78,7 @@ exports.getMonthData=async (req,res,next)=>{
 	        }}
 		])
 		res.status(200).json({
-			count:count
+			data:count
 		})
 	}
 	catch(err){
@@ -104,7 +104,35 @@ exports.getData=async (req,res,next)=>{
 		})
 		console.log(count);
 		res.status(200).json({
-			count:count
+			data:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}
+
+
+exports.getLastWeekData=async (req,res,next)=>{
+	try{
+		const toDate=new Date();
+		const fromDate=new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+		
+		const count=await Attempts.find({
+			
+				updatedAt : {
+				    '$gte': fromDate,
+				    '$lte': toDate
+				},
+				attemptResult:"correct"
+			// ,user:req.user._id
+		})
+		console.log(count);
+		res.status(200).json({
+			data:count
 		})
 	}
 	catch(err){

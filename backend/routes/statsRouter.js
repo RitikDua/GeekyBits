@@ -13,4 +13,7 @@ router.route("/user/month")
 
 router.route("/user/dateRange")
 	   .get(Stats.getData)
+
+router.route("/user/lastweek")
+	   .get(Stats.getLastWeekData)
 module.exports=router;
