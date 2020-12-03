@@ -86,7 +86,7 @@ exports.updateContest=async (request,response)=>{
             if(currentTime<(contest.startedAt.getTime()+30*60000)&&!contest.winner){
                 const attempts=contest.attempts;
                 for(const attempt of attempts){
-                    if(attempt.attemptResult==='Correct'){
+                    if(attempt.attemptResult.toLowerCase()==='correct'){
                             contest.winner=attempt.user;
                             contest.endedAt=currentTime;
                             break;

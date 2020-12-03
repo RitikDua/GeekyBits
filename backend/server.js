@@ -5,8 +5,9 @@ process.on('uncaughtException',error=>{
     process.exit(1);
 });
 const app=require(`${__dirname}/app`);
-const url= process.env.DB_CLOUD;
-mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log('Successfully Connected to Cloud'));
+const url= process.env.DB_LOCAL_TEST||process.env.DB_CLOUD;
+
+mongoose.connect(url, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => console.log(`Successfully Connected to ${url}`));
 const port=process.env.PORT||4000;
 server=app.listen(port,()=>{console.log(`Server running on port:${process.env.PORT}`)});
 const {startSocket}=require(`${__dirname}/socket-server`)
@@ -25,3 +26,5 @@ process.on('SIGTERM',()=>{
         console.log('Webapp processes terminated');
     }); 
 });
+
+module.exports = server;
