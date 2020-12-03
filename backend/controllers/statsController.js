@@ -61,3 +61,30 @@ exports.getAttemptsAccuracy=async (req,res,next)=>{
         })
 	}	
 }
+
+
+exports.getMonthData=async (req,res,next)=>{
+	try{
+
+		const count=await Attempts.aggregate([
+			{$match:{attemptResult:"correct"}},
+			{$project : { 
+              month : {$month : "$updatedAt"},
+              // attemptResult:1
+          }}, 
+	        {$group : { 
+	                _id : {month : "$month" },  
+	              total : {$sum : 1} 
+	        }}
+		])
+		res.status(200).json({
+			count:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}

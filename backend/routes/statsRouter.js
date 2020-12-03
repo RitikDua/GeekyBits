@@ -7,4 +7,9 @@ router.route('/count')
 
 router.route("/user/accuracy")
 	   .get(Stats.getAttemptsAccuracy);
+
+router.route("/user/month")
+	   .get(Stats.getMonthData);
+
+
 module.exports=router;
