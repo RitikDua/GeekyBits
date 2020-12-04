@@ -1,5 +1,7 @@
 const Tutorials=require(`${__dirname}/../models/tutorialModel`);
 const { matchBodyWithSchema } = require("../utils/matchBodyWithSchema");
+const mongoose = require('mongoose');
+
 exports.getTutorials=async (request,response)=>{
     try {
         const tutorials=await Tutorials.find();
@@ -18,11 +20,15 @@ exports.getTutorials=async (request,response)=>{
 };
 exports.getTutorialById=async (request,response)=>{
     try {
-        const tutorialId=request.params.tutorialId;
-        if(!tutorialId)
-            throw new Error('Please provide a valid id');
+        const tutorialId=request.params.tutorialId; 
+        if (!mongoose.Types.ObjectId.isValid(tutorialId))
+            return response.status(404).send("Invalid ID");
+        
         const tutorial=await Tutorials.findById(tutorialId);
-        response.status(200).json({
+        if (!tutorial)
+            return response.status(404).send("Problem with given ID not found");        
+        
+            response.status(200).json({
             status:'success',
             data:{tutorial}
         }); 
