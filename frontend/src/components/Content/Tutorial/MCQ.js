@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -98,7 +99,7 @@ export default function ErrorRadios(props) {
 
     })
   };
-  if(!data.options||data.options.length===0) return  "laoding...";
+  if(!data.options||data.options.length===0) return  <LinearProgress />;
   return (
     <div>
     <form onSubmit={handleSubmit}>
