@@ -34,7 +34,8 @@ function App() {
       {/* <Material/> */}
      {/* <Main/> */}
       {/*<Login/> */}
-      <Stats />
+      <Main />
+      {/*<Stats />*/}
     {/*<CodingProblem/> */}
     {/* <MCQ />*/}
       {/*<Dashboard/>*/}

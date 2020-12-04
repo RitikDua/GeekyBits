@@ -7,6 +7,7 @@ import "ace-builds/src-noconflict/theme-monokai";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import './tut.css'
 import { Chip } from '@material-ui/core';
+import LinearProgress from '@material-ui/core/LinearProgress';
 export default class Tutorial extends React.Component {
 	constructor(props){
 		super(props);
@@ -86,6 +87,8 @@ export default class Tutorial extends React.Component {
 			return data.content;
 		}
 	render() {
+
+		if(!this.state.title) return <LinearProgress />
 		return (
 		<div>
 		{/* <Navacc/> */}

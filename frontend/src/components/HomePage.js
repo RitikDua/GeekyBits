@@ -8,23 +8,15 @@ import Footer from "./Footer";
 import Dashboard from './Dashboard/Dashboard';
 import { Route, Switch,Link } from 'react-router-dom';
 import MainRoutes from '../routes/MainRoutes';
-function Main() {
+export default function HomePage() {
     return ( 
         <main>
-        
-           <Switch>
-            {MainRoutes.map((route, index) => (
-              <Route
-                key={index}
-                path={route.path}
-                exact={route.exact}
-                children={<route.main />}
-              />
-            ))}
-          </Switch>
-
-      </main>
-   
-    )
+          <Nav />
+          <Banner />
+          <Flow />
+          <Gridblock />
+          <Logoblock />
+          <Footer />
+          </main>
+          )
 }
-export default Main

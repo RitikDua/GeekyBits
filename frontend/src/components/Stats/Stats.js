@@ -5,8 +5,8 @@ import Bar from './Bar';
 export default function Stats() {
 	return (
 		<div>
-			{/*<Pie />*/}
-			{/*<Bar />*/}
+			<Pie />
+			<Bar />
 			<Line />
 		</div>
 	)
