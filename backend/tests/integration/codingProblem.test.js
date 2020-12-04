@@ -140,12 +140,6 @@ describe("/codingProblems", () => {
       expect(cp).not.toBeNull();
     });
 
-    // it("should return the code if it is valid", async () => {
-    //   const res = await exec();
-    //   console.log(res.body.data);
-    //   expect(res.body.data).toHaveProperty("_id");
-    // });
-
     it('should return 400 if problem details are not valid',async () =>{
       code=1234;
 

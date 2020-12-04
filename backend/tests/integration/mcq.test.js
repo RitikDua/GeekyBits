@@ -138,13 +138,6 @@ describe("/mcqs", () => {
       expect(foo).not.toBeNull();
     });
 
-    // it("should return the mcq if it is valid", async () => {
-    //   const res = await exec();
-    //   // console.log(res.body.data);
-    //   expect(res.body.data).toHaveProperty("_id");
-    // });
-
-
     it("should return 400 if mcq details are not valid", async () => {
       mul = 1234;
 
