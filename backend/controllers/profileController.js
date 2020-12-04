@@ -4,7 +4,7 @@ exports.profileShortLink = async (request, response) => {
   try {
     const username = request.params.profileShortLink;
     const user = await Users.findOne({ profileShortLink: username });
-    console.log(username, user);
+    // console.log(username, user);
     if (!user)
       return response
         .status(400)

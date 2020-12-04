@@ -1,5 +1,7 @@
 const MCQs = require(`${__dirname}/../models/mcqModel`);
 const { matchBodyWithSchema } = require("../utils/matchBodyWithSchema");
+const mongoose = require("mongoose");
+
 exports.getMCQs = async (request, response) => {
   try {
     const mcqs = await MCQs.find();
@@ -17,9 +19,13 @@ exports.getMCQs = async (request, response) => {
 };
 exports.getMCQById = async (request, response) => {
   try {
-    const mcqId = request.params.mcqId;
-    if (!mcqId) throw new Error("Please provide a valid id");
-    const mcq = await MCQs.findById(mcqId);
+    if (!mongoose.Types.ObjectId.isValid(request.params.mcqId))
+      return response.status(404).send("Invalid ID");
+
+    const mcq = await MCQs.findById(request.params.mcqId);
+
+    if (!mcq) return response.status(404).send("MCQ with given ID not found");
+
     response.status(200).json({
       status: "success",
       data: { mcq },
