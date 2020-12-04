@@ -1,6 +1,9 @@
 const express = require('express');
 const router=express.Router();
 const Stats=require("../controllers/statsController");
+const authController=require(`${__dirname}/../controllers/authController`);
+
+router.use(authController.protect);
 
 router.route('/count')
 	  .get(Stats.countAttempts);
@@ -16,4 +19,7 @@ router.route("/user/dateRange")
 
 router.route("/user/lastweek")
 	   .get(Stats.getLastWeekData)
+
+router.route("/user/attempts")
+		.get(Stats.getAttemptsData);
 module.exports=router;

@@ -62,7 +62,29 @@ exports.getAttemptsAccuracy=async (req,res,next)=>{
 	}	
 }
 
+exports.getAttemptsData=async(req,res,next)=>{
+	try{
 
+		const count=await Attempts.aggregate([
+			{$match:{user:mongoose.Types.ObjectId(req.user._id)}},
+			{
+				$group:{
+					_id:"$attemptType",
+					count:{$sum:1}
+				}
+			}
+		])
+		res.status(200).json({
+			count:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}
 exports.getMonthData=async (req,res,next)=>{
 	try{
 
