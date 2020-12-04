@@ -1,5 +1,5 @@
 .banner{
-    height: 720px;
+    height: 100vh;
     color: white;
     object-fit: contain;
     /* box-shadow: inset 0px -300px 550px #111; */

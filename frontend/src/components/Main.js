@@ -11,8 +11,14 @@ import MainRoutes from '../routes/MainRoutes';
 function Main() {
     return ( 
         <main>
-        <h1>adss</h1>
-           <Switch>
+        {/* <h1>adss</h1>sss */}
+        <Nav/>
+        <Banner/>
+        <Flow/>
+        <Gridblock/>
+        <Logoblock/>
+        <Footer/>
+           {/* <Switch>
             {MainRoutes.map((route, index) => (
               <Route
                 key={index}
@@ -21,7 +27,7 @@ function Main() {
                 children={<route.main />}
               />
             ))}
-          </Switch>
+          </Switch> */}
           {/*<Dashboard />*/}
       </main>
    

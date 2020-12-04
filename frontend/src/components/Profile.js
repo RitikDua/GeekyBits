@@ -26,12 +26,16 @@ function Profile(props) {
     }, [props])
     const handleDelete=(e)=>{
         e.preventDefault();
+        Axios.delete(`/users/changePassword`)
+        .then((res)=>{
+            console.log(res);
+        }).catch((err)=>console.log(err));
     }
     const handlePassword=(e)=>{
         e.preventDefault();
         Axios.patch(`/users/changePassword`,{currentPassword:oldpass,newPassword:newpass})
         .then((res)=>{
-            console.log("updated");
+            console.log(res);
         }).catch((err)=>console.log(err));
     }
     if(!obj || obj.length===0)return "loading...";
