@@ -1,5 +1,5 @@
 const Attempts=require("../models/attemptModel");
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 /**Here field can be
 		-- "user" as String or id 
@@ -121,7 +121,7 @@ exports.getData=async (req,res,next)=>{
 				    '$gte': fromDate,
 				    '$lte': toDate
 				},
-				attemptResult:"correct"
+				attemptResult:"correct",
 			
 		})
 		console.log(count);
@@ -143,16 +143,24 @@ exports.getLastWeekData=async (req,res,next)=>{
 		const toDate=new Date();
 		const fromDate=new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 		
-		const count=await Attempts.find({
+		const count=await Attempts.aggregate([
+
+		{$match:{
 			
 				updatedAt : {
 				    '$gte': fromDate,
 				    '$lte': toDate
 				},
 				attemptResult:"correct"
-			// ,user:req.user._id
-		})
-		console.log(count);
+			,user:mongoose.Types.ObjectId(req.user._id)
+		}},
+
+	        {$group : { 
+	                _id :  { $dateToString: { format: "%Y-%m-%d", date: "$updatedAt" } } ,  
+	              total : {$sum : 1} 
+	        }}
+		])
+		
 		res.status(200).json({
 			data:count
 		})
