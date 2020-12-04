@@ -17,7 +17,7 @@ describe("/mcqs", () => {
 
   afterEach(async () => {
     await server.close();
-    await MCQ.collection.deleteMany({});
+    // await MCQ.collection.deleteMany({});
   });
 
   describe("GET /", () => {
