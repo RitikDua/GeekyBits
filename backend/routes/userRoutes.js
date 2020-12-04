@@ -10,4 +10,5 @@ router.get('/',userController.getUsers);
 router.get('/:userId',userController.getUserById);
 router.patch('/changePassword',userController.changePassword);
 router.patch('/updateMe',userController.updateMe);
+router.delete('/deleteMe',userController.deleteMe);
 module.exports=router;

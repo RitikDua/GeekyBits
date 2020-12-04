@@ -10,7 +10,7 @@ function Profile(props) {
     const [newpass, setnewpass] = useState("");
     useEffect(() => {
         async function fun(){
-            await Axios.get(`/users/${window.localStorage.getItem("userId")}`)
+            await Axios.get(`/users/profile`)
             .then(res=>{
                 console.log(res);
                 setobj(res.data.data.user);
