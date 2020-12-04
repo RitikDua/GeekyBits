@@ -4,6 +4,7 @@ import Profile from '../components/Profile';
 import Contest from '../components/Contest';
 import Stats from '../components/Stats/Stats'
 import Onevsone from '../components/Onevsone';
+import Register from '../components/Register';
 const DashboardRoutes = [
 
     {
@@ -31,7 +32,11 @@ const DashboardRoutes = [
       sidebar: () => <div>home</div>,
       main: () => <div><Onevsone/></div>
     },
-    
+    {
+      path: "/register",
+      sidebar: () => <div>home</div>,
+      main: () => <div><Register/></div>
+    },
   ];
 
   export default DashboardRoutes;

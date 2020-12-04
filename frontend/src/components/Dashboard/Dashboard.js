@@ -92,10 +92,11 @@ function ResponsiveDrawer(props) {
       
       <List>
         
-          <Link to={`/dashboard`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Dashboard" style={{height:"160px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem></Link>
-          <Link to={`/profile`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Profile" style={{height:"160px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Profile" /></ListItem></Link>
-         <Link to={`/attempts`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Attempts" style={{height:"160px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem></Link>
-         <Link to={`/contest`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Contest" style={{height:"160px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem></Link>
+          <Link to={`/dashboard`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Dashboard" style={{height:"134px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem></Link>
+          <Link to={`/profile`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Profile" style={{height:"134px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Profile" /></ListItem></Link>
+         <Link to={`/attempts`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Attempts" style={{height:"134px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem></Link>
+         <Link to={`/contest`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Contest" style={{height:"134px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem></Link>
+         <Link to={`/register`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Register" style={{height:"134px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Register" /></ListItem></Link>
       </List>
       <Divider />
     </div>
