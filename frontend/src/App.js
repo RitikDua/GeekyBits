@@ -33,8 +33,8 @@ function App() {
       {/* <Course/> */}
       {/* <Material/> */}
      {/* <Main/> */}
-      {/*<Login/> */}
-      <Stats />
+      <Login/>
+      {/* <Stats /> */}
     {/*<CodingProblem/> */}
     {/* <MCQ />*/}
       {/*<Dashboard/>*/}
