@@ -95,8 +95,7 @@ export default function CodeEditor(props) {
 		
 	}
 	const getOutput=()=>{
-		if(output!=='') return output;
-		else  return 'loading...';
+		return output
 	}
 	const editorDidMount = (e) => {
         console.log("EDITOR MOUNTED")
