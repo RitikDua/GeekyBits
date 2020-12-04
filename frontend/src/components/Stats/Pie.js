@@ -18,7 +18,7 @@ export default function PieChartData(props)  {
           axios.get(`/stats/user/accuracy`)
                      .then((res)=>{
                        console.log(res.data.count)
-                       setData(res.data.count);
+                       
                        let arr=[];
                        for(let i=0;i<res.data.count.length;i++)
                        arr.push({"name":res.data.count[i]._id,"value":res.data.count[i].count})
