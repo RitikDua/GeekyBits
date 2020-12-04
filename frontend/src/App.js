@@ -8,7 +8,7 @@ import {createMuiTheme} from '@material-ui/core/styles';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import Stats from './components/Stats/Stats';
 import { BrowserRouter } from 'react-router-dom';
 import CodingProblem from './components/Content/Tutorial/CodingProblem';
 import MCQ from './components/Content/Tutorial/MCQ';
@@ -33,7 +33,8 @@ function App() {
       {/* <Course/> */}
       {/* <Material/> */}
      {/* <Main/> */}
-      <Login/> 
+      {/*<Login/> */}
+      <Stats />
     {/*<CodingProblem/> */}
     {/* <MCQ />*/}
       {/*<Dashboard/>*/}

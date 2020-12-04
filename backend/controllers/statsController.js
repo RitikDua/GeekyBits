@@ -1,5 +1,5 @@
 const Attempts=require("../models/attemptModel");
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 /**Here field can be
 		-- "user" as String or id 
@@ -62,7 +62,29 @@ exports.getAttemptsAccuracy=async (req,res,next)=>{
 	}	
 }
 
+exports.getAttemptsData=async(req,res,next)=>{
+	try{
 
+		const count=await Attempts.aggregate([
+			{$match:{user:mongoose.Types.ObjectId(req.user._id)}},
+			{
+				$group:{
+					_id:"$attemptType",
+					count:{$sum:1}
+				}
+			}
+		])
+		res.status(200).json({
+			count:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}
 exports.getMonthData=async (req,res,next)=>{
 	try{
 
@@ -78,7 +100,7 @@ exports.getMonthData=async (req,res,next)=>{
 	        }}
 		])
 		res.status(200).json({
-			count:count
+			data:count
 		})
 	}
 	catch(err){
@@ -99,12 +121,48 @@ exports.getData=async (req,res,next)=>{
 				    '$gte': fromDate,
 				    '$lte': toDate
 				},
-				attemptResult:"correct"
+				attemptResult:"correct",
 			
 		})
 		console.log(count);
 		res.status(200).json({
-			count:count
+			data:count
+		})
+	}
+	catch(err){
+		res.status(500).json({ status:'error',
+            message:err.message,
+            err:err
+        })
+	}	
+}
+
+
+exports.getLastWeekData=async (req,res,next)=>{
+	try{
+		const toDate=new Date();
+		const fromDate=new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+		
+		const count=await Attempts.aggregate([
+
+		{$match:{
+			
+				updatedAt : {
+				    '$gte': fromDate,
+				    '$lte': toDate
+				},
+				attemptResult:"correct"
+			,user:mongoose.Types.ObjectId(req.user._id)
+		}},
+
+	        {$group : { 
+	                _id :  { $dateToString: { format: "%Y-%m-%d", date: "$updatedAt" } } ,  
+	              total : {$sum : 1} 
+	        }}
+		])
+		
+		res.status(200).json({
+			data:count
 		})
 	}
 	catch(err){
