@@ -12,6 +12,14 @@ import WorkOutlineIcon from '@material-ui/icons/WorkOutline';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
+          
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -102,11 +110,14 @@ function Nav() {
         <p>Courses</p>
       </MenuItem>
       <MenuItem>
+      <Link to={`/login`} style={{ textDecoration: 'none','color':'black' }}>
+
         <IconButton aria-label="Login" color="inherit">
             
             <LockOpenIcon />
         </IconButton>
         <p>Login</p>
+        </Link>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -148,9 +159,12 @@ function Nav() {
             <IconButton aria-label="courses" color="inherit">
                 <WorkOutlineIcon />
             </IconButton>
+                  <Link to={`/login`} style={{ textDecoration: 'none','color':'black' }}>
+
             <IconButton aria-label="login" color="inherit">
             <LockOpenIcon />
             </IconButton>
+            </Link>
             <IconButton
               edge="end"
               aria-label="about-us"
