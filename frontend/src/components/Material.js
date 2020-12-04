@@ -25,6 +25,8 @@ import Axios from 'axios';
 import CodingProblem from './Content/Tutorial/CodingProblem';
 import Tutorial from './Content/Tutorial/Tutorial';
 import MCQ from './Content/Tutorial/MCQ';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 const drawerWidth = 370;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -119,7 +121,7 @@ function ResponsiveDrawer(props) {
      fun();
   }, []);
   const showSubItemsData=(index)=>{
-    if(!subItems[index]) return "loading...";
+    if(!subItems[index]) return <CircularProgress />;
     else
     {
       let temp="";
@@ -136,7 +138,7 @@ function ResponsiveDrawer(props) {
           console.log("setSubItems");
           let indexStr=""+index;
           console.log(res.data.data.courseItem.subItems);  
-          // setSubItems({...subItems,...{"value":{indexStr:{res.data.courseItem.subItems}}})
+          
           let items=Object.assign({},subItems);
           items[index]=res.data.data.courseItem.subItems;
           setSubItems(items);
@@ -157,7 +159,7 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
-    <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:"loading...."} </span></div><br/>
+    <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:<CircularProgress />} </span></div><br/>
         <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
@@ -189,7 +191,7 @@ function ResponsiveDrawer(props) {
                 <ListItem style={{width:"1200px"}} key={index} button  onClick={(e)=>changeMainComponent(parentIndex,index)}>
                   <div style={{fontSize:"17px",padding:"1%"}}>{val.subItemType=='Tutorial'?<MenuBookIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</div>
                 </ListItem>)              
-             })):"loading..."
+             })):<CircularProgress />
            }
            </List>
             
@@ -204,7 +206,11 @@ function ResponsiveDrawer(props) {
     </div>
   );
   const getDefaultComponent=()=>{
-    if(!currComponent) return "loading...";
+    if(!currComponent){
+      console.log("asd");
+      return <LinearProgress />
+    }
+
     console.log(currComponent);
     switch(currComponent.subItemType){
       case "Tutorial":
@@ -225,8 +231,10 @@ function ResponsiveDrawer(props) {
   
   }
   const pagination=()=>{
-    if(!currComponent||currIndex.length===0) return "loading...";
-     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
+    if(!data) return <LinearProgress />
+    if(!currComponent||currIndex.length===0) return  <Tutorial queryId="5fafeec106ccb1909bbc2bac" />;
+    
+    let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
       
     if(subItems[indexes[0]].length-1===indexes[1])
       return '';
