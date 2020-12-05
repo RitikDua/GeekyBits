@@ -5,7 +5,7 @@ import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
-import Dash from './Dashboard/Dashboard'
+import Dashboard from './Dashboard/Dashboard'
 // import CodingProblem from './Content/Tutorial/CodingProblem.js';
 import Main from './Main';
 import '../css/login.css'
@@ -54,7 +54,6 @@ function Login() {
             setlogname("");
             setlogemail("");
         })
-        .then(()=>window.location.href="/")
         .catch((res)=>{
             console.log(res);
             setlogpass("");
@@ -82,7 +81,6 @@ function Login() {
             setlogname("");
             setlogemail("");
         })
-        .then(()=>window.location.href="/")
         .catch((res)=>{
             console.log(res);
             setlogpass("");
@@ -91,7 +89,7 @@ function Login() {
         });
     }
     const [isFlipped, setisFlipped] = useState(false)
-    if(isLoggedIn()) return <Main/>
+    if(isLoggedIn()) return <Dashboard/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
                     {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}
