@@ -83,7 +83,13 @@ exports.updateProgress=async (request,response)=>{
         if(!currentSubItemProgress){         
             coursesProgress.set(String(courseId),String(courseSubItemId));
         }
-        else{            
+        else if(currentSubItemProgress.includes(String(courseSubItemId))){            
+            return response.status(400).json({
+                status:'failed',
+                data:{courseProgress}
+            });
+        }
+        else{                        
             currentSubItemProgress=currentSubItemProgress.concat(' ',String(courseSubItemId));
             coursesProgress.set(String(courseId),String(currentSubItemProgress));
         }
