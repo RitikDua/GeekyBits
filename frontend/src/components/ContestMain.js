@@ -36,7 +36,7 @@ function ContestMain() {
 	console.log(waitingTimeinMin,Math.floor((waitingTime-waitingTimeinMin)*60));
 	if(waitingTime>0){
 		setTimeout(()=>console.log('Started'),waitingTime);
-		const time=setTimeout(declareWinner,30*60000);
+		// const time=setTimeout(declareWinner,30*60000);
 	}
     setContest(data.data.contest);
   }
@@ -46,7 +46,7 @@ function ContestMain() {
     socket.emit('winner_declared',{roomId,userId:user,message:{
       winningMessage:' won the match'
 	}});
-	clearTimeout(time);
+	// clearTimeout(time);
   }
   useEffect(()=>{
     fetchContest();
