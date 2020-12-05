@@ -1,5 +1,6 @@
 const CourseSubItems=require(`${__dirname}/../models/courseSubItemModel`);
 const {matchBodyWithSchema}=require(`${__dirname}/../utils/matchBodyWithSchema`);
+const {updateProgress}=require(`${__dirname}/../utils/updateProgress`);
 exports.getCourseSubItems=async (request,response)=>{
     try{        
         const courseSubItems=await CourseSubItems.find();
@@ -21,8 +22,13 @@ exports.getCourseSubItems=async (request,response)=>{
 };
 exports.getCourseSubItemById=async (request,response)=>{
     try{
-        const courseSubItemId=request.params.courseSubItemId;        
+        const courseSubItemId=request.params.courseSubItemId;     
+        const courseId=request.body.courseId;   
         const courseSubItem=await CourseSubItems.findById(courseSubItemId).populate('subItem');
+        const subItemType=courseSubItem.subItemType;
+        if(subItemType==='Tutorial'){
+            updateProgress(courseId,courseSubItemId,request.user);
+        }
         response.status(200).json({
             status:'success',
             data:{
