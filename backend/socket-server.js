@@ -26,6 +26,7 @@ exports.startSocket=server=>{
 	};
 	const checkValidUser=async (socket,userObj)=>{
 		const {userId,roomId,id}=userObj;
+		console.log(userId,roomId,id);
 		contest=await Contests.findOne({contestUrl:roomId});
 		if(!contest||!contest.users.includes(userId)){	
 			emitError({status:'error',message:'You are not authorized to enter this contest'},id);
@@ -33,8 +34,8 @@ exports.startSocket=server=>{
 		else{
 			socket.join(roomId);
 			io.to(roomId).emit('joined_contest_room',{status:'success',message:`User->${id} successfully joined the room(${roomId})`});
-			socket.on('code_executed',({roomId,userId,message})=>sendResponse('code_executed',roomId,userId,message));
-			socket.on('winner_declared',({roomId,userId,message})=>sendResponse('winner_declared',roomId,userId,message));			
+			socket.on('code_executed',({roomId,userId,message})=>sendResponse('code_executed_server',roomId,userId,message));
+			socket.on('winner_declared',({roomId,userId,message})=>sendResponse('winner_declared_server',roomId,userId,message));			
 		}		
 	};
 	io.on('connection',socket=>{

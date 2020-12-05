@@ -22,7 +22,6 @@ function Main() {
               />
             ))}
           </Switch>
-
       </main>
    
     )
