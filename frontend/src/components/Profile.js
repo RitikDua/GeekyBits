@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
@@ -23,19 +23,16 @@ export default function FullWidthGrid() {
   const classes = useStyles();
 
   return (
-    <div className={classes.root} style={{paddingTop:"100px"}}>
-      <Grid>
-      <Grid container direction="row" >
-                        
+    <div className={classes.root} style={{paddingTop:"50px"}}>
+      <Grid container direction="row" >         
         <Grid style={{border:"1px solid black"}} item xs={8} sm={8}>
-        	<ProfileBio />
+        	<div style={{paddingLeft:"5%",paddingTop:"2%"}}><ProfileBio /></div>
         </Grid>
         <Grid style={{border:"1px solid black"}}  item xs={4} sm={4}>
         	<Pie />
         </Grid>
        </Grid>
-       <Grid container direction="row" >
-                        
+       <Grid container direction="row" >  
         <Grid style={{border:"1px solid black"}} item xs={8} sm={8}>
         	<Line />
         </Grid>
@@ -43,8 +40,6 @@ export default function FullWidthGrid() {
         	<Bar />
         </Grid>
         </Grid>
-
-      </Grid>
     </div>
   );
 }
