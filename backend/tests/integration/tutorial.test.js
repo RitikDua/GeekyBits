@@ -43,6 +43,8 @@ describe("/tutorials", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.data.tutorials).toHaveProperty("tutorialTitle", dbTutorials.tutorialTitle);
+      expect(res.body.data.tutorials.some(t => t.tutorialTitle === "Variables and Identifiers")).toBeTruthy();
+      expect(res.body.data.tutorials.some(t => t.tutorialTitle === "C - Data types")).toBeTruthy();  
     });
   });
 
@@ -84,13 +86,13 @@ describe("/tutorials", () => {
 
   describe("POST /", () => {
     // Define
-    let tut;
+    let tut={};
 
     const exec = async () => {
       return await request(server)
         .post("/tutorials")
         .set("authorization", "Bearer " + token)
-        .send({ tut });
+        .send(tut);
     };
 
     beforeEach(() => {
@@ -109,8 +111,8 @@ describe("/tutorials", () => {
       expect(res.status).toBe(401);
     });
 
-    it("should save the mcq if it is valid", async () => {
-      await exec();
+    it("should return 201 and save the mcq if it is valid", async () => {
+      const res=await exec();
 
       const foo = await Tutorial.find({
         tut: {
@@ -121,14 +123,24 @@ describe("/tutorials", () => {
       });
 
       expect(foo).not.toBeNull();
+      expect(res.status).toBe(201);
     });
 
     it("should return 400 if tutorial details are not valid", async () => {
-      tut = 1234;
+      tut = {
+        ola:"pqrs"
+      };
 
       const res = await exec();
 
       expect(res.status).toBe(400);
+    });
+
+    it('should return the tutorial if it is valid', async() => { 
+      const res = await exec();
+
+      expect(res.body.data.tutorial).toHaveProperty('_id');
+      expect(res.body.data.tutorial).toHaveProperty("tutorialTitle","Variables and Identifiers");      
     });
   });
 });

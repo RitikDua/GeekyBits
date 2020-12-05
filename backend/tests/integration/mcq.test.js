@@ -52,6 +52,8 @@ describe("/mcqs", () => {
 
       expect(res.status).toBe(200);
       expect(res.body.data.mcqs).toHaveProperty("mcqTitle", dbMcq.mcqTitle);
+      expect(res.body.data.mcqs.some(m => m.mcqTitle === "Introduction to Programming - 1")).toBeTruthy();
+      expect(res.body.data.mcqs.some(m => m.mcqTitle === "Introduction to Programming - 2")).toBeTruthy();
     });
   });
 
@@ -95,13 +97,13 @@ describe("/mcqs", () => {
 
   describe("POST /", () => {
     // Define
-    let mul;
+    let mul={};
 
     const exec = async () => {
       return await request(server)
         .post("/mcqs")
         .set("authorization", "Bearer " + token)
-        .send({ mul });
+        .send(mul);
     };
 
     beforeEach(() => {
@@ -122,8 +124,8 @@ describe("/mcqs", () => {
       expect(res.status).toBe(401);
     });
 
-    it("should save the mcq if it is valid", async () => {
-      await exec();
+    it("should return 201 and save the mcq if it is valid", async () => {
+      const res=await exec();
 
       const foo = await MCQ.find({
         mul: {
@@ -136,14 +138,24 @@ describe("/mcqs", () => {
       });
 
       expect(foo).not.toBeNull();
+      expect(res.status).toBe(201);
     });
 
     it("should return 400 if mcq details are not valid", async () => {
-      mul = 1234;
+      mul = {
+        abc:"xyz123"
+      };
 
       const res = await exec();
 
       expect(res.status).toBe(400);
+    });
+
+    it('should return the mcq if it is valid', async() => { 
+      const res = await exec();
+
+      expect(res.body.data.mcq).toHaveProperty('_id');
+      expect(res.body.data.mcq).toHaveProperty("mcqTitle","Introduction to Programming - 2");      
     });
   });
 });
