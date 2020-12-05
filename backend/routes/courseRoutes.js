@@ -7,5 +7,7 @@ router.route('/')
 .get(courseController.getCourses)
 .post(courseController.createCourse);
 router.route('/:courseId')
-.get(courseController.getCourseById);
+.get(courseController.getCourseById)
+.post(courseController.enrollCourse);
+
 module.exports=router;
