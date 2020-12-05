@@ -83,7 +83,7 @@ function ResponsiveDrawer(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
+  // localStorage.getItem("contest-url")
 
   const drawer = (
     <div>
