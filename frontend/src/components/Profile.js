@@ -24,19 +24,24 @@ export default function FullWidthGrid() {
 
   return (
     <div className={classes.root} style={{paddingTop:"100px"}}>
-      <Grid container spacing={3}>
-      
-        <Grid item xs={8} sm={8}>
+      <Grid>
+      <Grid container direction="row" >
+                        
+        <Grid style={{border:"1px solid black"}} item xs={8} sm={8}>
         	<ProfileBio />
         </Grid>
-        <Grid item xs={4} sm={4}>
+        <Grid style={{border:"1px solid black"}}  item xs={4} sm={4}>
         	<Pie />
         </Grid>
-        <Grid item xs={8} sm={8}>
+       </Grid>
+       <Grid container direction="row" >
+                        
+        <Grid style={{border:"1px solid black"}} item xs={8} sm={8}>
         	<Line />
         </Grid>
-        <Grid item xs={4} sm={4}>
+        <Grid style={{border:"1px solid black"}} item xs={4} sm={4}>
         	<Bar />
+        </Grid>
         </Grid>
 
       </Grid>

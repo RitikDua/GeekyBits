@@ -28,7 +28,7 @@ exports.protect=async (request,response,next)=>{
         token=request.cookies.jwt;   
     if(!token)
         return response.status(401).json({status:'error',message:'You are not logged in!!..Please login to get access.'});
-    //Verify the token and check if it is manipulated or not
+    //Verify the token and check if it is manipulated or not    
     let decoded;
     try{
         decoded=await promisify(jwt.verify)(token,process.env.JWT_SECRET_KEY);    

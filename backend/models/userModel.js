@@ -38,6 +38,10 @@ const userSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Course'
     }],
+    coursesProgress:{
+        type:Map,
+        of:String
+    },
     profileShortLink:{
         type:String,        
         default:v4
@@ -50,8 +54,10 @@ userSchema.pre('save',async function(next){
     if(!this.isModified('password')) 
         return next(); 
     this.password=await bcrypt.hash(this.password,10);
-    if(this.isNew)
+    if(this.isNew){
+        this.coursesProgress={};        
         return next();
+    }        
     // this.passwordChangedAt=Date.now()-1000;
 });
 userSchema.index({profileShortLink:1});

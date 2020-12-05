@@ -71,9 +71,41 @@ exports.updateMe=async (request,response)=>{
         response.status(500).json({status:'error',err:err.message});
     }
 };
-// exports.updateProgress=async (request,response)=>{
-//     const 
-// };
+exports.updateProgress=async (request,response)=>{
+    try{
+        const {courseId,courseSubItemId} = request.body;
+        const currentUser=request.user;
+        let coursesProgress=currentUser.coursesProgress; 
+        if(!coursesProgress){
+            currentUser.coursesProgress={};
+        }
+        let currentSubItemProgress=coursesProgress.get(courseId);
+        if(!currentSubItemProgress){         
+            coursesProgress.set(String(courseId),String(courseSubItemId));
+        }
+        else if(currentSubItemProgress.includes(String(courseSubItemId))){            
+            return response.status(400).json({
+                status:'failed',
+                data:{courseProgress}
+            });
+        }
+        else{                        
+            currentSubItemProgress=currentSubItemProgress.concat(' ',String(courseSubItemId));
+            coursesProgress.set(String(courseId),String(currentSubItemProgress));
+        }
+        await currentUser.save();
+        response.status(200).json({
+            status:'success',
+            data:{coursesProgress}
+        });
+    }
+    catch (err){
+        response.status(500).json({
+            status:'error',
+            message:err.message
+        });
+    }
+};
 exports.deleteMe=async (request,response)=>{
     try{
         await Users.findByIdAndDelete({_id:request.user._id});
