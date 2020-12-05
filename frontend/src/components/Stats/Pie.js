@@ -3,9 +3,6 @@ import {
   PieChart, Pie, Sector, Cell,Tooltip
 } from 'recharts';
 import axios from 'axios';
-
-
-
 export default function PieChartData(props)  {
   const [data, setData] = useState([])
   useEffect(() => {
@@ -48,8 +45,6 @@ active}) => {
   );
 };
 function CustomTooltip({ payload, label, active }) {
-  // console.log(payload);
-  // console.log(label);
   if (active) {
     return (
       <div className="custom-tooltip">
@@ -61,10 +56,11 @@ function CustomTooltip({ payload, label, active }) {
 
   return null;
 }
-
+// 
   if(!data) return "loading...";
     return (
-      <PieChart width={500} height={500}>
+      <div style={{paddingBottom:"10%",paddingTop:"1%"}}>
+      <PieChart width={300} height={300}>
             <Tooltip content={<CustomTooltip />}/>
         <Pie
           data={data}
@@ -81,7 +77,7 @@ function CustomTooltip({ payload, label, active }) {
              <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />)
           }
         </Pie>
-      </PieChart>
+      </PieChart></div>
     );
   
 }
