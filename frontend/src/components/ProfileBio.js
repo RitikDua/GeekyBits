@@ -10,7 +10,7 @@ function Profile(props) {
     const [newpass, setnewpass] = useState("");
     useEffect(() => {
          function fun(){
-            Axios.get(`/users/profile`)
+            Axios.get(`/profile`)
             .then(res=>{
                 console.log(res);
                 setobj(res.data.data.user);
