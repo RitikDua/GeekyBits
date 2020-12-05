@@ -1,15 +1,10 @@
 import React, { useEffect,useState} from 'react';
 import {
-  PieChart, Pie, Sector, Cell,
+  PieChart, Pie, Sector, Cell,Tooltip
 } from 'recharts';
 import axios from 'axios';
 
-// const data = [
-//   { name: 'Group A', value: 400 },
-//   { name: 'Group B', value: 300 },
-//   { name: 'Group C', value: 300 },
-//   { name: 'Group D', value: 200 },
-// ];
+
 
 export default function PieChartData(props)  {
   const [data, setData] = useState([])
@@ -30,26 +25,47 @@ export default function PieChartData(props)  {
     getData();
   }, [props])
 
-const COLORS = [ '#FF8042','#0088FE', '#00C49F', '#FFBB28'];
+const COLORS={
+  "correct":"#1c8c0e",
+  "wrong":"#e56255",
+  "compiler error":"#a5a09e",
+  "runtime error":"#f7750f"
+}
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
   cx, cy, midAngle, innerRadius, outerRadius, percent, index,
-}) => {
+active}) => {
+  // console.log(active);
    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
   console.log(data[index]);
   return (
     <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}% ${data[index].name}`}
+      {`${(percent * 100).toFixed(0)}% `}
     </text>
   );
 };
+function CustomTooltip({ payload, label, active }) {
+  // console.log(payload);
+  // console.log(label);
+  if (active) {
+    return (
+      <div className="custom-tooltip">
+        <p className="label">{payload[0].name}</p>
+
+      </div>
+    );
+  }
+
+  return null;
+}
 
   if(!data) return "loading...";
     return (
-      <PieChart width={400} height={400}>
+      <PieChart width={500} height={500}>
+            <Tooltip content={<CustomTooltip />}/>
         <Pie
           data={data}
           cx={200}
@@ -61,7 +77,8 @@ const renderCustomizedLabel = ({
           dataKey="value"
         >
           {
-            data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+            data.map((entry, index) =>
+             <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />)
           }
         </Pie>
       </PieChart>
