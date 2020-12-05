@@ -85,8 +85,10 @@ exports.updateContest=async (request,response)=>{
         if(!attemptId){    
             if(currentTime<(contest.startedAt.getTime()+30*60000)&&!contest.winner){
                 const attempts=contest.attempts;
+                console.log(attempts);
                 for(const attempt of attempts){
                     if(attempt.attemptResult.toLowerCase()==='correct'){
+                        console.log('hi');
                             contest.winner=attempt.user;
                             contest.endedAt=currentTime;
                             break;
@@ -124,6 +126,7 @@ exports.updateContest=async (request,response)=>{
         });
     }
     catch (err){
+        console.log(err);
         response.status(500).json({
             status:'error',
             message:err.message
@@ -133,7 +136,7 @@ exports.updateContest=async (request,response)=>{
 exports.registerParticipant =async (request,response)=>{
     try{
         const contestId=request.params.contestId;
-        const newParticipant=request.body.userId;
+        const newParticipant=request.user._id;
         const contest=await Contests.findById(contestId);
         if(!contest||contest.users.length==0)
             throw new Error('No such contest exist');
