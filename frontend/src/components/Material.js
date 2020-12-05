@@ -27,6 +27,14 @@ import Tutorial from './Content/Tutorial/Tutorial';
 import MCQ from './Content/Tutorial/MCQ';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
+
 const drawerWidth = 370;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -262,9 +270,11 @@ function ResponsiveDrawer(props) {
             <MenuIcon />
           </IconButton>
           <Box display="flex" flexGrow={1}>
+          <Link to={'/'} style={{ textDecoration: 'none','color':'white' }}>
           <Typography variant="h5" noWrap>
             GeekyBits
           </Typography>
+          </Link>
           </Box>
           <PermIdentityIcon />
           <Typography variant="p" noWrap>
