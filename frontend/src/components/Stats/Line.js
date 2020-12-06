@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+ ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import axios from 'axios';
 
@@ -20,6 +20,7 @@ export default function Example(props) {
   }, [props])
   if(!data) return "";
   return (
+    <ResponsiveContainer width="100%" height={350}>
       <LineChart
         width={500}
         height={300}
@@ -36,6 +37,6 @@ export default function Example(props) {
         <Line type="monotone" dataKey="total" stroke="#8884d8" activeDot={{ r: 8 }} />
      
       </LineChart>
-    );
+    </ResponsiveContainer>);
 
 }
