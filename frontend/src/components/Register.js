@@ -8,7 +8,7 @@ function Register() {
         e.preventDefault();
         Axios.post(url)
         .then((res)=>{
-            console.log(res.data.contestStartUrl);
+            console.log(res);
             setcontest(res.data.contestStartUrl);
         }).catch((err)=>{
             console.log(err);
