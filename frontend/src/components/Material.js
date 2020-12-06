@@ -107,7 +107,7 @@ function ResponsiveDrawer(props) {
   const [currIndex, setCurrIndex] = useState("")
   const [currComponent, setCurrComponent] = useState({}) 
   const [open, setOpen] = React.useState(false);
-
+  const courseId=props.courseId||"5fb01e55e8d9acbadcd66bff";
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -119,7 +119,7 @@ function ResponsiveDrawer(props) {
   };
   useEffect(() => {
      async function fun(){
-      await Axios.get(`/courses/5fb01e55e8d9acbadcd66bff`, {withCredentials: true})
+      await Axios.get(`/courses/${courseId}`, {withCredentials: true})
       .then((res)=>{
         console.log(res.data.data.course.courseItems);
         setData(res.data.data.course);
@@ -222,7 +222,7 @@ function ResponsiveDrawer(props) {
     console.log(currComponent);
     switch(currComponent.subItemType){
       case "Tutorial":
-        return <Tutorial queryId={currComponent._id} />
+        return <Tutorial courseId={courseId} queryId={currComponent._id} />
       case "MCQ":
         return <MCQ queryId={currComponent._id} />
       case "CodingProblem":
@@ -240,7 +240,7 @@ function ResponsiveDrawer(props) {
   }
   const pagination=()=>{
     if(!data) return <LinearProgress />
-    if(!currComponent||currIndex.length===0) return  <Tutorial queryId="5fafeec106ccb1909bbc2bac" />;
+    if(!currComponent||currIndex.length===0) return  <Tutorial courseId={courseId} queryId="5fafeec106ccb1909bbc2bac" />;
     
     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
       
