@@ -19,7 +19,7 @@ exports.getAttempts=async (request,response)=>{
             filterObj=request.body;
         else
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj);        
+        const attempts=await Attempts.find(filterObj).sort({createdAt:-1});        
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -37,7 +37,7 @@ exports.getAttemptsByProblemId=async (request,response)=>{
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj);
+        const attempts=await Attempts.find(filterObj).sort({createdAt:-1});;
         response.status(200).json({
             status:'success',
             data:{attempts}

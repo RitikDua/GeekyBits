@@ -10,7 +10,7 @@ router.route('/')
 router.route('/:contestId')
 .get(contestController.getContestById)
 .post(contestController.registerParticipant)
-.patch(contestController.updateContest);
 router.route('/:contestId/:contestUrl')
 .get(contestController.startContest)
+.post(contestController.updateContest);
 module.exports = router;

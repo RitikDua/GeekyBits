@@ -35,10 +35,8 @@ function Profile(props) {
     return (
         <div>
             <div>
-                <Grid container direction="row" >
-                   
+                <Grid container direction="row" style={{paddingBottom:"10px"}} >
                     <Grid item xs={12}>
-                       
                         <Grid container direction="row" >
                             <Grid item xs={3}>
                                 <h2>Name</h2>
@@ -46,7 +44,6 @@ function Profile(props) {
                             <Grid item xs={8}>
                                 <h2>{obj.name}</h2>
                             </Grid>
-                        
                         </Grid>
 
                         <Grid container direction="row" >
@@ -63,8 +60,8 @@ function Profile(props) {
                                     <span style={{fontSize:"20px",color:"grey"}}><span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>ProfileShortLink:  </span><br/>
                                     </span></Grid>
                                     <Grid item xs={8}>
-<span style={{fontSize:"20px",resize:"none"}}>{obj.profileShortLink} </span><CopyToClipboard text={obj.profileShortLink}
-          onCopy={() => setcopy(true)}><Button style={{height:"20px",width:"20px"}} variant="contained" color="primary">Copy</Button></CopyToClipboard>
+                                    <span style={{fontSize:"20px",resize:"none"}}>{obj.profileShortLink} </span><CopyToClipboard text={obj.profileShortLink}
+                                        onCopy={() => setcopy(true)}><Button style={{height:"20px",width:"20px"}} variant="contained" color="primary">Copy</Button></CopyToClipboard>
                                     </Grid>
                         </Grid>
 

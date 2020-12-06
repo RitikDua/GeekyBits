@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
 function ResponsiveDrawer(props) {
   const myName=props.name?props.name:"username";
   const { window } = props;
+  const [progress, setProgress] = useState(0)
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -107,10 +108,11 @@ function ResponsiveDrawer(props) {
   const [currIndex, setCurrIndex] = useState("")
   const [currComponent, setCurrComponent] = useState({}) 
   const [open, setOpen] = React.useState(false);
-
+  const courseId=props.courseId||"5fb01e55e8d9acbadcd66bff";
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -119,10 +121,12 @@ function ResponsiveDrawer(props) {
   };
   useEffect(() => {
      async function fun(){
-      await Axios.get(`/courses/5fb01e55e8d9acbadcd66bff`, {withCredentials: true})
+      await Axios.get(`/courses/${courseId}`, {withCredentials: true})
       .then((res)=>{
-        console.log(res.data.data.course.courseItems);
+        console.log("asdasdasdasdasda")
+        console.log(res.data.data);
         setData(res.data.data.course);
+        setProgress(res.data.data.courseProgressPercent);
          })
       .catch((err)=>console.log(err));
      }
@@ -167,7 +171,9 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+
     <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:<CircularProgress />} </span></div><br/>
+       <LinearProgress value={progress||0} variant="determinate"/>
         <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
@@ -222,7 +228,7 @@ function ResponsiveDrawer(props) {
     console.log(currComponent);
     switch(currComponent.subItemType){
       case "Tutorial":
-        return <Tutorial queryId={currComponent._id} />
+        return <Tutorial courseId={courseId} queryId={currComponent._id} />
       case "MCQ":
         return <MCQ queryId={currComponent._id} />
       case "CodingProblem":
@@ -240,7 +246,7 @@ function ResponsiveDrawer(props) {
   }
   const pagination=()=>{
     if(!data) return <LinearProgress />
-    if(!currComponent||currIndex.length===0) return  <Tutorial queryId="5fafeec106ccb1909bbc2bac" />;
+    if(!currComponent||currIndex.length===0) return  <Tutorial courseId={courseId} queryId="5fafeec106ccb1909bbc2bac" />;
     
     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
       
