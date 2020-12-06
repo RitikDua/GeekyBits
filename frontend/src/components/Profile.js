@@ -25,10 +25,10 @@ export default function FullWidthGrid() {
   return (
     <div className={classes.root} style={{paddingTop:"50px"}}>
       <Grid container direction="row" >         
-        <Grid style={{border:"1px solid black"}} item xs={8} sm={8}>
+        <Grid style={{border:"1px solid black"}} item xs={7} sm={7}>
         	<div style={{paddingLeft:"5%",paddingTop:"2%"}}><ProfileBio /></div>
         </Grid>
-        <Grid style={{border:"1px solid black"}}  item xs={4} sm={4}>
+        <Grid style={{border:"0px solid black"}}  item xs={5} sm={5}>
         	<Pie />
         </Grid>
        </Grid>
