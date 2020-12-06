@@ -26,7 +26,7 @@ exports.getCourseSubItemById=async (request,response)=>{
         const courseId=request.query.key;   
         const courseSubItem=await CourseSubItems.findById(courseSubItemId).populate('subItem');
         const subItemType=courseSubItem.subItemType;
-        if(subItemType==='Tutorial'){
+        if(courseId&&subItemType==='Tutorial'){
             updateProgress(courseId,courseSubItemId,request.user);
         }
         response.status(200).json({

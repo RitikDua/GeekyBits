@@ -115,7 +115,7 @@ exports.submitAttempt=async (request, response) => {
             // deleteFile(`${__dirname}/../test.c`);
             // deleteFile(`${__dirname}/../a.out`);                 
         }  
-        if(attemptObj.attemptResult==='correct'){
+        if(courseId&&attemptObj.attemptResult==='correct'){
             updateProgress(courseId,problemId,request.user);
         }        
         const attempt = await Attempts.create(attemptObj);                

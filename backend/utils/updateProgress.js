@@ -3,6 +3,7 @@ exports.updateProgress=async (courseId,courseSubItemId,currentUser)=>{
         let coursesProgress=currentUser.coursesProgress; 
         if(!coursesProgress)
             currentUser.coursesProgress={};
+        console.log(currentUser);
         let currentSubItemProgress=coursesProgress.get(courseId);
         if(!currentSubItemProgress)
             coursesProgress.set(String(courseId),String(courseSubItemId));
