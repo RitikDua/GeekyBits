@@ -35,7 +35,7 @@ function Profile(props) {
     return (
         <div>
             <div>
-                <Grid container direction="row" >
+                <Grid container direction="row" style={{paddingBottom:"10px"}} >
                     <Grid item xs={12}>
                         <Grid container direction="row" >
                             <Grid item xs={3}>

@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
 function ResponsiveDrawer(props) {
   const myName=props.name?props.name:"username";
   const { window } = props;
+  const [progress, setProgress] = useState(0)
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -111,6 +112,7 @@ function ResponsiveDrawer(props) {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -121,8 +123,10 @@ function ResponsiveDrawer(props) {
      async function fun(){
       await Axios.get(`/courses/${courseId}`, {withCredentials: true})
       .then((res)=>{
-        console.log(res.data.data.course.courseItems);
+        console.log("asdasdasdasdasda")
+        console.log(res.data.data);
         setData(res.data.data.course);
+        setProgress(res.data.data.courseProgressPercent);
          })
       .catch((err)=>console.log(err));
      }
@@ -167,7 +171,9 @@ function ResponsiveDrawer(props) {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+
     <div style={{paddingLeft:"4%",paddingRight:"4%"}}><span style={{fontSize:"22px"}}>{data?data.courseTitle:<CircularProgress />} </span></div><br/>
+       <LinearProgress value={progress||0} variant="determinate"/>
         <Accordion square expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary style={{backgroundColor:"grey",color:"white"}} aria-controls="panel1d-content" id="panel1d-header">
           <Typography >Overview</Typography>
