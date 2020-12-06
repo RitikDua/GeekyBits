@@ -13,12 +13,12 @@ export default class Tutorial extends React.Component {
 		super(props);
 		this.state={
 				"content":"","title":"","codes":[]
-			
 		}
 	}	
 	async componentDidMount(){
+		console.log(this.props);
 		await axios.get(
-		`/courseSubItems/${this.props.queryId}`
+		`/courseSubItems/${this.props.queryId}?key=${this.props.courseId}`
 		)
 		.then( async(res)=>{
 			console.log(res);
