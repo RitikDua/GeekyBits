@@ -23,7 +23,7 @@ exports.getCourseSubItems=async (request,response)=>{
 exports.getCourseSubItemById=async (request,response)=>{
     try{
         const courseSubItemId=request.params.courseSubItemId;     
-        const courseId=request.body.courseId;   
+        const courseId=request.query.key;   
         const courseSubItem=await CourseSubItems.findById(courseSubItemId).populate('subItem');
         const subItemType=courseSubItem.subItemType;
         if(subItemType==='Tutorial'){
