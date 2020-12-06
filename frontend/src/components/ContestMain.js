@@ -1,17 +1,140 @@
 import React,{useState,useEffect}from 'react';
 import {io} from 'socket.io-client';
 import axios from 'axios';
-// import './App.css';
-function ContestMain() {
+import Countdown from "react-countdown";
+import { Grid, LinearProgress, Paper } from '@material-ui/core';
+import CodeEditor from './Content/Tutorial/CodeEditor';
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/theme-xcode";
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/theme-monokai";
+import Button from '@material-ui/core/Button';
+import {cod} from './Content/Tutorial/defaultCode'
+import { Switch } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+function ContestMain(props) {
   const [socket,setSocket]= useState(io('http://localhost:4000'));
   const [user,setUser]=useState(localStorage.getItem("userId"));
   const [contest,setContest]=useState(null);
   const url=localStorage.getItem("contest-url").split('/');
   const [roomId,setRoomId]=useState(url[url.length-1]);
-  const [code,setCode]=useState('');
+  const [timer, settimer] = useState("");
+  const [dat, setdat] = useState("");
+  const [Data, setData] = useState("");
+  const [testcases, settestcases] = useState("")
+
+
+
+
+
+
+
+
+
+
+  const [code, setCode] = useState("");
+	const [lang,setLang]=useState("C");
+	const [output, setOutput] = useState("")
+	const [stdin,setStdin] = useState("")
+	const [submitExecution,setSubmitExec]=useState(false);
+	const [check, setCheck] = useState([])
+	const [val, setval] = useState(props.attempt?props.attemptData.attemptString:cod["cpp"]);
+	const [codelang, setcodelang] = useState("c_cpp");
+	const [state, setState] = React.useState({
+		checkedA: true,
+		checkedB: true,
+	  });
+	  const [swt, setswt] = useState(false);
+	
+	  const handleChange = (event) => {
+		setState({ ...state, [event.target.name]: event.target.checked });
+		setswt(!swt);
+	  };
+	const getDefaultCode=()=>{
+		switch(lang){
+			case 'C':
+				return decodeURIComponent("%23include%3Cstdio.h%3E%20%20int%20main()%20%7B%20%20%20%7D");
+		}
+	}
+	const executeCode=async ()=>{
+	 console.log(parseInt(stdin));
+	 const options = {
+		  method: 'POST',
+		  url: '/compile',
+		  data: {
+		    lang: "C",
+		    code: val,
+		    input: (stdin)
+		  }
+		};
+		await axios.request(options)
+			.then((res)=>{
+				console.log(res.data);
+				if(res.data.err){
+					setOutput(res.data.error);
+				}else
+				setOutput(res.data.output);
+				})
+			.catch((err)=>console.error(err));
+	}
+	const getOutput=()=>{
+		return output
+	}
+	const editorDidMount = (e) => {
+        console.log("EDITOR MOUNTED")
+	}
+	const changedata=(code,e)=>{
+		setCode(code);
+		setval(code);
+	}
+	const onLangSelectHandler = (e) => {
+		console.log(e.target.value);
+		const lang = e.target.value
+		if(lang==="java"){
+			setcodelang("java");
+		}
+		else if(lang==="c" || lang==="cpp"){
+			setcodelang("c_cpp")
+		}
+		else if(lang==="python"){
+			setcodelang("python");
+		}
+        // this.setState({
+        //     lang,
+        //     code: code[lang]
+		// })
+		setval(cod[lang]);
+		console.log(cod[lang]);
+    }
+	const options = {
+		selectOnLineNumbers: true,
+		renderIndentGuides: true,
+		colorDecorators: true,
+		cursorBlinking: "blink",
+		autoClosingQuotes: "always",
+		find: {
+			autoFindInSelection: "always"
+		},
+		snippetSuggestions: "inline"
+	  };
+
+
+
+
+
+
+
+
+
+
+
   const joinRoom=async ()=>{
     socket.emit('participant_connected',{id:socket.id,roomId,userId:user});
   }
+  const Completionist = () => <span>You are good to go!</span>;
   const userExecuted=async ()=>{    
 	console.log(contest,code);
 	const {data}=await axios({method:'POST',url:`http://localhost:4000/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:'C',attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
@@ -23,21 +146,38 @@ function ContestMain() {
 	}});
 	const attemptResult=data.data.attempt.attemptResult;
 	if(attemptResult==='correct'){
+    settestcases(attemptResult);
 		declareWinner(roomId,user,{winningMessage:' won the match'}); 
-	}
+  }
+  else{
+    settestcases(attemptResult);
+  }
   };
   const fetchContest=async ()=>{
-	const {data}=await axios({method:'GET',url:`http://localhost:4000${localStorage.getItem("contest-url")}`,withCredentials:true});
+  const {data}=await axios({method:'GET',url:`http://localhost:4000${localStorage.getItem("contest-url")}`,withCredentials:true});
+  console.log(data.data.contest.problem.problemStatement);
+  setData(
+    	{
+    	"content":decodeURIComponent(data.data.contest.problem.problemStatement).replace(/\n/gmi,"<br />")
+    	,"title":decodeURIComponent(data.data.contest.problem.problemTitle),
+    	"testCases":data.data.contest.problem.testCases,
+    	"correctOutput":data.data.contest.problem.correctOutput
+    	,"id":data.data.contest.problem._id,subItemId:data.data.contest.problem._id}
+          );
+
+  setdat(data);
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
 	const waitingTime=(Date.parse(startAt)-Date.parse(new Date()))/60000;
 	const waitingTimeinMin=Math.floor(waitingTime);
-	console.log(waitingTimeinMin,Math.floor((waitingTime-waitingTimeinMin)*60));
-	if(waitingTime>0){
-		setTimeout(()=>console.log('Started'),waitingTime);
-		// const time=setTimeout(declareWinner,30*60000);
-	}
+  settimer(waitingTimeinMin,Math.floor((waitingTime-waitingTimeinMin)*60));
+  console.log(timer);
+  // settimer(Date.parse(startAt)+100000);
+	// if(waitingTime>0){
+	// 	setTimeout(()=>console.log('Started'),waitingTime);
+	// 	// const time=setTimeout(declareWinner,30*60000);
+	// }
     setContest(data.data.contest);
   }
   const declareWinner=async (roomId,userId,message)=>{
@@ -66,13 +206,120 @@ function ContestMain() {
       console.log(finalmessage);
     });
   },[]);
+  if(!dat) return <LinearProgress />;
   return (
-    <div className="App">
-      <h1 className="title">1 vs 1 challenge</h1>
+    <div className="App" style={{height:"100vh"}}>
+      {/* <h1 className="title">1 vs 1 challenge</h1>
       <textarea rows='10' cols='30' onChange={e=>setCode(e.target.value)} placeholder='Enter code'></textarea>
       <div className="output"></div>
       <button className="execute" onClick={()=>userExecuted()}>Execute Code</button>
-      {/* <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
+      <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
+
+        <Grid container spacing={2}>
+        <Grid item xs={6} sm={5} style={{paddingTop:"2%"}}>
+          <Paper style={{"height":"94vh"}} >
+            <div style={{paddingLeft:"2%",paddingTop:"2%"}}>
+          	<h1>{Data.title}</h1>
+          	<p>{Data.content}</p>
+  			<p><b>Input:</b></p>
+          		<div className="jumbotron">
+          		
+          			{
+          				Data&&Data.testCases&&Data.testCases.map((value,index)=>{
+          					return (
+          							<p key={index}>
+          							{decodeURIComponent(value)}<br />
+          							</p>
+          						)
+          				})
+          			}
+          		</div>
+          		<p><b>Output:</b></p>
+          		<div className="jumbotron" style={{backgroundColor:"#eee",padding:"1%"}}>
+          		
+          			{
+          				Data&&Data.correctOutput&&Data.correctOutput.map((value,index)=>{
+          					return (
+          							<p key={index}>
+          							{decodeURIComponent(value)}<br />
+          							</p>
+          						)
+          				})
+          			}
+          		</div></div>
+          </Paper>
+        </Grid>
+        <Grid item xs={7} sm={7} style={{paddingTop:"2%"}}>
+          <Paper style={{"height":"94vh"}}>
+          <div style={{padding:"2%"}}>
+          <div  style={{display:"flex",justifyContent:"space-between"}} >
+					<div><select id="lang" onChange={(e) => onLangSelectHandler(e)}>
+                            <option value="cpp">C++</option>
+                            <option value="c">C</option>
+                            <option value="java">Java</option>
+                            <option value="python">Python</option>
+                        </select></div>
+						<Switch
+							checked={state.checkedA}
+							onChange={handleChange}
+							name="checkedA"
+							inputProps={{ 'aria-label': 'checkbox' }}
+							color="primary"
+						/>	
+					</div>
+					<div style={{overflow:"hidden"}}>
+						<div><span style={{fontSize:"20px"}}>Code your code here</span></div>
+					<AceEditor
+						width="100%"
+						height="30vh"
+						mode={codelang}
+						theme={swt===false?"monokai":"xcode"}
+						value={val}
+						onChange={(code,e)=>changedata(code,e)}
+						name="UNIQUE_ID_OF_DIV"
+						editorProps={{ $blockScrolling: true }}
+					/>
+							</div>
+					<div className="output" >
+						<div style={{color:'white',width:"100%",backgroundColor:"black",height:"10vh"}} className="code-output">
+							<p>
+								{submitExecution?"submitting....":getOutput()}
+							</p>
+						</div>
+					</div><br/>
+
+					<div className="stdin">
+						<span style={{fontSize:"20px"}}>Provide Input:</span><br/>
+						<textarea style={{width:"100%",resize:"none",height:"15vh"}} onChange={(e)=>setStdin(e.target.value)}></textarea>
+					</div>
+					<div className="row">
+					<Button onClick={()=>executeCode()} style={{color:"#0275d8",borderColor:"#0275d8"}} variant="outlined" color="primary">Execute</Button>
+						{/* <button>Execute</button> */}&nbsp;&nbsp;
+					<Button onClick={()=>userExecuted()} style={{color:"green",borderColor:"green"}} variant="outlined">Submit</Button>
+					 {/* <button onClick={()=>submitCode()}>Submit</button> */}
+						
+					</div><br/>
+          <div style={{display:"flex",justifyContent:"space-between"}}>
+            {testcases.length!=0 && <div>
+            <span style={{fontSize:"20px"}}>TESTCASES: </span>
+            </div>}
+            {testcases.length!=0 && <div>
+                <span style={{fontSize:"20px"}}>{testcases}</span>
+            </div>}
+            {testcases==='correct' && <div>
+                <span style={{fontSize:"20px"}}><CheckIcon style={{color:"green"}}/></span>
+            </div>}
+            {testcases!=='correct' && testcases.length!=0 && <div>
+                <span style={{fontSize:"20px"}}><CloseIcon style={{color:"red"}}/></span>
+            </div>}
+          </div></div>
+
+
+
+          </Paper>
+        </Grid>
+        </Grid>
+
     </div>
   );
 }
