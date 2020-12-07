@@ -10,13 +10,13 @@ import { Route, Switch,Link } from 'react-router-dom';
 import MainRoutes from '../routes/MainRoutes';
 export default function HomePage() {
     return ( 
-        <main>
+        <div>
           <Nav />
           <Banner />
           <Flow />
-          <Gridblock />
           <Logoblock />
+          <Gridblock />
           <Footer />
-          </main>
+          </div>
           )
 }
