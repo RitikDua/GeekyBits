@@ -25,7 +25,8 @@ function ContestMain(props) {
   const [dat, setdat] = useState("");
   const [Data, setData] = useState("");
   const [testcases, settestcases] = useState("")
-
+  const [timeLeft,settimeLeft]=useState('');
+  const [startat, setstartat] = useState("");
 
 
 
@@ -166,6 +167,8 @@ function ContestMain(props) {
           );
 
   setdat(data);
+  settimeLeft(new Date(data.data.contest.startedAt));
+//   setstartat(Date.parse(data.data.contest.startedAt));
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
@@ -185,9 +188,19 @@ function ContestMain(props) {
 	console.log(data);
     socket.emit('winner_declared',{roomId,userId:user,message:{
       winningMessage:' won the match'
-	}});
+	}});		
 	// clearTimeout(time);
   }
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+	if (completed) {
+	  // Render a completed state
+	  declareWinner();
+	  return <span>Contest Finished</span>;
+	} else {
+	  // Render a countdown
+	  return <span>{hours}:{minutes}:{seconds}</span>;
+	}
+  };
   useEffect(()=>{
     fetchContest();
     socket.on('connect',()=>{      
@@ -203,10 +216,34 @@ function ContestMain(props) {
       console.log(result);
     });
     socket.on('winner_declared_server',finalmessage=>{
-      console.log(finalmessage);
+	  console.log(finalmessage);
+	 window.location.href="/";
+	  alert(`${finalmessage.name} wont the contest!!`);
     });
   },[]);
+
   if(!dat) return <LinearProgress />;
+  if(timeLeft.length!==0 && timeLeft.getTime()-Date.now()>0){
+	 return(
+		 <div style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/1v1.jpg`})`,height:"100vh",backgroundSize:"cover",overflow:"hidden"}}>
+		<div  style={{textAlign:"center",background:"rgba(0, 0, 0, 0.2)",overflow: "hidden",height:"100vh"}}>
+			<div>
+				<h1 style={{fontSize:"40px"}}>1 vs 1 Contest</h1>
+			</div>
+			<div>
+				<span style={{fontSize:"20px"}}>Contest Will Start at {timeLeft.length!==0 && timeLeft.getTime()-Date.now()>0 && timeLeft.toTimeString()}</span>
+			</div>
+			<div>
+				<span style={{fontSize:"20px"}}>Time for Completing the Test is 30 minutes</span><br/>
+			</div>
+			<br/>
+			<div>
+			<Button variant="contained" onClick={()=>window.location.reload()} color="secondary">Start Contest</Button>
+			</div>
+		</div>
+		</div>
+	 );
+  }
   return (
     <div className="App" style={{height:"100vh"}}>
       {/* <h1 className="title">1 vs 1 challenge</h1>
@@ -214,7 +251,9 @@ function ContestMain(props) {
       <div className="output"></div>
       <button className="execute" onClick={()=>userExecuted()}>Execute Code</button>
       <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
-
+	  {/* timeLeft.getTime()-Date.now()>0 */}
+	  {console.log(timeLeft)}
+		{timeLeft?<div style={{backgroundColor:"#111",color:"white",width:"100px",padding:"1% 2%"}}><Countdown date={Date.now()+timeLeft.getTime()+30*60000-Date.now()} renderer={renderer}/></div>:null}
         <Grid container spacing={2}>
         <Grid item xs={6} sm={5} style={{paddingTop:"2%"}}>
           <Paper style={{"height":"94vh"}} >
