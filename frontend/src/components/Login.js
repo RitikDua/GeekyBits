@@ -1,18 +1,15 @@
 import React, { useState } from 'react'
 import Icon from '@material-ui/icons/Send';
-import { Button, FormControl, Grid, Hidden, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
+import { Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import Dashboard from './Dashboard/Dashboard'
 // import CodingProblem from './Content/Tutorial/CodingProblem.js';
-import Main from './Main';
 import '../css/login.css'
 // import CodingProblem from './Content/Tutorial/CodingProblem';
-import Attempts from './Attempts/Attempts'
 import Axios from 'axios';
-import Profile from './Profile';
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
@@ -24,14 +21,8 @@ function Login() {
     const  getToken=()=>{
         return storage.getItem("login");
     }
-    const  saveToken=(token)=>{
-        storage.setItem('login',token); 
-    }
     const [values, setValues] = React.useState({
         showPassword: false,
-      });
-      const [values1, setValues1] = React.useState({
-        showPassword1: false,
       });
     function isLoggedIn(){
         const token=getToken();
