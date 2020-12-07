@@ -3,6 +3,8 @@ import Axios from 'axios';
 import CodingProblem from '../Content/Tutorial/CodingProblem';
 import MCQ from '../Content/Tutorial/MCQ';
 import clsx from 'clsx';
+
+import {render} from 'react-dom';
 // import clsx from 'clsx';
 // import Drawer from '@material-ui/core/Drawer';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -100,32 +102,33 @@ export default function CustomPaginationActionsTable(props) {
   const classes = useStyles2();
   // const classes = useStyles();
   const [drawer, setDrawer] = useState(false);
-  const [runningIndex,setRunningIndex]=useState(0);
+  const [drawerData,setDrawerData]=useState({});
   const [data, setData] = useState([])
   
-  const toggleDrawer = ( open,index) => (event) => {
+  const toggleDrawer = ( open,drawerdataTemp) => (event) => {
     console.log("asd")
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-    if(index)
-    {  console.log(index);
-      const fun=async ()=>setRunningIndex(index);
-      fun().then(()=>setDrawer(open))
-      .catch(err=>console.error(err));
+    if(drawerdataTemp)
+    {  
+      setDrawerData(drawerdataTemp);
+      setDrawer(open)
+      
     }
     else setDrawer(open);
   };
   const showAttempt=()=>{
-  console.log(runningIndex);  
-  if(!data||data.length<=runningIndex||!data[runningIndex]) return "loading...";
+
+  if(!data||!drawerData) return "loading...";
     
-  else   if(data[runningIndex].attemptType==="CodingProblem"){
-      console.log("asd");
-      return <CodingProblem attempt="true"  queryId={data[runningIndex].problem} attemptData={data[runningIndex]}/>
+  else   if(drawerData.attemptType==="CodingProblem"){
+      
+      return <CodingProblem attempt="true"  queryId={drawerData.problem} attemptData={drawerData}/>
     }
     else
-    {  return <MCQ attempt="true"  queryId={data[runningIndex].problem} attemptData={data[runningIndex]}/>
+    {  return <MCQ attempt="true"  queryId={drawerData.problem} attemptData={drawerData}/>
+        
     }
 
   }
@@ -168,7 +171,8 @@ export default function CustomPaginationActionsTable(props) {
         <TableBody>
           {(getArr()).map((row,index) => 
           (
-           <TableRow onClick={toggleDrawer(true,index+(page*rowsPerPage))} >
+
+           <TableRow onClick={toggleDrawer(true,row)} >
               <TableCell component="th" scope="row">
                 {row.attemptType}
               </TableCell>
@@ -208,6 +212,8 @@ export default function CustomPaginationActionsTable(props) {
       </Table>
           <Drawer open={drawer} onClose={toggleDrawer(false,0)}>
             {showAttempt()}
+            <div id="renderAttempt">
+            </div>
           </Drawer>
     </TableContainer>
   );
