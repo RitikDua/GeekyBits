@@ -106,10 +106,6 @@ function ContestMain(props) {
 		else if(lang==="python"){
 			setcodelang("python");
 		}
-        // this.setState({
-        //     lang,
-        //     code: code[lang]
-		// })
 		setval(cod[lang]);
 		console.log(cod[lang]);
     }
@@ -171,7 +167,6 @@ function ContestMain(props) {
 
   setdat(data);
   settimeLeft(new Date(data.data.contest.startedAt));
-//   setstartat(Date.parse(data.data.contest.startedAt));
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
@@ -179,11 +174,6 @@ function ContestMain(props) {
 	const waitingTimeinMin=Math.floor(waitingTime);
   settimer(waitingTimeinMin,Math.floor((waitingTime-waitingTimeinMin)*60));
   console.log(timer);
-  // settimer(Date.parse(startAt)+100000);
-	// if(waitingTime>0){
-	// 	setTimeout(()=>console.log('Started'),waitingTime);
-	// 	// const time=setTimeout(declareWinner,30*60000);
-	// }
     setContest(data.data.contest);
   }
   const declareWinner=async (roomId,userId,message)=>{
@@ -192,15 +182,12 @@ function ContestMain(props) {
     socket.emit('winner_declared',{roomId,userId:user,message:{
       winningMessage:' won the match'
 	}});
-	// clearTimeout(time);
   }
   const renderer = ({ hours, minutes, seconds, completed }) => {
 	if (completed) {
-	  // Render a completed state
 	  declareWinner();
 	  return <span>Contest Finished</span>;
 	} else {
-	  // Render a countdown
 	  return <span>{hours}:{minutes}:{seconds}</span>;
 	}
   };
@@ -222,10 +209,6 @@ function ContestMain(props) {
 	  console.log(finalmessage);
 	  setwinner(finalmessage);
 	  setopen(true);
-	// if(open===false){
-	// 	 window.location.href="/";
-	// }
-	//   alert(`${finalmessage.name} wont the contest!!`);
     });
   },[]);
 
@@ -253,12 +236,6 @@ function ContestMain(props) {
   }
   return (
     <div className="App" style={{height:"100vh"}}>
-      {/* <h1 className="title">1 vs 1 challenge</h1>
-      <textarea rows='10' cols='30' onChange={e=>setCode(e.target.value)} placeholder='Enter code'></textarea>
-      <div className="output"></div>
-      <button className="execute" onClick={()=>userExecuted()}>Execute Code</button>
-      <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
-	  {/* timeLeft.getTime()-Date.now()>0 */}
 	  {console.log(timeLeft)}
 		{timeLeft?<div style={{backgroundColor:"#111",color:"white",width:"100px",padding:"1% 2%"}}><Countdown date={Date.now()+timeLeft.getTime()+30*60000-Date.now()} renderer={renderer}/></div>:null}
         <Grid container spacing={2}>
@@ -340,9 +317,9 @@ function ContestMain(props) {
 					</div>
 					<div className="row">
 					<Button onClick={()=>executeCode()} style={{color:"#0275d8",borderColor:"#0275d8"}} variant="outlined" color="primary">Execute</Button>
-						{/* <button>Execute</button> */}&nbsp;&nbsp;
+						&nbsp;&nbsp;
 					<Button onClick={()=>userExecuted()} style={{color:"green",borderColor:"green"}} variant="outlined">Submit</Button>
-					 {/* <button onClick={()=>submitCode()}>Submit</button> */}
+					 
 						
 					</div><br/>
 					{testcases.length!==0 && testcases.map((t,idx)=>(
