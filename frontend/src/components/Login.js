@@ -6,7 +6,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import Dashboard from './Dashboard/Dashboard'
-
+import {isLoggedIn} from '../utils/utils'
 import '../css/login.css'
 
 import Axios from 'axios';
@@ -18,25 +18,10 @@ function Login() {
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [pass, setpass] = useState("");
-    let storage=localStorage;
-    const  getToken=()=>{
-        return storage.getItem("login");
-    }
-
     const [values, setValues] = React.useState({
         showPassword: false,
       });
-    
-    function isLoggedIn(){
-        const token=getToken();
-        if(token){
-              const payload=JSON.parse(atob(token.split('.')[1]));     
-          return ((Date.now()/1000)-payload.iat)<6.048e+8;
-        }
-        else{
-          return false;
-        }
-    }
+
     async function handleSignup(e){
         e.preventDefault();
        console.log(pass);
@@ -51,6 +36,7 @@ function Login() {
             setlogname("");
             setlogemail("");
         })
+         .then(()=> window.location.href="/")
         .catch((res)=>{
             console.log(res);
             setlogpass("");
