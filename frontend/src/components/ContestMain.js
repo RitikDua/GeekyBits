@@ -3,7 +3,6 @@ import {io} from 'socket.io-client';
 import axios from 'axios';
 import Countdown from "react-countdown";
 import { Dialog, DialogContent, DialogContentText, DialogTitle, Grid, LinearProgress, Paper } from '@material-ui/core';
-import CodeEditor from './Content/Tutorial/CodeEditor';
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-xcode";
 import "ace-builds/src-noconflict/mode-java";
@@ -27,7 +26,6 @@ function ContestMain(props) {
   const [Data, setData] = useState("");
   const [testcases, settestcases] = useState("")
   const [timeLeft,settimeLeft]=useState('');
-  const [startat, setstartat] = useState("");
   const [winner, setwinner] = useState([]);
   const [open, setopen] = useState(false);
 
@@ -40,11 +38,9 @@ function ContestMain(props) {
 
 
   const [code, setCode] = useState("");
-	const [lang,setLang]=useState("C");
 	const [output, setOutput] = useState("")
 	const [stdin,setStdin] = useState("")
 	const [submitExecution,setSubmitExec]=useState(false);
-	const [check, setCheck] = useState([])
 	const [val, setval] = useState(props.attempt?props.attemptData.attemptString:cod["cpp"]);
 	const [codelang, setcodelang] = useState("c_cpp");
 	const [state, setState] = React.useState({
@@ -57,12 +53,6 @@ function ContestMain(props) {
 		setState({ ...state, [event.target.name]: event.target.checked });
 		setswt(!swt);
 	  };
-	const getDefaultCode=()=>{
-		switch(lang){
-			case 'C':
-				return decodeURIComponent("%23include%3Cstdio.h%3E%20%20int%20main()%20%7B%20%20%20%7D");
-		}
-	}
 	const executeCode=async ()=>{
 	 console.log(parseInt(stdin));
 	 const options = {
@@ -87,9 +77,6 @@ function ContestMain(props) {
 	const getOutput=()=>{
 		return output
 	}
-	const editorDidMount = (e) => {
-        console.log("EDITOR MOUNTED")
-	}
 	const changedata=(code,e)=>{
 		setCode(code);
 		setval(code);
@@ -109,32 +96,11 @@ function ContestMain(props) {
 		setval(cod[lang]);
 		console.log(cod[lang]);
     }
-	const options = {
-		selectOnLineNumbers: true,
-		renderIndentGuides: true,
-		colorDecorators: true,
-		cursorBlinking: "blink",
-		autoClosingQuotes: "always",
-		find: {
-			autoFindInSelection: "always"
-		},
-		snippetSuggestions: "inline"
-	  };
-
-
-
-
-
-
-
-
-
 
 
   const joinRoom=async ()=>{
     socket.emit('participant_connected',{id:socket.id,roomId,userId:user});
   }
-  const Completionist = () => <span>You are good to go!</span>;
   const userExecuted=async ()=>{    
 	console.log(contest,code);
 	const {data}=await axios({method:'POST',url:`http://localhost:4000/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:'C',attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
