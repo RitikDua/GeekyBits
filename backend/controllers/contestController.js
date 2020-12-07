@@ -84,11 +84,9 @@ exports.updateContest=async (request,response)=>{
             throw new Error('Contest has already finished');
         if(!attemptId){    
             if(currentTime<(contest.startedAt.getTime()+30*60000)&&!contest.winner){
-                const attempts=contest.attempts;
-                console.log(attempts);
+                const attempts=contest.attempts;                
                 for(const attempt of attempts){
-                    if(attempt.attemptResult.toLowerCase()==='correct'){
-                        console.log('hi');
+                    if(attempt.attemptResult.toLowerCase()==='correct'){                        
                             contest.winner=attempt.user;
                             contest.endedAt=currentTime;
                             break;
