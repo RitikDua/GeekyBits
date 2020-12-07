@@ -90,7 +90,7 @@ const handleLogout=()=>{
     await Axios.get(`/users/logout`,{withCredentials:true})
     .then((res)=>{
       window.location.href="/";
-      console.log(window);
+      
     }).catch((err)=>{
       console.log(err);
     })
