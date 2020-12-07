@@ -67,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
@@ -91,16 +90,12 @@ const useStyles = makeStyles((theme) => ({
 
 function ResponsiveDrawer(props) {
   const myName=props.name?props.name:"username";
-  const { window } = props;
   const [progress, setProgress] = useState(0)
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = useState({})
-  const [course, setcourse] = useState(["asd"]);
   const [subItems, setSubItems] = useState({})
-  const [item, setitem] = useState([])
   const [currIndex, setCurrIndex] = useState("")
   const [currComponent, setCurrComponent] = useState({}) 
   const [open, setOpen] = React.useState(false);
@@ -128,23 +123,10 @@ function ResponsiveDrawer(props) {
      }
      fun();
   }, []);
-  const showSubItemsData=(index)=>{
-    if(!subItems[index]) return <CircularProgress />;
-    else
-    {
-      let temp="";
-      for(let i of subItems[index]){
-        temp+="*"+i.subItemType+"\n";
-      }
-
-      return temp;
-    }
-  }
   const showAccordianData=async (index,value)=>{
   await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
         .then((res)=>{
           console.log("setSubItems");
-          let indexStr=""+index;
           console.log(res.data.data.courseItem.subItems);  
           
           let items=Object.assign({},subItems);
@@ -159,10 +141,6 @@ function ResponsiveDrawer(props) {
     const fun=async()=>setCurrComponent(subItems[parentIndex][index]);
     fun().then(()=>setCurrIndex(parentIndex+" "+index));
     console.log(currComponent);
-  }
-  const check=(index)=>{
-    if(subItems[index]) return true;
-    return 
   }
   const drawer = (
     <div>
@@ -199,7 +177,7 @@ function ResponsiveDrawer(props) {
               // console.log(subItems);
               return (
                 <ListItem style={{width:"1200px"}} key={index} button  onClick={(e)=>changeMainComponent(parentIndex,index)}>
-                  <div style={{fontSize:"17px",padding:"1%"}}>{val.subItemType=='Tutorial'?<MenuBookIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</div>
+                  <div style={{fontSize:"17px",padding:"1%"}}>{val.subItemType==='Tutorial'?<MenuBookIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType==='MCQ'?<PlaylistAddCheckIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType==='CodingProblem'?<AssignmentIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</div>
                 </ListItem>)              
              })):<CircularProgress />
            }
@@ -231,7 +209,6 @@ function ResponsiveDrawer(props) {
         return <CodingProblem queryId={currComponent._id} />
     }
   }
-  const container = window !== undefined ? () => window().document.body : undefined;
   const paginationUtil=()=>{
     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
     console.log(indexes);
