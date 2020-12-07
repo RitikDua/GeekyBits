@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './dashboard.css';
-
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -32,6 +32,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import DashboardRoutes from '../../routes/DashboardRoutes';
+import Axios from 'axios';
 
 const drawerWidth = 230;
 export const useStyles = makeStyles((theme) => ({
@@ -84,7 +85,18 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
   // localStorage.getItem("contest-url")
-
+const handleLogout=()=>{
+  async function fun(){
+    await Axios.get(`/users/logout`,{withCredentials:true})
+    .then((res)=>{
+      window.location.href="/";
+      console.log(window);
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+  fun();
+}
   const drawer = (
     <div>
       <div className={classes.toolbar} />
@@ -92,11 +104,12 @@ function ResponsiveDrawer(props) {
       
       <List>
         
-          <Link to={`/dashboard`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Dashboard" style={{height:"134px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem></Link>
-          <Link to={`/profile`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Profile" style={{height:"134px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Profile" /></ListItem></Link>
-         <Link to={`/attempts`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Attempts" style={{height:"134px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem></Link>
-         <Link to={`/contest`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Contest" style={{height:"134px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem></Link>
-         <Link to={`/register`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Register" style={{height:"134px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Register" /></ListItem></Link>
+          <Link to={`/dashboard`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Dashboard" style={{height:"112px",width:"100%",textAlign:"center"}}><DashboardIcon style={{fontSize:"40px"}}/> <ListItemText primary="Dashboard" /></ListItem></Link>
+          <Link to={`/profile`} style={{ textDecoration: 'none','color':'black' }}><ListItem button key="Profile" style={{height:"112px",width:"100%",textAlign:"center"}}><BarChartIcon style={{fontSize:"40px"}}/> <ListItemText primary="Profile" /></ListItem></Link>
+         <Link to={`/attempts`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Attempts" style={{height:"112px",width:"100%",textAlign:"center"}}><AssignmentIcon style={{fontSize:"40px"}}/> <ListItemText primary="Attempts" /></ListItem></Link>
+         <Link to={`/contest`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Contest" style={{height:"112px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Contest" /></ListItem></Link>
+         <Link to={`/register`} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Register" style={{height:"112px",width:"100%",textAlign:"center"}}><SupervisorAccountIcon style={{fontSize:"40px"}}/> <ListItemText primary="Register" /></ListItem></Link>
+         <Link to={`/`} onClick={()=>handleLogout()} style={{ textDecoration: 'none','color':'black' }}> <ListItem button key="Logout" style={{height:"112px",width:"100%",textAlign:"center"}}><LockOpenIcon style={{fontSize:"40px"}}/> <ListItemText primary="Logout" /></ListItem></Link>
       </List>
       <Divider />
     </div>
