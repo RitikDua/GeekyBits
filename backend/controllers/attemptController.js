@@ -18,7 +18,7 @@ exports.getAttempts=async (request,response)=>{
             filterObj=request.body;
         else
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj).skip(0).limit(10);        
+        const attempts=await Attempts.find(filterObj);        
         response.status(200).json({
             status:'success',
             data:{attempts}
