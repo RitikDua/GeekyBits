@@ -1,7 +1,6 @@
 import React,{useState,useEffect}from 'react';
 import {io} from 'socket.io-client';
 import axios from 'axios';
-import Countdown from "react-countdown";
 import { Grid, LinearProgress, Paper } from '@material-ui/core';
 import CodeEditor from './Content/Tutorial/CodeEditor';
 import AceEditor from "react-ace";
@@ -15,6 +14,7 @@ import {cod} from './Content/Tutorial/defaultCode'
 import { Switch } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import CountDown from 'react-countdown';
 function ContestMain(props) {
   const [socket,setSocket]= useState(io('http://localhost:4000'));
   const [user,setUser]=useState(localStorage.getItem("userId"));
@@ -25,7 +25,7 @@ function ContestMain(props) {
   const [dat, setdat] = useState("");
   const [Data, setData] = useState("");
   const [testcases, settestcases] = useState("")
-
+const [startDate,setstartDate] = useState('');
 
 
 
@@ -166,9 +166,11 @@ function ContestMain(props) {
           );
 
   setdat(data);
+  setstartDate(new Date(data.data.contest.startedAt));
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
+	console.log(new Date(startAt));
 	const waitingTime=(Date.parse(startAt)-Date.parse(new Date()))/60000;
 	const waitingTimeinMin=Math.floor(waitingTime);
   settimer(waitingTimeinMin,Math.floor((waitingTime-waitingTimeinMin)*60));
@@ -214,7 +216,7 @@ function ContestMain(props) {
       <div className="output"></div>
       <button className="execute" onClick={()=>userExecuted()}>Execute Code</button>
       <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
-
+		{startDate?<CountDown date={Date.now()+startDate.getTime()+30*60000-Date.now()}/>:null}
         <Grid container spacing={2}>
         <Grid item xs={6} sm={5} style={{paddingTop:"2%"}}>
           <Paper style={{"height":"94vh"}} >
