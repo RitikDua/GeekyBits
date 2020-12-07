@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Button, List, ListItem, ListItemText } from '@material-ui/core';
+import { Box, Button, List, ListItem } from '@material-ui/core';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -28,11 +27,8 @@ import MCQ from './Content/Tutorial/MCQ';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {
-  HashRouter as Router,
-  Switch,
-  Route,
+  HashRouter as
   Link,
-  Redirect,
 } from 'react-router-dom';
 
 const drawerWidth = 370;
