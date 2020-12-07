@@ -20,7 +20,7 @@ export default class Tutorial extends React.Component {
 	}	
 	async componentDidMount(){
 		await axios.get(
-		`/courseSubItems/${this.props.queryId}`
+		`/courseSubItems/${this.props.queryId}?key=${this.props.courseId}`
 		)
 		.then( async(res)=>{
 			console.log(res);

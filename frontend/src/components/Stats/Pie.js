@@ -1,9 +1,14 @@
+
 import React, { useEffect,useState} from 'react';
-import {
-  PieChart, Pie, Sector, Cell,Tooltip
-} from 'recharts';
+
 import axios from 'axios';
-export default function PieChartData(props)  {
+import { ResponsiveContainer,Cell, PieChart, Pie } from "recharts";
+
+
+// const data = [{ name: "network 1", value: 2 }, { name: "network 3", value: 4 }];
+
+export default function PieData(props){
+
   const [data, setData] = useState([])
   useEffect(() => {
     const getData= () => {
@@ -28,56 +33,53 @@ const COLORS={
   "compiler error":"#a5a09e",
   "runtime error":"#f7750f"
 }
-
-const RADIAN = Math.PI / 180;
-const renderCustomizedLabel = ({
-  cx, cy, midAngle, innerRadius, outerRadius, percent, index,
-active}) => {
-  // console.log(active);
-   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  console.log(data[index]);
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${(percent * 100).toFixed(0)}% `}
-    </text>
-  );
-};
-function CustomTooltip({ payload, label, active }) {
-  if (active) {
-    return (
-      <div className="custom-tooltip">
-        <p className="label">{payload[0].name}</p>
-
-      </div>
-    );
-  }
-
-  return null;
-}
-// 
   if(!data) return "loading...";
-    return (
-      <div style={{paddingBottom:"10%",paddingTop:"1%"}}>
-      <PieChart width={300} height={300}>
-            <Tooltip content={<CustomTooltip />}/>
-        <Pie
-          data={data}
-          cx={200}
-          cy={200}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={80}
-          fill="#8884d8"
-          dataKey="value"
-        >
-          {
+  return  (
+  <ResponsiveContainer width="100%" height={350} style={{paddingRight:"30px"}}>
+    <PieChart height={250}>
+      <Pie
+        data={data}
+        cx="50%"
+        cy="50%"
+        outerRadius={100}
+        fill="#8884d8"
+        dataKey="value"
+        label={({
+          cx,
+          cy,
+          midAngle,
+          innerRadius,
+          outerRadius,
+          percent,
+          index
+        }) => {
+
+          const RADIAN = Math.PI / 180;
+          // eslint-disable-next-line
+          const radius = 25 + innerRadius + (outerRadius - innerRadius);
+          // eslint-disable-next-line
+          const x = cx + radius * Math.cos(-midAngle * RADIAN);
+          // eslint-disable-next-line
+          const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+          return (
+            <text
+              x={x}
+              y={y}
+              fill="#8884d8"
+              textAnchor={x > cx ? "start" : "end"}
+              dominantBaseline="central"
+            >
+              {data[index].name} ({`${(percent * 100).toFixed(0)}%`})
+            </text>
+          );
+        }}
+      >
+       {
             data.map((entry, index) =>
              <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />)
           }
-        </Pie>
-      </PieChart></div>
-    );
-  
+      </Pie>
+    </PieChart>
+  </ResponsiveContainer>);
 }
