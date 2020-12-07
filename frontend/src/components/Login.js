@@ -48,8 +48,11 @@ function Login() {
        console.log(pass);
         await Axios.post("/users/signup",{email:email,name:name,password:pass})
          .then((res)=>{
-            console.log(res.data.data.token);
+            console.log(res.data.data);
+            let str=window.btoa(res.data.data.user.name);
             window.localStorage.setItem('login', res.data.data.token)
+            window.localStorage.setItem('exp', str)
+            
             setlogpass("");
             setlogname("");
             setlogemail("");
@@ -74,8 +77,9 @@ function Login() {
         await Axios.post("/users/login",{email:logemail,password:logpass})
         .then((res)=>{
             console.log(res.data.data);
+            let str=window.btoa(res.data.data.user.name);
             window.localStorage.setItem('login', res.data.data.token)
-            window.localStorage.setItem('userId', res.data.data.user._id)
+            window.localStorage.setItem('exp', str)
             
             setlogpass("");
             setlogname("");

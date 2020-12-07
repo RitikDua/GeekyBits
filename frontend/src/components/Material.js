@@ -92,9 +92,16 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 0,
   },
 }));
-
+const getName=()=>{
+  try{
+   return window.atob(localStorage.getItem("exp"));
+  }
+  catch(err){
+    return "username"
+  }
+}
 function ResponsiveDrawer(props) {
-  const myName=props.name?props.name:"username";
+  const myName=props.name?props.name:getName();
   const { window } = props;
   const [progress, setProgress] = useState(0)
   const classes = useStyles();

@@ -72,10 +72,17 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
 }));
-
+const getName=()=>{
+  try{
+   return window.atob(localStorage.getItem("exp"));
+  }
+  catch(err){
+    return "username"
+  }
+}
 // const DashboardRoutes=[]
 function ResponsiveDrawer(props) {
-  const myName=props.name?props.name:"username";
+  const myName=props.name?props.name:getName();
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -96,6 +103,7 @@ function ResponsiveDrawer(props) {
     .then((res)=>{
       console.log(res);
       localStorage.removeItem("login");
+      localStorage.removeItem("exp");
 
      // window.location.href="http://localhost:3000/login"
     })
