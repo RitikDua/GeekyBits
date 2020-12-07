@@ -2,7 +2,7 @@ import React,{useState,useEffect}from 'react';
 import {io} from 'socket.io-client';
 import axios from 'axios';
 import Countdown from "react-countdown";
-import { Grid, LinearProgress, Paper } from '@material-ui/core';
+import { Dialog, DialogContent, DialogContentText, DialogTitle, Grid, LinearProgress, Paper } from '@material-ui/core';
 import CodeEditor from './Content/Tutorial/CodeEditor';
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-xcode";
@@ -15,6 +15,7 @@ import {cod} from './Content/Tutorial/defaultCode'
 import { Switch } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import { Link } from 'react-router-dom';
 function ContestMain(props) {
   const [socket,setSocket]= useState(io('http://localhost:4000'));
   const [user,setUser]=useState(localStorage.getItem("userId"));
@@ -25,7 +26,10 @@ function ContestMain(props) {
   const [dat, setdat] = useState("");
   const [Data, setData] = useState("");
   const [testcases, settestcases] = useState("")
-
+  const [timeLeft,settimeLeft]=useState('');
+  const [startat, setstartat] = useState("");
+  const [winner, setwinner] = useState([]);
+  const [open, setopen] = useState(false);
 
 
 
@@ -146,11 +150,11 @@ function ContestMain(props) {
 	}});
 	const attemptResult=data.data.attempt.attemptResult;
 	if(attemptResult==='correct'){
-    settestcases(attemptResult);
+    settestcases(data.data.attempt.testCasesPassed);
 		declareWinner(roomId,user,{winningMessage:' won the match'}); 
   }
   else{
-    settestcases(attemptResult);
+    settestcases(data.data.attempt.testCasesPassed);
   }
   };
   const fetchContest=async ()=>{
@@ -166,6 +170,8 @@ function ContestMain(props) {
           );
 
   setdat(data);
+  settimeLeft(new Date(data.data.contest.startedAt));
+//   setstartat(Date.parse(data.data.contest.startedAt));
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
@@ -188,6 +194,16 @@ function ContestMain(props) {
 	}});
 	// clearTimeout(time);
   }
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+	if (completed) {
+	  // Render a completed state
+	  declareWinner();
+	  return <span>Contest Finished</span>;
+	} else {
+	  // Render a countdown
+	  return <span>{hours}:{minutes}:{seconds}</span>;
+	}
+  };
   useEffect(()=>{
     fetchContest();
     socket.on('connect',()=>{      
@@ -203,10 +219,38 @@ function ContestMain(props) {
       console.log(result);
     });
     socket.on('winner_declared_server',finalmessage=>{
-      console.log(finalmessage);
+	  console.log(finalmessage);
+	  setwinner(finalmessage);
+	  setopen(true);
+	// if(open===false){
+	// 	 window.location.href="/";
+	// }
+	//   alert(`${finalmessage.name} wont the contest!!`);
     });
   },[]);
+
   if(!dat) return <LinearProgress />;
+  if(timeLeft.length!==0 && timeLeft.getTime()-Date.now()>0){
+	 return(
+		 <div style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/1v1.jpg`})`,height:"100vh",backgroundSize:"cover",overflow:"hidden"}}>
+		<div  style={{textAlign:"center",background:"rgba(0, 0, 0, 0.2)",overflow: "hidden",height:"100vh"}}>
+			<div>
+				<h1 style={{fontSize:"40px"}}>1 vs 1 Contest</h1>
+			</div>
+			<div>
+				<span style={{fontSize:"20px"}}>Contest Will Start at {timeLeft.length!==0 && timeLeft.getTime()-Date.now()>0 && timeLeft.toTimeString()}</span>
+			</div><br/>
+			<div>
+				<span style={{fontSize:"15px"}}>Time for Completing the Test is 30 minutes</span><br/>
+			</div>
+			<br/>
+			<div>
+			<Button variant="contained" onClick={()=>window.location.reload()} color="secondary">Start Contest</Button>
+			</div>
+		</div>
+		</div>
+	 );
+  }
   return (
     <div className="App" style={{height:"100vh"}}>
       {/* <h1 className="title">1 vs 1 challenge</h1>
@@ -214,7 +258,9 @@ function ContestMain(props) {
       <div className="output"></div>
       <button className="execute" onClick={()=>userExecuted()}>Execute Code</button>
       <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
-
+	  {/* timeLeft.getTime()-Date.now()>0 */}
+	  {console.log(timeLeft)}
+		{timeLeft?<div style={{backgroundColor:"#111",color:"white",width:"100px",padding:"1% 2%"}}><Countdown date={Date.now()+timeLeft.getTime()+30*60000-Date.now()} renderer={renderer}/></div>:null}
         <Grid container spacing={2}>
         <Grid item xs={6} sm={5} style={{paddingTop:"2%"}}>
           <Paper style={{"height":"94vh"}} >
@@ -299,27 +345,43 @@ function ContestMain(props) {
 					 {/* <button onClick={()=>submitCode()}>Submit</button> */}
 						
 					</div><br/>
-          <div style={{display:"flex",justifyContent:"space-between"}}>
-            {testcases.length!=0 && <div>
-            <span style={{fontSize:"20px"}}>TESTCASES: </span>
-            </div>}
-            {testcases.length!=0 && <div>
-                <span style={{fontSize:"20px"}}>{testcases}</span>
-            </div>}
-            {testcases==='correct' && <div>
-                <span style={{fontSize:"20px"}}><CheckIcon style={{color:"green"}}/></span>
-            </div>}
-            {testcases!=='correct' && testcases.length!=0 && <div>
-                <span style={{fontSize:"20px"}}><CloseIcon style={{color:"red"}}/></span>
-            </div>}
-          </div></div>
+					{testcases.length!==0 && testcases.map((t,idx)=>(
+						<div key={idx} style={{display:"flex",justifyContent:"space-between"}}>
+								<div>
+								<span style={{fontSize:"20px"}}>TESTCASES: </span>
+								</div>
+								<div>
+									<span style={{fontSize:"20px"}}>{t?"Correct":"Wrong"}</span>
+								</div>
+								{t===true && <div>
+									<span style={{fontSize:"20px"}}><CheckIcon style={{color:"green"}}/></span>
+								</div>}
+								{t!==true && testcases.length!=0 && <div>
+									<span style={{fontSize:"20px"}}><CloseIcon style={{color:"red"}}/></span>
+								</div>}
+						</div>
+					))}
+					</div>
 
 
 
           </Paper>
         </Grid>
         </Grid>
-
+		<Dialog
+                      style={{textAlign:"center"}}
+                          open={open}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description">
+                          <DialogTitle id="alert-dialog-title">
+							  <Link to="#" style={{textDecoration:"none",color:"black"}} onClick={()=>window.location.href="/"}><div style={{float:"right",paddingRight:"2%"}} onClick={()=>setopen(false)}><span>x</span></div></Link>
+							  <span>{winner.name} Won the contest</span></DialogTitle>
+                          <DialogContent>
+                          <DialogContentText id="alert-dialog-description">
+                          <img src={process.env.PUBLIC_URL + `/image/winner.jpg`} alt="error" style={{width:"200px",height:"150px"}}/>
+                          </DialogContentText>
+                          </DialogContent>
+                      </Dialog>
     </div>
   );
 }

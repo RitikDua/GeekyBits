@@ -58,7 +58,7 @@ exports.login = async (request,response)=>{
 };
 exports.logout = async (request,response)=>{
     try{
-        request.clearCookies('jwt');
+        response.clearCookie('jwt');
         response.status(200).json({
             status:'success',
             message:'Logged out successfully'

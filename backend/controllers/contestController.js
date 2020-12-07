@@ -170,7 +170,9 @@ exports.startContest=async (request,response)=>{
         else if(!contest.users.includes(request.user._id))
             throw new Error('You are not allowed access this contest');
         else if(Date.now()>contest.endedAt)
-            throw new Error('Contest is already finished');            
+            throw new Error('Contest is already finished');     
+        else if(contest.winner)       
+            throw new Error('Winner is already declared');
         response.status(200).json({
             status: 'success',
             data:{contest}
