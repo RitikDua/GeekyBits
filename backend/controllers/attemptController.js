@@ -1,6 +1,7 @@
 const CodingProblems = require(`${__dirname}/../models/codingProblemModel`);
 const Attempts=require(`${__dirname}/../models/attemptModel`);
 const executeCode=require(`${__dirname}/../middlewares/CompileCode`);
+const {updateProgress}=require(`${__dirname}/../utils/updateProgress`);
 const {c, cpp, python, java} = require('compile-run');
 const deleteFile = (filename) => {
     fs.unlink(filename, function (err) {
@@ -18,7 +19,7 @@ exports.getAttempts=async (request,response)=>{
             filterObj=request.body;
         else
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj);        
+        const attempts=await Attempts.find(filterObj).sort({createdAt:-1});        
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -36,7 +37,7 @@ exports.getAttemptsByProblemId=async (request,response)=>{
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;
-        const attempts=await Attempts.find(filterObj);
+        const attempts=await Attempts.find(filterObj).sort({createdAt:-1});;
         response.status(200).json({
             status:'success',
             data:{attempts}
@@ -51,9 +52,8 @@ exports.getAttemptsByProblemId=async (request,response)=>{
 };
 exports.submitAttempt=async (request, response) => {
     try{
-        const { problemId,attemptType, attemptString, attemptLanguage,attemptTitle,subItemId,attemptResult } = request.body;//.problemId;
-        const attemptObj = {attemptType,attemptString,problem: problemId,user:request.user._id,subItem:subItemId,attemptTitle,attemptResult};
-        
+        const { problemId,attemptType, attemptString, attemptLanguage,attemptTitle,subItemId,attemptResult,courseId} = request.body;//.problemId;
+        const attemptObj = {attemptType,attemptString,problem: problemId,user:request.user._id,subItem:subItemId,attemptTitle,attemptResult};        
         if (attemptType === "CodingProblem") {
             const codingProblem = await CodingProblems.findById(subItemId);
             const { testCases, correctOutput } = codingProblem;            
@@ -114,12 +114,15 @@ exports.submitAttempt=async (request, response) => {
             // deleteFile(`${__dirname}/../input.txt`);
             // deleteFile(`${__dirname}/../test.c`);
             // deleteFile(`${__dirname}/../a.out`);                 
-        }    
+        }  
+        if(courseId&&attemptObj.attemptResult==='correct'){
+            updateProgress(courseId,problemId,request.user);
+        }        
         const attempt = await Attempts.create(attemptObj);                
         response.status(201).json({
             status: "success",
             data: { attempt }
-        });                   
+        });                         
     }
     catch (err){        
         // console.log(err);
