@@ -6,9 +6,7 @@ import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import Dashboard from './Dashboard/Dashboard'
-// import CodingProblem from './Content/Tutorial/CodingProblem.js';
 import '../css/login.css'
-// import CodingProblem from './Content/Tutorial/CodingProblem';
 import Axios from 'axios';
 function Login() {
     const [logname, setlogname] = useState("");
@@ -83,7 +81,6 @@ function Login() {
     if(isLoggedIn()) return <Dashboard/>
     return (
          <div style={{height:"100vh",overflow:"hidden"}}>
-                    {/* <header className="banner" style={{backgroundImage:`url(${process.env.PUBLIC_URL + `/image/best.jpg`})`,height:"100vh"}}> */}
                     <Grid container className="gridset" spacing={2}>
                     <Grid item md={4} lg={4}></Grid>
                         <Grid item xs={5}>
@@ -150,8 +147,7 @@ function Login() {
                     <span style={{color:"red",paddingLeft:"18%"}} onClick={()=>setisFlipped(!isFlipped)}>Already Registered?</span></div>
                     </form></div></ReactCardFlip></Grid>
                     <Grid item xs={6}></Grid>
-                </Grid>
-                {/* </header> */}               
+                </Grid>               
         </div>
     )
 }
