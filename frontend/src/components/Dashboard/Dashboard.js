@@ -85,17 +85,25 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
   // localStorage.getItem("contest-url")
-const handleLogout=()=>{
-  async function fun(){
+  function reloadPage(){ 
+    // window.location.reload(); 
+    document.location.reload()
+   {/*<Redirect to={'/'} exact="true" />*/}
+  }
+ const handleLogout=async ()=>{
+  
     await Axios.get(`/users/logout`,{withCredentials:true})
     .then((res)=>{
-      window.location.href="/";
-      
-    }).catch((err)=>{
+      console.log(res);
+      localStorage.removeItem("login");
+
+     // window.location.href="http://localhost:3000/login"
+    })
+    .then(reloadPage)
+    .catch((err)=>{
       console.log(err);
     })
-  }
-  fun();
+  
 }
   const drawer = (
     <div>
