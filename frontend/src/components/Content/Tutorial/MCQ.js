@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
+ import { Alert, AlertTitle } from '@material-ui/lab'; 
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -10,6 +11,8 @@ import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import './style.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(3),
@@ -64,7 +67,17 @@ console.log(props);
       setError(true);
     }
   };
-  if(!data.options||data.options.length===0) return  "laoding...";
+  const getAttemptAnswer=()=>{
+    // if()
+     return (<Alert severity={props.attemptData.attemptResult==="correct"?"success":"error"} >
+        <AlertTitle>{props.attemptData.attemptResult==="correct"?"Correct":"Wrong"}</AlertTitle>
+        
+        
+      <h1>{props.attemptData.attemptString}</h1>
+        </Alert>)
+
+  }
+  if(!data.options||data.options.length===0) return  <CircularProgress />;
   return (
     <div className={props.attempt?"disabled":""}>
     <form onSubmit={handleSubmit} >
@@ -83,7 +96,7 @@ console.log(props);
           {/*<FormControlLabel value="worst" control={<Radio />} label="The worst." />*/}
         </RadioGroup>
         <FormHelperText>{!props.attempt&&helperText}</FormHelperText>
-        {props.attempt&&<h1>{props.attemptData.attemptString}</h1>}
+        {props.attempt&&getAttemptAnswer()}
         
         <Button type="submit" variant="outlined" color="primary" className={classes.button}>
           Check Answer
