@@ -3,6 +3,7 @@ const Attempts=require(`${__dirname}/../models/attemptModel`);
 const executeCode=require(`${__dirname}/../middlewares/CompileCode`);
 const {updateProgress}=require(`${__dirname}/../utils/updateProgress`);
 const {c, cpp, python, java} = require('compile-run');
+const mongoose = require('mongoose');
 const deleteFile = (filename) => {
     fs.unlink(filename, function (err) {
         if (err) {
@@ -34,6 +35,8 @@ exports.getAttempts=async (request,response)=>{
 };
 exports.getAttemptsByProblemId=async (request,response)=>{
     try{
+        if (!mongoose.Types.ObjectId.isValid(request.params.problemId))
+            return response.status(404).send("Invalid ID");
         const filterObj={problem: request.params.problemId};
         if(request.user.role==='user')
             filterObj.user=request.user._id;

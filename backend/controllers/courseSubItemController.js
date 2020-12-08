@@ -1,6 +1,8 @@
 const CourseSubItems=require(`${__dirname}/../models/courseSubItemModel`);
 const {matchBodyWithSchema}=require(`${__dirname}/../utils/matchBodyWithSchema`);
 const {updateProgress}=require(`${__dirname}/../utils/updateProgress`);
+const mongoose = require('mongoose');
+
 exports.getCourseSubItems=async (request,response)=>{
     try{        
         const courseSubItems=await CourseSubItems.find();
@@ -23,8 +25,12 @@ exports.getCourseSubItems=async (request,response)=>{
 exports.getCourseSubItemById=async (request,response)=>{
     try{
         const courseSubItemId=request.params.courseSubItemId;     
+        if (!mongoose.Types.ObjectId.isValid(courseSubItemId))
+            return response.status(404).send("Invalid ID");
         const courseId=request.query.key;   
         const courseSubItem=await CourseSubItems.findById(courseSubItemId).populate('subItem');
+        if (!courseSubItem)
+            return response.status(404).send("Problem with given ID not found");
         const subItemType=courseSubItem.subItemType;
         if(courseId&&subItemType==='Tutorial'){
             updateProgress(courseId,courseSubItemId,request.user);
