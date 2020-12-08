@@ -17,7 +17,7 @@ describe("/courseSubItems", () => {
 
   afterEach(async () => {
     await server.close();
-    await CourseSubItems.collection.deleteMany({});
+    // await CourseSubItems.collection.deleteMany({});
   });
 
   describe("GET /", () => {
