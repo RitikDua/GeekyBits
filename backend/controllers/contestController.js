@@ -80,8 +80,8 @@ exports.updateContest=async (request,response)=>{
             throw new Error('You are not allowed access this contest');
         else if(currentTime<contest.startedAt)
             throw new Error('Contest hasn\'t started yet');
-        else if(currentTime>contest.endedAt)
-            throw new Error('Contest has already finished');
+        else if(currentTime>contest.endedAt||contest.winner)
+            throw new Error('Contest has already finished');            
         if(!attemptId){    
             if(currentTime<(contest.startedAt.getTime()+30*60000)&&!contest.winner){
                 const attempts=contest.attempts;                
@@ -101,10 +101,7 @@ exports.updateContest=async (request,response)=>{
                     if(score>maxScore){
                         maxScore=score;
                         maxScoreUserId=attempt.user;
-                    }
-                    else if(score===maxScore){
-                        maxScoreUserId=attempt.user;
-                    }
+                    }                    
                 }
                 if(maxScore>0){
                     contest.winner=maxScoreUserId;                
@@ -168,7 +165,9 @@ exports.startContest=async (request,response)=>{
         else if(!contest.users.includes(request.user._id))
             throw new Error('You are not allowed access this contest');
         else if(Date.now()>contest.endedAt)
-            throw new Error('Contest is already finished');            
+            throw new Error('Contest is already finished');     
+        else if(contest.winner)       
+            throw new Error('Winner is already declared');
         response.status(200).json({
             status: 'success',
             data:{contest}

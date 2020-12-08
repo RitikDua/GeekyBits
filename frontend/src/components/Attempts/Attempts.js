@@ -3,6 +3,13 @@ import Axios from 'axios';
 import CodingProblem from '../Content/Tutorial/CodingProblem';
 import MCQ from '../Content/Tutorial/MCQ';
 import clsx from 'clsx';
+
+import {render} from 'react-dom';
+// import clsx from 'clsx';
+// import Drawer from '@material-ui/core/Drawer';
+// import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -95,32 +102,35 @@ export default function CustomPaginationActionsTable(props) {
   const classes = useStyles2();
   // const classes = useStyles();
   const [drawer, setDrawer] = useState(false);
-  const [runningIndex,setRunningIndex]=useState(0);
+  const [drawerData,setDrawerData]=useState({});
   const [data, setData] = useState([])
   
-  const toggleDrawer = (anchor, open,index) => (event) => {
+  const toggleDrawer = ( open,drawerdataTemp) => (event) => {
+    console.log("asd")
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-    if(index)
-    {  const fun=async ()=>setRunningIndex(index);
-      fun().then(()=>setDrawer(open))
-      .catch(err=>console.error(err));
+    if(drawerdataTemp)
+    {  
+      setDrawerData(drawerdataTemp);
+      setDrawer(open)
+      
     }
     else setDrawer(open);
   };
-  const showAttempt=(index)=>{
-  console.log(runningIndex);  
-  if(!data||data.length<=runningIndex||!data[runningIndex]) return "loading...";
+  const showAttempt=()=>{
+
+  if(!data||!drawerData) return "loading...";
     
-  else   if(data[runningIndex].attemptType==="CodingProblem"){
-      console.log("asd");
-      return <CodingProblem attempt="true"  queryId={data[runningIndex].problem} attemptData={data[runningIndex]}/>
+  else   if(drawerData.attemptType==="CodingProblem"){
+      
+      return <CodingProblem attempt="true"  queryId={drawerData.problem} attemptData={drawerData}/>
     }
     else
-    {  return <MCQ attempt="true"  queryId={data[runningIndex].problem} attemptData={data[runningIndex]}/>
+    {  return <MCQ attempt="true"  queryId={drawerData.problem} attemptData={drawerData}/>
+        
     }
-    console.log(data[index]);
+
   }
     useEffect(() => {
     //use for both problem specific and all problems
@@ -150,16 +160,19 @@ export default function CustomPaginationActionsTable(props) {
     setRowsPerPage(parseInt(event.target.value, 5));
     setPage(0);
   };
+  const getArr=()=>rowsPerPage > 0
+            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : data
+          ;
   if(!data) return "loading..";
   return (
     <TableContainer style={{marginTop:"90px"}} component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
         <TableBody>
-          {(rowsPerPage > 0
-            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : data
-          ).map((row) => (
-            <TableRow >
+          {(getArr()).map((row,index) => 
+          (
+
+           <TableRow onClick={toggleDrawer(true,row)} >
               <TableCell component="th" scope="row">
                 {row.attemptType}
               </TableCell>
@@ -197,6 +210,11 @@ export default function CustomPaginationActionsTable(props) {
           </TableRow>
         </TableFooter>
       </Table>
+          <Drawer open={drawer} onClose={toggleDrawer(false,0)}>
+            {showAttempt()}
+            <div id="renderAttempt">
+            </div>
+          </Drawer>
     </TableContainer>
   );
 }
