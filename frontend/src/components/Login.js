@@ -1,18 +1,16 @@
 import React, { useState } from 'react'
 import Icon from '@material-ui/icons/Send';
-import { Button, FormControl, Grid, Hidden, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
+import { Button, FormControl, Grid,  IconButton, InputAdornment, InputLabel, OutlinedInput, TextField } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ReactCardFlip from 'react-card-flip';
 import Dashboard from './Dashboard/Dashboard'
-// import CodingProblem from './Content/Tutorial/CodingProblem.js';
-import Main from './Main';
+import {isLoggedIn} from '../utils/utils'
 import '../css/login.css'
-// import CodingProblem from './Content/Tutorial/CodingProblem';
-import Attempts from './Attempts/Attempts'
+
 import Axios from 'axios';
-import Profile from './Profile';
+
 function Login() {
     const [logname, setlogname] = useState("");
     const [logemail, setlogemail] = useState("");
@@ -20,40 +18,25 @@ function Login() {
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [pass, setpass] = useState("");
-    let storage=localStorage;
-    const  getToken=()=>{
-        return storage.getItem("login");
-    }
-    const  saveToken=(token)=>{
-        storage.setItem('login',token); 
-    }
     const [values, setValues] = React.useState({
         showPassword: false,
       });
-      const [values1, setValues1] = React.useState({
-        showPassword1: false,
-      });
-    function isLoggedIn(){
-        const token=getToken();
-        if(token){
-              const payload=JSON.parse(atob(token.split('.')[1]));     
-          return ((Date.now()/1000)-payload.iat)<6.048e+8;
-        }
-        else{
-          return false;
-        }
-    }
+
     async function handleSignup(e){
         e.preventDefault();
        console.log(pass);
         await Axios.post("/users/signup",{email:email,name:name,password:pass})
          .then((res)=>{
-            console.log(res.data.data.token);
+            console.log(res.data.data);
+            let str=window.btoa(res.data.data.user.name);
             window.localStorage.setItem('login', res.data.data.token)
+            window.localStorage.setItem('exp', str)
+            
             setlogpass("");
             setlogname("");
             setlogemail("");
         })
+         .then(()=> window.location.href="/")
         .catch((res)=>{
             console.log(res);
             setlogpass("");
@@ -74,8 +57,9 @@ function Login() {
         await Axios.post("/users/login",{email:logemail,password:logpass})
         .then((res)=>{
             console.log(res.data.data);
+            let str=window.btoa(res.data.data.user.name);
             window.localStorage.setItem('login', res.data.data.token)
-            window.localStorage.setItem('userId', res.data.data.user._id)
+            window.localStorage.setItem('exp', str)
             
             setlogpass("");
             setlogname("");
