@@ -19,7 +19,7 @@ describe("/contests", () => {
 
   afterEach(async () => {
     await server.close();
-    await Contests.collection.deleteMany({});
+    // await Contests.collection.deleteMany({});
   });
 
   describe("GET /", () => {
