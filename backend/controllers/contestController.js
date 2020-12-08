@@ -31,7 +31,13 @@ exports.getContests=async (request,response)=>{
 exports.getContestById=async (request,response)=>{
     try{        
         let contestId = request.params.contestId;        
+        if (!mongoose.Types.ObjectId.isValid(contestId))
+            return response.status(404).send("Invalid ID");
         const contest=await Contests.findById(contestId);
+        
+        if (!contest)
+            return response.status(404).send("Contest with given ID not found");
+        
         response.status(200).json({
             status:'success',
             data:{contest}
@@ -48,6 +54,7 @@ exports.createContest=async (request,response)=>{
     try{                
         const randomProblem=await CodingProblem.aggregate([{$sample:{size:1}}]);
         const contestObj={users:[request.user._id],problem:randomProblem[0]._id};
+        
         const contest=await Contests.create([contestObj]);        
         const registerUrl=`/contests/${contest[0]._id}`;
         const contestStartUrl=`/contests/${contest[0]._id}/${contest[0].contestUrl}`;        
