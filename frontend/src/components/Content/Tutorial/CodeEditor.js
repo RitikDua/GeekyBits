@@ -5,6 +5,8 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/theme-monokai";
+import CloseIcon from '@material-ui/icons/Close';
+import CheckIcon from '@material-ui/icons/Check';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import {cod} from './defaultCode'
@@ -18,6 +20,7 @@ export default function CodeEditor(props) {
 	const [check, setCheck] = useState([])
 	const [val, setval] = useState(props.attempt?props.attemptData.attemptString:cod["cpp"]);
 	const [codelang, setcodelang] = useState("c_cpp");
+	const [testcases, settestcases] = useState("");
 	const [state, setState] = React.useState({
 		checkedA: true,
 		checkedB: true,
@@ -85,7 +88,8 @@ export default function CodeEditor(props) {
 			};
 			await axios.request(options)
 				.then((res)=>{
-					console.log(res.data);
+					console.log(res.data.data.attempt.testCasesPassed);
+					settestcases(res.data.data.attempt.testCasesPassed);
 					if(res.data.data.attempt.err){
 						setOutput(res.data.data.attempt.error);
 					}else
@@ -161,7 +165,7 @@ export default function CodeEditor(props) {
 						<div><span style={{fontSize:"20px"}}>Code your code here</span></div>
 					<AceEditor
 						width="100%"
-						height="30vh"
+						height="25vh"
 						mode={codelang}
 						theme={swt===false?"monokai":"xcode"}
 						value={val}
@@ -180,15 +184,30 @@ export default function CodeEditor(props) {
 
 					<div className="stdin">
 						<span style={{fontSize:"20px"}}>Provide Input:</span><br/>
-						<textarea style={{width:"100%",resize:"none",height:"15vh"}} onChange={(e)=>setStdin(e.target.value)}></textarea>
+						<textarea style={{width:"100%",resize:"none",height:"10vh"}} onChange={(e)=>setStdin(e.target.value)}></textarea>
 					</div>
 					<div className="row">
 					<Button onClick={()=>executeCode()} style={{color:"#0275d8",borderColor:"#0275d8"}} variant="outlined" color="primary">Execute</Button>
 						{/* <button>Execute</button> */}&nbsp;&nbsp;
 					<Button onClick={()=>submitCode()} style={{color:"green",borderColor:"green"}} variant="outlined">Submit</Button>
 					 {/* <button onClick={()=>submitCode()}>Submit</button> */}
-						
-					</div>
+					</div><br/>
+					{testcases.length!==0 && testcases.map((t,idx)=>(
+						<div key={idx} style={{display:"flex",justifyContent:"space-between"}}>
+								<div>
+								<span style={{fontSize:"20px"}}>TESTCASES: </span>
+								</div>
+								<div>
+									<span style={{fontSize:"20px"}}>{t?"Correct":"Wrong"}</span>
+								</div>
+								{t===true && <div>
+									<span style={{fontSize:"20px"}}><CheckIcon style={{color:"green"}}/></span>
+								</div>}
+								{t!==true && testcases.length!=0 && <div>
+									<span style={{fontSize:"20px"}}><CloseIcon style={{color:"red"}}/></span>
+								</div>}
+						</div>
+					))}
 					
 		</div>
 	)

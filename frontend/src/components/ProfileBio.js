@@ -10,17 +10,14 @@ function Profile(props) {
     const [newpass, setnewpass] = useState("");
     useEffect(() => {
          function fun(){
-            Axios.get(`/users/profile`)
+            Axios.get(`/profile`)
             .then(res=>{
-                console.log(res);
+                
                 setobj(res.data.data.user);
-                // resolve();
-                console.log(obj);
             })
-            // .then(()=>console.log(obj))
+            
             .catch(err=>console.log(err));
-            // setobj();
-            // console.log(obj);
+        
         }
         fun();
     }, [props])
@@ -36,41 +33,44 @@ function Profile(props) {
     }
     if(!obj || obj.length===0)return "loading...";
     return (
-        <div style={{paddingTop:"50px"}}>
+        <div>
             <div>
-                <Grid container direction="row" >
-                    <Grid item xs={3}></Grid>
-                    <Grid item xs={6}>
-                        <h1>Account</h1>
-                        <hr/>
-                        <br/>
-                        <Grid container>
-                            <Grid item xs={5}>
-                                <span style={{fontSize:"20px",color:"grey"}}>Member</span>
+                <Grid container direction="row" style={{paddingBottom:"10px"}} >
+                    <Grid item xs={12}>
+                        <Grid container direction="row" >
+                            <Grid item xs={3}>
+                                <h2>Name</h2>
                             </Grid>
-                            <Grid item xs={7}>
-                                <div style={{lineHeight:"30px"}}>
-                                <span style={{fontSize:"20px",color:"grey"}}><span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>Name: </span>{obj.name}</span><br/>
-                                <span style={{fontSize:"20px",color:"grey"}}><span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>Email: </span>{obj.email}</span><br/>
-                                <span style={{fontSize:"20px",color:"grey"}}><span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>Password: </span>********</span><br/>
-                                </div><br/>
-                                <hr/>
-                                <br/>
-                                <Grid container>
-                                    <Grid item xs={12}>
-                                    <span style={{fontSize:"20px",color:"grey"}}><span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>ProfileShortLink:  </span><span style={{fontSize:"20px",resize:"none"}}>{obj.profileShortLink} </span><CopyToClipboard text={obj.profileShortLink}
-          onCopy={() => setcopy(true)}><Button style={{height:"20px",width:"20px"}} variant="contained" color="primary">Copy</Button></CopyToClipboard></span><br/>
+                            <Grid item xs={8}>
+                                <h2>{obj.name}</h2>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container direction="row" >
+                            <Grid item xs={3}>
+                                <h2>Email</h2>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <h2>{obj.email}</h2>
+                            </Grid>
+                        
+                        </Grid>
+                        <Grid container direction="row">
+                                    <Grid item xs={3}>
+                                    <span style={{fontSize:"20px",color:"grey"}}><span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>ProfileShortLink:  </span><br/>
+                                    </span></Grid>
+                                    <Grid item xs={8}>
+                                    <span style={{fontSize:"20px",resize:"none"}}>{obj.profileShortLink} </span><CopyToClipboard text={obj.profileShortLink}
+                                        onCopy={() => setcopy(true)}><Button style={{height:"20px",width:"20px"}} variant="contained" color="primary">Copy</Button></CopyToClipboard>
                                     </Grid>
-                                </Grid>
-                            </Grid><br/>
-                            <Grid item xs={5} style={{paddingTop:"10%"}}><br/>
-                            <span style={{fontSize:"20px",color:"grey"}}>Setting</span>
+                        </Grid>
+
+                        <Grid container direction="row" >
+                            <Grid item xs={3}>
+                                <h2>Change Password</h2>
                             </Grid>
-                            <Grid item xs={7}>
-                                <br/><br/>
-                                <hr/><br/>
-                                <span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>Change Password:</span>
-                                <form noValidate autoComplete="off" onSubmit={(e)=>handlePassword(e)}>
+                            <Grid item xs={8}>
+                             <form noValidate autoComplete="off" onSubmit={(e)=>handlePassword(e)}>
                                     <Grid container>
                                         <Grid item xs={5}>
                                         <TextField id="standard-basic" value={oldpass} label="Old Password" onChange={(e)=>setoldpass(e.target.value)}/>
@@ -83,11 +83,9 @@ function Profile(props) {
                                     </Grid>
                                     
                                     </form>
-                                    <br/>
-                                    <div style={{lineHeight:"2"}}>
-                                    <span style={{fontSize:"20px",color:"black",fontWeight:"bold"}}>Delete Account:</span><br/>
-                                    <Link to="#" onClick={()=>handleDelete()} style={{color:"red",textDecoration:"none"}}>Delete Me</Link></div>
+                           
                             </Grid>
+                        
                         </Grid>
                     </Grid>
                 </Grid>
@@ -97,3 +95,4 @@ function Profile(props) {
 }
 
 export default Profile
+

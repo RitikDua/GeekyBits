@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  ResponsiveContainer,BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import axios from 'axios';
 
@@ -21,6 +21,7 @@ export default function Example(props) {
    }, [props])
    if(!data) return "";
     return (
+      <ResponsiveContainer width="100%" height={350}>
       <BarChart
         width={300}
         height={300}
@@ -36,6 +37,7 @@ export default function Example(props) {
         <Legend />
         <Bar dataKey="count" fill="#82ca9d" />
       </BarChart>
+      </ResponsiveContainer>
     );
 
 }

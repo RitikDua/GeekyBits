@@ -92,8 +92,10 @@ exports.updateContest=async (request,response)=>{
         if(!attemptId){    
             if(currentTime<(contest.startedAt.getTime()+30*60000)&&!contest.winner){
                 const attempts=contest.attempts;
+                console.log(attempts);
                 for(const attempt of attempts){
                     if(attempt.attemptResult.toLowerCase()==='correct'){
+                        console.log('hi');
                             contest.winner=attempt.user;
                             contest.endedAt=currentTime;
                             break;
@@ -131,6 +133,7 @@ exports.updateContest=async (request,response)=>{
         });
     }
     catch (err){
+        console.log(err);
         response.status(500).json({
             status:'error',
             message:err.message
@@ -140,7 +143,7 @@ exports.updateContest=async (request,response)=>{
 exports.registerParticipant =async (request,response)=>{
     try{
         const contestId=request.params.contestId;
-        const newParticipant=request.body.userId;
+        const newParticipant=request.user._id;
         const contest=await Contests.findById(contestId);
         if(!contest||contest.users.length==0)
             throw new Error('No such contest exist');
@@ -174,7 +177,9 @@ exports.startContest=async (request,response)=>{
         else if(!contest.users.includes(request.user._id))
             throw new Error('You are not allowed access this contest');
         else if(Date.now()>contest.endedAt)
-            throw new Error('Contest is already finished');            
+            throw new Error('Contest is already finished');     
+        else if(contest.winner)       
+            throw new Error('Winner is already declared');
         response.status(200).json({
             status: 'success',
             data:{contest}

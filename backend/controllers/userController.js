@@ -71,9 +71,6 @@ exports.updateMe=async (request,response)=>{
         response.status(500).json({status:'error',err:err.message});
     }
 };
-// exports.updateProgress=async (request,response)=>{
-//     const 
-// };
 exports.deleteMe=async (request,response)=>{
     try{
         await Users.findByIdAndDelete({_id:request.user._id});

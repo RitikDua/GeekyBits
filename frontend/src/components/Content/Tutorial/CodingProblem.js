@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import CodeEditor from './CodeEditor';
 import './tut.css';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
+import './style.css';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -44,7 +44,7 @@ export default function FullWidthGrid(props) {
   }, [props])
  if(!data.content) return <LinearProgress />;
   return (
-    <div className={classes.root}>
+    <div className={classes.root+" "+(props.attempt?"disabled":"") }>
       <Grid container spacing={2}>
         
         <Grid item xs={6} sm={5}>

@@ -23,6 +23,22 @@ exports.profileShortLink = async (request, response) => {
   }
 };
 
+exports.getCurrentUser=async (request,response)=>{
+    try{
+        const userId=request.user._id;
+        const user=await Users.findById(userId);
+        response.status(200).json({
+            status:'success',
+            data:{user}
+        });
+    }
+    catch (err){
+        response.status(500).json({
+            status:'error',
+            err:err.Users
+        });
+    }
+};
 exports.changeProfileShortLink = async (request, response) => {
   try {
     const username = request.body.username;

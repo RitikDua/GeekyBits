@@ -1,3 +1,4 @@
+
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,30 +30,30 @@ export default function ErrorRadios(props) {
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(false);
   const [helperText, setHelperText] = useState('Choose wisely');
-  const [data, setData] = useState({})	
+  const [data, setData] = useState({})  
   const [open, setOpen] = React.useState(true);
 
   useEffect( () => {
 
     console.log(props);
-  		const fetchData=async()=>await  axios.get(
-		`/courseSubItems/${props.queryId}`
-		)
-		.then((res)=>{
-			console.log(res);
-			setData(
-				{
-				"content":decodeURIComponent(res.data.data.courseSubItem.subItem.mcqStatement).replace(/\n/gmi,"<br />")
-				,"title":res.data.data.courseSubItem.subItem.mcqTitle,
-				"options":res.data.data.courseSubItem.subItem.options,
-				'answer':res.data.data.courseSubItem.subItem.answer
-				,id:res.data.data.courseSubItem._id,subItemId:res.data.data.courseSubItem.subItem._id}
-			);
+      const fetchData=async()=>await  axios.get(
+    `/courseSubItems/${props.queryId}`
+    )
+    .then((res)=>{
+      console.log(res);
+      setData(
+        {
+        "content":decodeURIComponent(res.data.data.courseSubItem.subItem.mcqStatement).replace(/\n/gmi,"<br />")
+        ,"title":res.data.data.courseSubItem.subItem.mcqTitle,
+        "options":res.data.data.courseSubItem.subItem.options,
+        'answer':res.data.data.courseSubItem.subItem.answer
+        ,id:res.data.data.courseSubItem._id,subItemId:res.data.data.courseSubItem.subItem._id}
+      );
         if(props.attempt) checkAnswer();
     }
 
-		)
-		.catch((err)=>console.error(err));
+    )
+    .catch((err)=>console.error(err));
     fetchData();
   }, [props])
 
@@ -99,41 +100,44 @@ export default function ErrorRadios(props) {
 
     })
   };
+  
+  const getAttemptAnswer=()=>{
+    // if()
+     return (<Alert severity={props.attemptData.attemptResult==="correct"?"success":"error"} >
+        <AlertTitle>{props.attemptData.attemptResult==="correct"?"Correct":"Wrong"}</AlertTitle>
+        
+        
+      <h1>{props.attemptData.attemptString}</h1>
+        </Alert>)
+
+  }
   if(!data.options||data.options.length===0) return  <LinearProgress />;
   return (
-    <div>
-    <form onSubmit={handleSubmit}>
-
+    <div className={props.attempt?"disabled":""}>
+    <form onSubmit={handleSubmit} >
     <Typography variant="h4" noWrap>
            {data.title}
+
           </Typography>
       <FormControl component="fieldset" error={error} className={classes.formControl}>
         <FormLabel component="legend">{data.content}</FormLabel>
         <RadioGroup aria-label="quiz" name="quiz" value={value} onChange={handleRadioChange}>
           {
-          	data.options.map((value,index)=>{
-         		return <FormControlLabel key={index} value={value} control={<Radio />} label={value} /> 		
-          	})
+            data.options.map((value,index)=>{
+             return <FormControlLabel key={index} value={value} control={<Radio />} label={value} />     
+            })
           }
           {/*<FormControlLabel value="worst" control={<Radio />} label="The worst." />*/}
         </RadioGroup>
-        {/* style={helperText.localeCompare("You got it!")===0?{backgroundColor:"#e8f5e9"}:{backgroundColor:"#d9534f",color:"white"}} */}
-        <FormHelperText>{helperText.localeCompare("You got it!")===0 &&
-        <Alert severity="success">
-        <AlertTitle>Correct</AlertTitle>
-        {helperText}
-        </Alert>}{helperText.localeCompare("Sorry, wrong answer!")===0 && <Alert severity="error">
-        <AlertTitle>Wrong</AlertTitle>
-        {helperText}
-      </Alert>}{(helperText.localeCompare("Please select an option.")===0 || helperText.localeCompare("Choose wisely")===0) && <Alert severity="info">
-        <AlertTitle>Pick an option</AlertTitle>
-        {helperText}
-      </Alert>}</FormHelperText>
-        <Button type="submit" onClick={()=>setOpen(true)}  variant="outlined" color="primary" className={classes.button}>
+        <FormHelperText>{!props.attempt&&helperText}</FormHelperText>
+        {props.attempt&&getAttemptAnswer()}
+        
+        <Button type="submit" variant="outlined" color="primary" className={classes.button}>
           Check Answer
         </Button>
       </FormControl>
     </form>
     </div>
   );
+
 }
