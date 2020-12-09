@@ -1,6 +1,6 @@
+
 import React,{useState,useEffect} from 'react'
 import axios from 'axios';
- import { Alert, AlertTitle } from '@material-ui/lab'; 
 import { makeStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -9,9 +9,12 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import Typography from '@material-ui/core/Typography';
-import './style.css';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -26,11 +29,13 @@ export default function ErrorRadios(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState(false);
-  const [helperText, setHelperText] = React.useState('Choose wisely');
+  const [helperText, setHelperText] = useState('Choose wisely');
   const [data, setData] = useState({})  
+  const [open, setOpen] = React.useState(true);
 
   useEffect( () => {
-console.log(props);
+
+    console.log(props);
       const fetchData=async()=>await  axios.get(
     `/courseSubItems/${props.queryId}`
     )
@@ -42,31 +47,60 @@ console.log(props);
         ,"title":res.data.data.courseSubItem.subItem.mcqTitle,
         "options":res.data.data.courseSubItem.subItem.options,
         'answer':res.data.data.courseSubItem.subItem.answer
-        }
-      );}
+        ,id:res.data.data.courseSubItem._id,subItemId:res.data.data.courseSubItem.subItem._id}
+      );
+        if(props.attempt) checkAnswer();
+    }
+
     )
     .catch((err)=>console.error(err));
     fetchData();
   }, [props])
+
   const handleRadioChange = (event) => {
     setValue(event.target.value);
-    setHelperText(' ');
+    setHelperText('Choose wisely');
     setError(false);
   };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (value === data.answer) {
+  const checkAnswer=async ()=>{
+    const checkVal=props.attempt?props.attemptData.attemptString:value;
+    if (checkVal === data.answer) {
       setHelperText('You got it!');
       setError(false);
-    } else if (value !== data.answer) {
+    } else if (checkVal !== data.answer) {
       setHelperText('Sorry, wrong answer!');
       setError(true);
     } else {
       setHelperText('Please select an option.');
       setError(true);
     }
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    checkAnswer().then(async ()=>{
+      console.log(value===data.answer);
+       const options = {
+       method: 'POST',
+        url: '/attempts',
+        data: {
+          attemptType:"MCQ",
+          attemptLanguage: "C",
+          attemptString: value,
+          attemptResult:((value===data.answer)?"correct":"wrong"),
+          attemptTitle:data.title,
+          userId:localStorage.getItem("userId"),
+          problemId:data.id,subItemId:data.subItemId
+        }
+    };
+    await axios.request(options)
+      .then((res)=>{
+        console.log(res.data);
+        })
+      .catch((err)=>console.error(err));
+
+    })
   };
+  
   const getAttemptAnswer=()=>{
     // if()
      return (<Alert severity={props.attemptData.attemptResult==="correct"?"success":"error"} >
@@ -77,7 +111,7 @@ console.log(props);
         </Alert>)
 
   }
-  if(!data.options||data.options.length===0) return  <CircularProgress />;
+  if(!data.options||data.options.length===0) return  <LinearProgress />;
   return (
     <div className={props.attempt?"disabled":""}>
     <form onSubmit={handleSubmit} >
@@ -105,4 +139,5 @@ console.log(props);
     </form>
     </div>
   );
+
 }

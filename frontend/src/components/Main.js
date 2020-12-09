@@ -3,7 +3,6 @@ import { Route, Switch} from 'react-router-dom';
 import MainRoutes from '../routes/MainRoutes';
 function Main() {
     return ( 
-        <main>
         
            <Switch>
             {MainRoutes.map((route, index) => (
@@ -15,8 +14,7 @@ function Main() {
               />
             ))}
           </Switch>
-      </main>
-   
+      
     )
 }
 export default Main

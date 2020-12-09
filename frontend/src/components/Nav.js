@@ -110,7 +110,7 @@ function Nav() {
         <p>Courses</p>
       </MenuItem>
       <MenuItem>
-      <Link to={`/login`} style={{ textDecoration: 'none','color':'black' }}>
+      <Link to={`/login`} style={{ textDecoration: 'none','color':'white' }}>
 
         <IconButton aria-label="Login" color="inherit">
             
@@ -159,7 +159,7 @@ function Nav() {
             <IconButton aria-label="courses" color="inherit">
                 <WorkOutlineIcon />
             </IconButton>
-                  <Link to={`/login`} style={{ textDecoration: 'none','color':'black' }}>
+                  <Link to={`/login`} style={{ textDecoration: 'none','color':'white' }}>
 
             <IconButton aria-label="login" color="inherit">
             <LockOpenIcon />
