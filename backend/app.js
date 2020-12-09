@@ -14,7 +14,8 @@ const attemptRouter=require(`${__dirname}/routes/attemptRoutes`);
 const compileCodeRouter=require(`${__dirname}/routes/compileCodeRoutes`);
 const statsRouter=require(`${__dirname}/routes/statsRouter`);
 const contestRouter=require(`${__dirname}/routes/contestRoutes.js`);
-
+const AppError=require(`${__dirname}/utils/AppError`);
+const globalErrorHandler=require(`${__dirname}/utils/errorHandler`);
 //Adding middlewares
 app.use((request,response,next)=>{
 	response.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -49,4 +50,8 @@ app.get('/',(request, response) => {
         message: 'Welcome to GeekyBits..'
     });
 });
+app.all('*',(request,response,next) => {
+	next(new AppError('No such route exist',400));
+});
+app.use(globalErrorHandler);
 module.exports =app;

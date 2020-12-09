@@ -15,10 +15,11 @@ import {cod} from './Content/Tutorial/defaultCode'
 import { Switch } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import {getUserId} from '../utils/utils';
 import { Link } from 'react-router-dom';
 function ContestMain(props) {
   const [socket,setSocket]= useState(io('http://localhost:4000'));
-  const [user,setUser]=useState(localStorage.getItem("userId"));
+  const [user,setUser]=useState(getUserId());
   const [contest,setContest]=useState(null);
   const url=localStorage.getItem("contest-url").split('/');
   const [roomId,setRoomId]=useState(url[url.length-1]);
@@ -151,13 +152,14 @@ function ContestMain(props) {
 	const attemptResult=data.data.attempt.attemptResult;
 	if(attemptResult==='correct'){
     settestcases(data.data.attempt.testCasesPassed);
-		declareWinner(roomId,user,{winningMessage:' won the match'}); 
+	declareWinner(roomId,user,{winningMessage:' won the match'}); 
   }
   else{
     settestcases(data.data.attempt.testCasesPassed);
   }
   };
   const fetchContest=async ()=>{
+try{
   const {data}=await axios({method:'GET',url:`http://localhost:4000${localStorage.getItem("contest-url")}`,withCredentials:true});
   console.log(data.data.contest.problem.problemStatement);
   setData(
@@ -175,6 +177,7 @@ function ContestMain(props) {
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
+	console.log(new Date(startAt));
 	const waitingTime=(Date.parse(startAt)-Date.parse(new Date()))/60000;
 	const waitingTimeinMin=Math.floor(waitingTime);
   settimer(waitingTimeinMin,Math.floor((waitingTime-waitingTimeinMin)*60));
@@ -184,36 +187,43 @@ function ContestMain(props) {
 	// 	setTimeout(()=>console.log('Started'),waitingTime);
 	// 	// const time=setTimeout(declareWinner,30*60000);
 	// }
-    setContest(data.data.contest);
+	setContest(data.data.contest);
+}
+catch(err) {
+	console.log(err.response.data);
+}
   }
   const declareWinner=async (roomId,userId,message)=>{
+	try{
 	const {data}=await axios({method:'POST',url:`http://localhost:4000${localStorage.getItem('contest-url')}`,withCredentials:true});
 	console.log(data);
-    socket.emit('winner_declared',{roomId,userId:user,message:{
-      winningMessage:' won the match'
-	}});
+    socket.emit('winner_declared',{roomId,userId:data.data.contest.winner,message});
+	}
+	catch(err) {
+		console.log(err);
+	}
 	// clearTimeout(time);
   }
   const renderer = ({ hours, minutes, seconds, completed }) => {
 	if (completed) {
 	  // Render a completed state
-	  declareWinner();
+	  declareWinner(roomId,user,{winningMessage:' won the match.'});
 	  return <span>Contest Finished</span>;
 	} else {
 	  // Render a countdown
 	  return <span>{hours}:{minutes}:{seconds}</span>;
 	}
   };
-  useEffect(()=>{
-    fetchContest();
+  useEffect(()=>{    
     socket.on('connect',()=>{      
       joinRoom();
     });
     socket.on('joined_contest_room',data=>{
-      console.log(data);
+	  console.log(data);
+	  fetchContest();
     });
     socket.on('error',error=>{
-      console.log(error);
+	  console.log(error);
     });
     socket.on('code_executed_server',result=>{
       console.log(result);
@@ -222,6 +232,7 @@ function ContestMain(props) {
 	  console.log(finalmessage);
 	  setwinner(finalmessage);
 	  setopen(true);
+	  socket.disconnect();
 	// if(open===false){
 	// 	 window.location.href="/";
 	// }

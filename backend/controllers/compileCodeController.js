@@ -2,6 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const execute = require('../middlewares/CompileCode')
 const {c, cpp, python, java} = require('compile-run');
+const catchAsyncError=require(`${__dirname}/../utils/catchAsyncError`);
+const AppError = require(`${__dirname}/../utils/AppError`);
 const deleteFile = (filename) => {
     fs.unlink(filename, function (err) {
         if (err) {
@@ -11,26 +13,21 @@ const deleteFile = (filename) => {
         console.log('File deleted!');
     }); 
 }
-exports.codeCompile=async (request,response)=>{
-    try{
-        const {code,input,lang}=request.body;
-        let testEnv;
-        switch (lang.toLowerCase()) {
-            case 'c':testEnv=c;break;
-            case 'c++':testEnv=cpp;break;
-            case 'java':testEnv=java;break;
-            case 'python':testEnv=python;break;
-        }
-        const data=await testEnv.runSource(code,{stdin:input});
-        response.status(200).json({
-            output:data.stdout?data.stdout:(data.stderr?data.stderr:`Error: ${data.signal} with exit code ${data.exitCode}`)
-        });
+exports.codeCompile=catchAsyncError(async (request,response,next)=>{    
+    const {code,input,lang}=request.body;
+    let testEnv;
+    switch (lang.toLowerCase()) {
+        case 'c':testEnv=c;break;
+        case 'c++':testEnv=cpp;break;
+        case 'java':testEnv=java;break;
+        case 'python':testEnv=python;break;
     }
-    catch (err){
-        response.status(500).json({err});
-    }
-}
-exports.compileCode=async (request,response)=>{
+    const data=await testEnv.runSource(code,{stdin:input});
+    response.status(200).json({
+        output:data.stdout?data.stdout:(data.stderr?data.stderr:`Error: ${data.signal} with exit code ${data.exitCode}`)
+    });
+});
+exports.compileCode=catchAsyncError(async (request,response,next)=>{
     console.log(request.body)
     const code = request.body.code
     const input = request.body.input
@@ -53,4 +50,4 @@ exports.compileCode=async (request,response)=>{
                         deleteFile(path.join(__dirname, '../a.exe'))
             })
 
-}
+});
