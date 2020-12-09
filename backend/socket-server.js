@@ -22,13 +22,16 @@ exports.startSocket=server=>{
 		if(user){
 			const {name}=user;
 			io.to(roomId).emit(event,{name,message});
+		}
+		else{
+			console.log(`User-${userId} not found`)
 		}		
 	};
 	const checkValidUser=async (socket,userObj)=>{
 		const {userId,roomId,id}=userObj;
 		console.log(userId,roomId,id);
 		contest=await Contests.findOne({contestUrl:roomId});
-		if(!contest||!contest.users.includes(userId)){	
+		if(!contest||!contest.users.includes(userId)||contest.endedAt||contest.winner){	
 			emitError({status:'error',message:'You are not authorized to enter this contest'},id);
 		}
 		else{
