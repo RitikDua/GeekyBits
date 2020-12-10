@@ -1,65 +1,30 @@
 const MCQs = require(`${__dirname}/../models/mcqModel`);
+const catchAsyncError=require(`${__dirname}/../utils/catchAsyncError`);
+const AppError = require(`${__dirname}/../utils/AppError`);
 const { matchBodyWithSchema } = require("../utils/matchBodyWithSchema");
-const mongoose = require("mongoose");
-
-exports.getMCQs = async (request, response) => {
-  try {
+exports.getMCQs = catchAsyncError(async (request, response,next) => {
     const mcqs = await MCQs.find();
     response.status(200).json({
       status: "success",
       data: { mcqs },
     });
-  } catch (err) {
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-      err,
-    });
-  }
-};
-exports.getMCQById = async (request, response) => {
-  try {
-    if (!mongoose.Types.ObjectId.isValid(request.params.mcqId))
-      return response.status(404).send("Invalid ID");
-
-    const mcq = await MCQs.findById(request.params.mcqId);
-
-    if (!mcq) return response.status(404).send("MCQ with given ID not found");
-
-    response.status(200).json({
-      status: "success",
-      data: { mcq },
-    });
-  } catch (err) {
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-      err,
-    });
-  }
-};
-exports.createMCQ = async (request, response) => {
-  try {
-    const mcqDetails = request.body;
-    if (
-      !matchBodyWithSchema(Object.keys(mcqDetails), [
-        "mcqTitle",
-        "mcqStatement",
-        "options",
-        "answer",
-      ])
-    )
-      return response.status(400).send("Please provide mcq Detail ");
-    const mcq = await MCQs.create(mcqDetails);
-    response.status(201).json({
-      status: "success",
-      data: { mcq },
-    });
-  } catch (err) {
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-      err,
-    });
-  }
-};
+});
+exports.getMCQById =catchAsyncError(async (request, response,next) => {
+  const mcqId = request.params.mcqId;
+  if (!mcqId) return next(new AppError("Please provide a valid id",400));
+  const mcq = await MCQs.findById(mcqId);
+  response.status(200).json({
+    status: "success",
+    data: { mcq },
+  });
+});
+exports.createMCQ =catchAsyncError(async (request, response,next) => {  
+  const mcqDetails = request.body;
+  if (!matchBodyWithSchema(Object.keys(mcqDetails), ["mcqTitle","mcqStatement","options","answer"]))
+    return next(new AppError("Please provide mcq Detail",400));
+  const mcq = await MCQs.create(mcqDetails);
+  response.status(201).json({
+    status: "success",
+    data: { mcq },
+  });
+});

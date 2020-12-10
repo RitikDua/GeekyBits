@@ -3,8 +3,12 @@ const storage=localStorage;
 const  getToken=()=>{
     return storage.getItem("login");
 }
-
-
+const getUserId=()=>{
+  const token=getToken();
+  const payload=JSON.parse(atob(token.split('.')[1]));     
+  console.log(payload);
+    return payload.id;
+}
 const isLoggedIn=()=>{
     const token=getToken();
     if(token){
@@ -17,5 +21,5 @@ const isLoggedIn=()=>{
 }
 
 module.exports={
-  storage,getToken,isLoggedIn
+  storage,getToken,isLoggedIn,getUserId
 }
