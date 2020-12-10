@@ -78,12 +78,12 @@ describe("/codingProblems", () => {
       );
     });
 
-    it("should return 404 if invalid id is passed", async () => {
+    it("should return 400 if invalid id is passed", async () => {
       const res = await request(server)
         .get("/codingProblems/1")
         .set("authorization", "Bearer " + token);
 
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(400);
     });
 
     it("should return 404 if no coding Problem with given id exist", async () => {

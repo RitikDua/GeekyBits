@@ -87,12 +87,12 @@ describe("/contests", () => {
       expect(res.body.data.contest).toHaveProperty("contestUrl", bar.contestUrl);
     });
 
-    it("should return 404 if invalid id is passed", async () => {
+    it("should return 400 if invalid id is passed", async () => {
       const res = await request(server)
         .get("/contests/1")
         .set("authorization", "Bearer " + token);
 
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(400);
     });
 
     it("should return 404 if no contest with given id exist", async () => {

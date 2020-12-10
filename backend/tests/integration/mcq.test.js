@@ -77,12 +77,12 @@ describe("/mcqs", () => {
       expect(res.body.data.mcq).toHaveProperty("mcqTitle", prblm.mcqTitle);
     });
 
-    it("should return 404 if invalid id is passed", async () => {
+    it("should return 400 if invalid id is passed", async () => {
       const res = await request(server)
         .get("/mcqs/1")
         .set("authorization", "Bearer " + token);
 
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(400);
     });
 
     it("should return 404 if no mcq with given id exist", async () => {

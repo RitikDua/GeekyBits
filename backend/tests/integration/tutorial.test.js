@@ -66,12 +66,12 @@ describe("/tutorials", () => {
       expect(res.body.data.tutorial).toHaveProperty("tutorialTitle", prblm.tutorialTitle);
     });
 
-    it("should return 404 if invalid id is passed", async () => {
+    it("should return 400 if invalid id is passed", async () => {
       const res = await request(server)
         .get("/tutorials/1")
         .set("authorization", "Bearer " + token);
 
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(400);
     });
 
     it("should return 404 if no tutorial with given id exist", async () => {
