@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const AppError = require(`${__dirname}/AppError`);
 const sendDevErr = (error,request, response) => {    
-    //API ERRPR    
+    //API ERROR    
         response.status(error.statusCode).json({
             status: error.status,
             error,
