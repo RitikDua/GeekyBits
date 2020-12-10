@@ -4,9 +4,7 @@ let server;
 
 describe('/HOME', () => {
     beforeEach(() => {server = require('../../server');});
-    afterEach(() => {
-        server.close();
-    });
+    afterEach(() => {server.close();});
 
     describe('GET /', () => {
         it('should return Home Page',async() => {

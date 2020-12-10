@@ -19,7 +19,7 @@ describe("/codingProblems", () => {
 
   afterEach(async () => {
     await server.close();
-    await CodingProblem.collection.deleteMany({});
+    // await CodingProblem.collection.deleteMany({});
   });
 
   describe("GET /", () => {
@@ -49,10 +49,9 @@ describe("/codingProblems", () => {
         .set("authorization", "Bearer " + token);
 
       expect(res.status).toBe(200);
-      expect(res.body.data.codingProblems).toHaveProperty(
-        "problemTitle",
-        codes.problemTitle
-      );
+      expect(res.body.data.codingProblems).toHaveProperty("problemTitle", codes.problemTitle);
+      expect(res.body.data.codingProblems.some(c => c.problemTitle === "Add%20two%20numbers")).toBeTruthy();
+      expect(res.body.data.codingProblems.some(c => c.problemTitle === "Area%20and%20Perimeter%20of%20a%20rectangle")).toBeTruthy();
     });
   });
 
@@ -79,12 +78,12 @@ describe("/codingProblems", () => {
       );
     });
 
-    it("should return 404 if invalid id is passed", async () => {
+    it("should return 400 if invalid id is passed", async () => {
       const res = await request(server)
         .get("/codingProblems/1")
         .set("authorization", "Bearer " + token);
 
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(400);
     });
 
     it("should return 404 if no coding Problem with given id exist", async () => {
@@ -99,13 +98,13 @@ describe("/codingProblems", () => {
 
   describe("POST /", () => {
     // Define
-    let code;
+    let code={};
 
     const exec = async () => {
       return await request(server)
         .post("/codingProblems")
         .set("authorization", "Bearer " + token)
-        .send({ code });
+        .send(code);
     };
 
     beforeEach(() => {
@@ -126,8 +125,8 @@ describe("/codingProblems", () => {
       expect(res.status).toBe(401);
     });
 
-    it("should save the code if it is valid", async () => {
-      await exec();
+    it("should return 201 and save the code if it is valid", async () => {
+      const res=await exec();
 
       const cp = await CodingProblem.find({ code:{
         problemTitle: "Add%20two%20numbers",
@@ -138,20 +137,24 @@ describe("/codingProblems", () => {
       } });
 
       expect(cp).not.toBeNull();
-    });
-
-    it("should return the code if it is valid", async () => {
-      const res = await exec();
-
-      expect(res.body.data.codingProblem).toHaveProperty("_id");
+      expect(res.status).toBe(201);
     });
 
     it('should return 400 if problem details are not valid',async () =>{
-      code=1234;
+      code={
+        abcd:"qwerty"
+      };
 
       const res = await exec();
 
       expect(res.status).toBe(400);
+    });
+
+    it('should return the coding problem if it is valid', async() => { 
+      const res = await exec();
+
+      expect(res.body.data.codingProblem).toHaveProperty('_id');
+      expect(res.body.data.codingProblem).toHaveProperty("problemTitle","Add%20two%20numbers");      
     });
   });
 });

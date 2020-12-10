@@ -1,8 +1,9 @@
-const Contests=require(`${__dirname}/../models/contestModel`);
 const CodingProblem=require(`${__dirname}/../models/codingProblemModel`);
-const mongoose=require('mongoose');
 const catchAsyncError=require(`${__dirname}/../utils/catchAsyncError`);
+const Contests=require(`${__dirname}/../models/contestModel`);
 const AppError = require(`${__dirname}/../utils/AppError`);
+const mongoose=require('mongoose');
+
 const getScore=testCasesPassed=>{
     let totalScore=0;
     testCasesPassed.forEach(testCasePassed=>{
@@ -22,8 +23,14 @@ exports.getContests=catchAsyncError(async (request,response,next)=>{
     });
 });
 exports.getContestById=catchAsyncError(async (request,response,next)=>{          
-    let contestId = request.params.contestId;        
+    let contestId = request.params.contestId;  
+    if (!mongoose.Types.ObjectId.isValid(contestId))
+      return next(new AppError("Invalid ID",400));
+      
     const contest=await Contests.findById(contestId);
+    if (!contest)
+        return next(new AppError("Contest with given ID not found",404));
+
     response.status(200).json({
         status:'success',
         data:{contest}
