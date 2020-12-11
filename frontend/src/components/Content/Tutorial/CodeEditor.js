@@ -80,7 +80,7 @@ export default function CodeEditor(props) {
 			  data: {
 			  	attemptType:"CodingProblem",
 			    attemptLanguage: "C",
-			    attemptString: val,
+			    attemptString: val,courseId:props.courseId,
 			    attemptTitle:props.data.title,
 			    userId:localStorage.getItem("userId"),
 			    problemId:props.data.id,subItemId:props.data.subItemId
