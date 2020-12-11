@@ -5,7 +5,7 @@ const { matchBodyWithSchema } = require(`${__dirname}/../utils/matchBodyWithSche
 const mongoose = require("mongoose");
 
 exports.getTutorials = catchAsyncError(async (request, response, next) => {
-  const tutorials = await Tutorials.find();
+  const tutorials = await Tutorials.find().lean();
   response.status(200).json({
     status: "success",
     data: { tutorials },
@@ -16,7 +16,7 @@ exports.getTutorialById = catchAsyncError(async (request, response, next) => {
   if (!mongoose.Types.ObjectId.isValid(tutorialId))
     return next(new AppError("Invalid ID", 400));
 
-  const tutorial = await Tutorials.findById(tutorialId);
+  const tutorial = await Tutorials.findById(tutorialId).lean();
   if (!tutorial)
     return next(new AppError("Tutorial with given ID not found", 404));
 

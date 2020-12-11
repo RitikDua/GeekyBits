@@ -16,7 +16,7 @@ exports.getContests=catchAsyncError(async (request,response,next)=>{
     let filterObj={...request.query};
     if(request.user.role==='user')            
         filterObj.users=request.user._id;
-    const contests=await Contests.find(filterObj);
+    const contests=await Contests.find(filterObj).lean();
     response.status(200).json({
         status:'success',
         data:{contests}
@@ -27,7 +27,7 @@ exports.getContestById=catchAsyncError(async (request,response,next)=>{
     if (!mongoose.Types.ObjectId.isValid(contestId))
       return next(new AppError("Invalid ID",400));
       
-    const contest=await Contests.findById(contestId);
+    const contest=await Contests.findById(contestId).lean();
     if (!contest)
         return next(new AppError("Contest with given ID not found",404));
 

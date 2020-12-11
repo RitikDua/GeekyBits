@@ -5,7 +5,7 @@ const attemptController =require(`${__dirname}/../controllers/attemptController`
 router.use(authController.protect);
 router.route('/')
 .get(attemptController.getAttempts)
-.post(attemptController.submitAttempt)
+.post(attemptController.submitOnlineAttempt)
 .delete(attemptController.deleteAttempts);
 router.route('/:problemId')
 .get(attemptController.getAttemptsByProblemId)

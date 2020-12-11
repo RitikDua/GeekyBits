@@ -3,7 +3,7 @@ const catchAsyncError=require(`${__dirname}/../utils/catchAsyncError`);
 const AppError = require(`${__dirname}/../utils/AppError`);
 const {matchBodyWithSchema}=require(`${__dirname}/../utils/matchBodyWithSchema`);
 exports.getCourseItems= catchAsyncError(async (request,response,next)=>{    
-    const courseItems=await CourseItems.find();
+    const courseItems=await CourseItems.find().lean();
     response.status(200).json({
         status:'success',
         data:{
@@ -13,7 +13,7 @@ exports.getCourseItems= catchAsyncError(async (request,response,next)=>{
 });
 exports.getCourseItemById=catchAsyncError(async (request,response,next)=>{    
     const courseItemId=request.params.courseItemId;
-    const courseItem=await CourseItems.findById(courseItemId).populate('subItems');
+    const courseItem=await CourseItems.findById(courseItemId).populate('subItems').lean();
     response.status(200).json({
         status: 'success',
         data:{

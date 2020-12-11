@@ -5,7 +5,7 @@ const AppError = require(`${__dirname}/../utils/AppError`);
 const mongoose = require("mongoose");
 
 exports.getCodingProblems = catchAsyncError(async (request, response, next) => {
-  const codingProblems = await CodingProblems.find();
+  const codingProblems = await CodingProblems.find().lean();
   response.status(200).json({
     status: "success",
     data: { codingProblems },
@@ -17,7 +17,7 @@ exports.getCodingProblemById = catchAsyncError(
       return next(new AppError("Invalid ID", 400));
     const codingProblem = await CodingProblems.findById(
       request.params.codingProblemId
-    );
+    ).lean();
     if (!codingProblem)
       return next(new AppError("Problem with given ID not found", 404));
 

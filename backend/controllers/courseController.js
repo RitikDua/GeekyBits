@@ -8,7 +8,7 @@ const getTotalSubItems=(totalItems)=>{
     return totalSubItems;
 }
 exports.getCourses=catchAsyncError(async (request,response,next)=>{
-    const courses=await Courses.find();
+    const courses=await Courses.find().lean();
     response.status(200).json({
         status:'success',
         data:{courses}
@@ -16,7 +16,7 @@ exports.getCourses=catchAsyncError(async (request,response,next)=>{
 });
 exports.getCourseById=catchAsyncError(async (request,response,next)=>{    
     const courseId = request.params.courseId;
-    const course=await Courses.findById(courseId).populate('courseItems');
+    const course=await Courses.findById(courseId).populate('courseItems').lean();
     const coursesProgress=request.user.coursesProgress;   
     let courseProgressPercent=0;
     if(coursesProgress){

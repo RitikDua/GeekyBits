@@ -4,6 +4,6 @@ const authController=require(`${__dirname}/../controllers/authController`);
 const compileCodeController=require(`${__dirname}/../controllers/compileCodeController`);
 router.use(authController.protect);
 router.route('/')
-.post(compileCodeController.codeCompile);
+.post(compileCodeController.compileOnline);
 
 module.exports=router;

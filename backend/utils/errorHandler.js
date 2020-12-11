@@ -59,7 +59,7 @@ const sendProdErr = (error,request, response) => {
 module.exports = (error, request, response, next) => {
     error.statusCode = error.statusCode || 500;
     error.status = error.status || 'error';
-    if (process.env.NODE_ENV === 'development')
+    if (process.env.NODE_ENV === 'DEVELOPMENT')
         sendDevErr(error,request, response);
     else {
         // let errorTemp={...error};        

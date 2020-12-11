@@ -11,7 +11,7 @@ const filterObj=(newDetailsObj)=>{
     return updateObj;
 };
 exports.getUsers=catchAsyncError(async (request,response,next)=>{    
-        const users=await Users.find();
+        const users=await Users.find().lean();
         response.status(200).json({
             status:'success',
             data:{users}
@@ -19,7 +19,7 @@ exports.getUsers=catchAsyncError(async (request,response,next)=>{
 });
 exports.getUserById=catchAsyncError(async (request,response,next)=>{    
         const userId=request.params.userId;
-        const user=await Users.findById(userId);
+        const user=await Users.findById(userId).lean();
         response.status(200).json({
             status:'success',
             data:{user}
