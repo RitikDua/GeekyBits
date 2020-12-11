@@ -5,7 +5,7 @@ const MCQs = require(`${__dirname}/../models/mcqModel`);
 const mongoose = require("mongoose");
 
 exports.getMCQs = catchAsyncError(async (request, response, next) => {
-  const mcqs = await MCQs.find();
+  const mcqs = await MCQs.find().lean();
   response.status(200).json({
     status: "success",
     data: { mcqs },
@@ -16,7 +16,7 @@ exports.getMCQById = catchAsyncError(async (request, response, next) => {
   if (!mongoose.Types.ObjectId.isValid(mcqId))
     return next(new AppError("Invalid ID", 400));
 
-  const mcq = await MCQs.findById(mcqId);
+  const mcq = await MCQs.findById(mcqId).lean();
   if (!mcq) return next(new AppError("MCQ with given ID not found", 404));
 
   response.status(200).json({

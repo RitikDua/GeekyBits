@@ -18,7 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {getUserId} from '../utils/utils';
 import { Link } from 'react-router-dom';
 function ContestMain(props) {
-  const [socket,setSocket]= useState(io('http://localhost:4000'));
+  const [socket,setSocket]= useState(io('https://geekyapi.herokuapp.com'));
   const [user,setUser]=useState(getUserId());
   const [contest,setContest]=useState(null);
   const url=localStorage.getItem("contest-url").split('/');
@@ -142,9 +142,9 @@ function ContestMain(props) {
   const Completionist = () => <span>You are good to go!</span>;
   const userExecuted=async ()=>{    
 	console.log(contest,code);
-	const {data}=await axios({method:'POST',url:`http://localhost:4000/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:'C',attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
+	const {data}=await axios({method:'POST',url:`/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:'C',attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
 	console.log(data);
-    await  axios({method:'POST',url:`http://localhost:4000${localStorage.getItem('contest-url')}`,data:{ attemptId:data.data.attempt._id},withCredentials:true});
+    await  axios({method:'POST',url:`${localStorage.getItem('contest-url')}`,data:{ attemptId:data.data.attempt._id},withCredentials:true});
     socket.emit('code_executed',{roomId,userId:user,message:{
       attemptResult:data.data.attempt.attemptResult,
       testCasesPassed:data.data.attempt.testCasesPassed
@@ -160,7 +160,7 @@ function ContestMain(props) {
   };
   const fetchContest=async ()=>{
 try{
-  const {data}=await axios({method:'GET',url:`http://localhost:4000${localStorage.getItem("contest-url")}`,withCredentials:true});
+  const {data}=await axios({method:'GET',url:`${localStorage.getItem("contest-url")}`,withCredentials:true});
   console.log(data.data.contest.problem.problemStatement);
   setData(
     	{
@@ -195,7 +195,7 @@ catch(err) {
   }
   const declareWinner=async (roomId,userId,message)=>{
 	try{
-	const {data}=await axios({method:'POST',url:`http://localhost:4000${localStorage.getItem('contest-url')}`,withCredentials:true});
+	const {data}=await axios({method:'POST',url:`${localStorage.getItem('contest-url')}`,withCredentials:true});
 	console.log(data);
     socket.emit('winner_declared',{roomId,userId:data.data.contest.winner,message});
 	}
