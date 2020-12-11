@@ -6,7 +6,7 @@ const AppError = require(`${__dirname}/../utils/AppError`);
 const mongoose = require('mongoose');
 
 exports.getCourseSubItems=catchAsyncError(async (request,response,next)=>{     
-    const courseSubItems=await CourseSubItems.find();
+    const courseSubItems=await CourseSubItems.find().lean();
     response.status(200).json({
         status:'success',
         data:{
@@ -23,7 +23,7 @@ exports.getCourseSubItemById=catchAsyncError(async (request,response,next)=>{
     if(courseId&&!mongoose.Types.ObjectId.isValid(courseId))
         return next(new AppError("Invalid key",400));
 
-    const courseSubItem=await CourseSubItems.findById(courseSubItemId).populate('subItem');
+    const courseSubItem=await CourseSubItems.findById(courseSubItemId).populate('subItem').lean();
     if (!courseSubItem)
       return next(new AppError("Course Sub Item with given ID not found",404));
 
@@ -34,7 +34,8 @@ exports.getCourseSubItemById=catchAsyncError(async (request,response,next)=>{
     response.status(200).json({
         status:'success',
         data:{
-            courseSubItem
+            courseSubItem,
+            courseId
         }
     });    
 });

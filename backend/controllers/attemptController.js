@@ -4,6 +4,7 @@ const catchAsyncError = require(`${__dirname}/../utils/catchAsyncError`);
 const executeCode = require(`${__dirname}/../middlewares/CompileCode`);
 const Attempts = require(`${__dirname}/../models/attemptModel`);
 const AppError = require(`${__dirname}/../utils/AppError`);
+const axios = require('axios');
 const { c, cpp, python, java } = require("compile-run");
 const mongoose = require("mongoose");
 
@@ -20,7 +21,7 @@ exports.getAttempts = catchAsyncError(async (request, response, next) => {
   let filterObj = {};
   if (request.user.role === "admin") filterObj = request.body;
   else filterObj.user = request.user._id;
-  const attempts = await Attempts.find(filterObj).sort({ createdAt: -1 });
+  const attempts = await Attempts.find(filterObj).sort({ createdAt: -1 }).lean();
   response.status(200).json({
     status: "success",
     data: { attempts },
@@ -33,13 +34,96 @@ exports.getAttemptsByProblemId = catchAsyncError(
 
     const filterObj = { problem: request.params.problemId };
     if (request.user.role === "user") filterObj.user = request.user._id;
-    const attempts = await Attempts.find(filterObj).sort({ createdAt: -1 });
+    const attempts = await Attempts.find(filterObj).sort({ createdAt: -1 }).lean();
     response.status(200).json({
       status: "success",
       data: { attempts },
     });
   }
 );
+exports.submitOnlineAttempt=catchAsyncError(async (request, response, next)=>{
+    const {
+        problemId,
+        attemptType,
+        attemptString,
+        attemptLanguage,
+        attemptTitle,
+        subItemId,
+        attemptResult,
+        courseId,
+      } = request.body; 
+      const attemptObj = {
+        attemptType,
+        attemptString,
+        problem: problemId,
+        user: request.user._id,
+        subItem: subItemId,
+        attemptTitle,
+        attemptResult,
+      };
+      if (attemptType === "CodingProblem") {
+        const codingProblem = await CodingProblems.findById(subItemId);
+        const { testCases, correctOutput } = codingProblem;
+        let arr = [],langCode,langIndex;  
+        switch(attemptLanguage.toLowerCase()){
+            case 'c':langCode='c';langIndex='3';break;
+            case 'java':langCode='java';langIndex='3';break;
+            case 'c++':langCode='cpp';langIndex='4';break;
+            case 'python':langCode='python3';langIndex='3';break;
+        }      
+        testCases.forEach((testCase) => {
+          arr.push(axios({method:'POST',url:'https://api.jdoodle.com/v1/execute',data:{
+            script:attemptString,
+            language:langCode,
+            versionIndex:langIndex,
+            stdin:decodeURIComponent(testCase),
+            clientId:process.env.JDOODLE_CLIENT_KEY,
+            clientSecret:process.env.JDOODLE_SECRET_KEY
+          }}));
+        });               
+        const result = await Promise.all(arr);             
+        arr = [];
+        let checkTestCases = [];
+        let checkStatus = 0,
+          errorType = "";
+        for (let i = 0; i < result.length; i++) {
+          let outcome; 
+          // console.log(result[i].data);
+          const isCompileTime=result[i].data.output.includes('error'),isRuntime=result[i].data.output.includes('warning')||result[i].data.output.includes('terminated');      
+          if (isRuntime||isCompileTime) {
+            errorType =isRuntime?'runtime error':'compiler error';
+            outcome = false;
+          } else
+            outcome = result[i].data.output === decodeURIComponent(correctOutput[i]);
+          // const outcome=(result[i].output===decodeURIComponent(correctOutput[i]));
+          checkStatus += outcome;
+          checkTestCases.push(outcome);
+          arr.push(result[i].data.output ? result[i].data.output : result[i].data.error);
+        }
+        //     arr.push(result[i].output);
+        // }
+        attemptObj.attemptResult = errorType
+          ? errorType
+          : checkStatus === result.length
+          ? "correct"
+          : "wrong";
+        // attemptObj.attemptResult=error?error:(checkStatus===result.length)?"correct":"wrong";
+        attemptObj.testCasesPassed = checkTestCases;
+        attemptObj.testCasesUserOutputs = arr;
+        attemptObj.attemptLanguage = attemptLanguage;
+        // deleteFile(`${__dirname}/../input.txt`);
+        // deleteFile(`${__dirname}/../test.c`);
+        // deleteFile(`${__dirname}/../a.out`);
+      }
+      if (courseId && attemptObj.attemptResult === "correct") {
+        updateProgress(courseId, problemId, request.user);
+      }
+      const attempt = await Attempts.create(attemptObj);
+      response.status(201).json({
+        status: "success",
+        data: { attempt },
+      });
+});
 exports.submitAttempt = catchAsyncError(async (request, response, next) => {
   const {
     problemId,
