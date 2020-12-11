@@ -211,9 +211,9 @@ function ResponsiveDrawer(props) {
       case "Tutorial":
         return <Tutorial courseId={courseId} queryId={currComponent._id} />
       case "MCQ":
-        return <MCQ queryId={currComponent._id} />
+        return <MCQ queryId={currComponent._id} courseId={courseId}/>
       case "CodingProblem":
-        return <CodingProblem queryId={currComponent._id} />
+        return <CodingProblem queryId={currComponent._id} courseId={courseId}/>
     }
   }
   const paginationUtil=()=>{

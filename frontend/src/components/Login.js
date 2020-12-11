@@ -59,8 +59,7 @@ function Login() {
             console.log(res.data.data);
             let str=window.btoa(res.data.data.user.name);
             window.localStorage.setItem('login', res.data.data.token)
-            window.localStorage.setItem('exp', str)
-            
+            window.localStorage.setItem('exp', str)            
             setlogpass("");
             setlogname("");
             setlogemail("");

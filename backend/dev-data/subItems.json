@@ -1,46 +1,57 @@
 [
     {
         "subItemType":"Tutorial",
-        "subItem":"5fad8f085503d91a5f6bd398"
+        "subItem":"5fad8f085503d91a5f6bd398",
+        "subItemTitle":"Introduction%20to%20Programming"
     },
     {
         "subItemType":"MCQ",
-        "subItem":"5fad8f085503d91a5f6bd39a"
+        "subItem":"5fad8f085503d91a5f6bd39a",
+        "subItemTitle":"Introduction%20to%20Programming%20-%201"
     },
     {
         "subItemType":"MCQ",
-        "subItem":"5fad8f085503d91a5f6bd39b"
+        "subItem":"5fad8f085503d91a5f6bd39b",
+        "subItemTitle":"Introduction%20to%20Programming%20-%202"
     },
     {
         "subItemType":"Tutorial",
-        "subItem":"5fad8f085503d91a5f6bd399"
+        "subItem":"5fad8f085503d91a5f6bd399",
+        "subItemTitle":"First%20Program%20in%20C%20Language"
     },
     {
         "subItemType":"CodingProblem",
-        "subItem":"5fad8f085503d91a5f6bd39c"
+        "subItem":"5fad8f085503d91a5f6bd39c",
+        "subItemTitle":"Hello%20GeekyBits"
     },
     {
         "subItemType":"Tutorial",
-        "subItem":"5fc626015a90683134a7ffc3"
+        "subItem":"5fc626015a90683134a7ffc3",
+        "subItemTitle":"Variables and Identifiers"
     },
     {
         "subItemType":"MCQ",
-        "subItem":"5fc627792084bd2e24c27d42"
+        "subItem":"5fc627792084bd2e24c27d42",
+        "subItemTitle":"Variables and Identifiers - 1"
     },
     {
         "subItemType":"MCQ",
-        "subItem":"5fc627792084bd2e24c27d43"
+        "subItem":"5fc627792084bd2e24c27d43",
+        "subItemTitle":"Variables and Identifiers - 2"
     },
     {
         "subItemType":"Tutorial",
-        "subItem":"5fc626015a90683134a7ffc4"
+        "subItem":"5fc626015a90683134a7ffc4",
+        "subItemTitle":"C - Data types"
     },
     {
         "subItemType":"MCQ",
-        "subItem":"5fc627792084bd2e24c27d44"
+        "subItem":"5fc627792084bd2e24c27d44",
+        "subItemTitle":"Data Types - 1"
     },
     {
         "subItemType":"MCQ",
-        "subItem":"5fc627792084bd2e24c27d45"
+        "subItem":"5fc627792084bd2e24c27d45",
+        "subItemTitle":"Data Types - 2"
     }
 ]

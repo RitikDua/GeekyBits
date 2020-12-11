@@ -1,46 +1,34 @@
 const CodingProblems = require(`${__dirname}/../models/codingProblemModel`);
+const catchAsyncError = require(`${__dirname}/../utils/catchAsyncError`);
+const { matchBodyWithSchema } = require("../utils/matchBodyWithSchema");
+const AppError = require(`${__dirname}/../utils/AppError`);
 const mongoose = require("mongoose");
-const {matchBodyWithSchema}=require("../utils/matchBodyWithSchema");
-exports.getCodingProblems = async (request, response) => {
-  try {
-    const codingProblems = await CodingProblems.find();
-    response.status(200).json({
-      status: "success",
-      data: { codingProblems },
-    });
-  } catch (err) {
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-      err,
-    });
-  }
-};
-exports.getCodingProblemById = async (request, response) => {
-  try {
+
+exports.getCodingProblems = catchAsyncError(async (request, response, next) => {
+  const codingProblems = await CodingProblems.find().lean();
+  response.status(200).json({
+    status: "success",
+    data: { codingProblems },
+  });
+});
+exports.getCodingProblemById = catchAsyncError(
+  async (request, response, next) => {
     if (!mongoose.Types.ObjectId.isValid(request.params.codingProblemId))
-      return response.status(404).send("Invalid ID");
+      return next(new AppError("Invalid ID", 400));
     const codingProblem = await CodingProblems.findById(
       request.params.codingProblemId
-    );
-
+    ).lean();
     if (!codingProblem)
-      return response.status(404).send("Problem with given ID not found");
+      return next(new AppError("Problem with given ID not found", 404));
 
     response.status(200).json({
       status: "success",
       data: { codingProblem },
     });
-  } catch (err) {
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-      err,
-    });
   }
-};
-exports.createCodingProblem = async (request, response) => {
-  try {
+);
+exports.createCodingProblem = catchAsyncError(
+  async (request, response, next) => {
     const codingProblemDetails = request.body;
     const status = matchBodyWithSchema(Object.keys(codingProblemDetails), [
       "problemTitle",
@@ -49,17 +37,13 @@ exports.createCodingProblem = async (request, response) => {
       "correctOutput",
     ]);
     if (!status)
-      return response.status(400).send("Please provide a coding problem");
+      return next(
+        new AppError("Please provide all coding problem details", 400)
+      );
     const codingProblem = await CodingProblems.create(codingProblemDetails);
     response.status(201).json({
       status: "success",
       data: { codingProblem },
     });
-  } catch (err) {
-    response.status(500).json({
-      status: "error",
-      message: err.message,
-      err,
-    });
   }
-};
+);

@@ -2,7 +2,7 @@ import { Grid } from '@material-ui/core'
 import React from 'react'
 function Logoblock() {
     return (
-        <div className="logogo" style={{paddingTop:"7%",paddingLeft:"5%",paddingRight:"5%",paddingBottom:"5%"}}>
+        <div style={{paddingTop:"7%",paddingLeft:"5%",paddingRight:"5%",paddingBottom:"5%"}}>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={12} md={6} lg={6}>
                     <h1>The Prodigious Courses for you<br/>

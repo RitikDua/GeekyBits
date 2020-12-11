@@ -29,7 +29,7 @@ describe("/users", () => {
       password: "rd123",
     });
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400);
   });
 
   it("Should return token on login", async () => {

@@ -82,7 +82,7 @@ export default function FullWidthGrid(props) {
         <Grid item xs={7} sm={7}>
           <Paper style={{"height":"85vh"}} className={classes.paper}>
 
-          	<CodeEditor data={data} attempt={props.attempt} attemptData={props.attemptData} />
+          	<CodeEditor data={data} courseId={props.courseId} attempt={props.attempt} attemptData={props.attemptData} />
           </Paper>
         </Grid>
         

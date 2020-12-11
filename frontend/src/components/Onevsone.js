@@ -3,7 +3,6 @@ import { Button, Grid} from '@material-ui/core';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import Axios from 'axios';
-import Countdown from 'react-countdown';
 function Onevsone() {
     const [register, setregister] = useState("");
     const [contest, setcontest] = useState("");

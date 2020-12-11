@@ -84,7 +84,7 @@ export default function ErrorRadios(props) {
         url: '/attempts',
         data: {
           attemptType:"MCQ",
-          attemptLanguage: "C",
+          attemptLanguage: "C",courseId:props.courseId,
           attemptString: value,
           attemptResult:((value===data.answer)?"correct":"wrong"),
           attemptTitle:data.title,
