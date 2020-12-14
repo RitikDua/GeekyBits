@@ -14,28 +14,6 @@ const deleteFile = (filename) => {
         console.log('File deleted!');
     }); 
 }
-exports.compileOnline=catchAsyncError(async (request,response,next)=>{    
-    const {code,input,lang}=request.body;
-    let langCode,langIndex;
-    switch(lang.toLowerCase()){
-        case 'c':langCode='c';langIndex='3';break;
-        case 'java':langCode='java';langIndex='3';break;
-        case 'c++':langCode='cpp';langIndex='4';break;
-        case 'python':langCode='python3';langIndex='3';break;
-    }
-    const {data}=await axios({method:'POST',url:'https://api.jdoodle.com/v1/execute',data:{
-        script:code,
-        language:langCode,
-        versionIndex:langIndex,
-        stdin:decodeURIComponent(input),
-        clientId:process.env.JDOODLE_CLIENT_KEY,
-        clientSecret:process.env.JDOODLE_SECRET_KEY
-      }});
-      console.log(data);
-    response.status(200).json({
-        output:data.output?data.output:(data.error?data.error:`Error occured with exit code ${data.statusCode}`)
-    });
-});
 exports.codeCompile=catchAsyncError(async (request,response,next)=>{    
     const {code,input,lang}=request.body;
     let testEnv;
