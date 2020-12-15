@@ -18,7 +18,10 @@ export default function Example(props) {
     };
     getData();
   }, [props])
-  if(!data) return "";
+
+   if(!data||data.length==0) return (
+       <div>
+       </div>);
   return (
     <ResponsiveContainer width="100%" height={350}>
       <LineChart

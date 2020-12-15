@@ -11,7 +11,7 @@ export default function Example(props) {
          const getData= () => {
           axios.get(`/stats/user/attempts`)
                      .then((res)=>{
-                       console.log(res.data.count)
+                       console.log(!data)
                        setData(res.data.count);
                        
                      })
@@ -19,7 +19,10 @@ export default function Example(props) {
     };
     getData();
    }, [props])
-   if(!data) return "";
+   
+   if(!data||data.length==0) return (
+       <div>
+       </div>);
     return (
       <ResponsiveContainer width="100%" height={350}>
       <BarChart

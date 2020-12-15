@@ -40,7 +40,7 @@ function Login() {
     const [click, setClick] = useState(false)
     const [err, setErr] = useState("")
 const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(true);
