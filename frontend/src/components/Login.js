@@ -10,6 +10,22 @@ import {isLoggedIn} from '../utils/utils'
 import '../css/login.css'
 
 import Axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
 
 function Login() {
     const [logname, setlogname] = useState("");
@@ -21,10 +37,27 @@ function Login() {
     const [values, setValues] = React.useState({
         showPassword: false,
       });
+    const [click, setClick] = useState(false)
+    const [err, setErr] = useState("")
+const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+
+  };
 
     async function handleSignup(e){
         e.preventDefault();
-       console.log(pass);
+       console.log(pass);setClick(true);
         await Axios.post("/users/signup",{email:email,name:name,password:pass})
          .then((res)=>{
             console.log(res.data.data);
@@ -39,6 +72,7 @@ function Login() {
          .then(()=> window.location.href="/")
         .catch((res)=>{
             console.log(res);
+            setOpen(true);
             setlogpass("");
             setlogname("");
             setlogemail("");
@@ -54,6 +88,7 @@ function Login() {
       };
       async function handleLogin(e){
         e.preventDefault();
+        setClick(true);
         await Axios.post("/users/login",{email:logemail,password:logpass})
         .then((res)=>{
             console.log(res.data.data);
@@ -65,7 +100,7 @@ function Login() {
             setlogemail("");
         })
         .catch((res)=>{
-            console.log(res);
+            setOpen(true);
             setlogpass("");
             setlogname("");
             setlogemail("");
@@ -143,7 +178,12 @@ function Login() {
                     </form></div></ReactCardFlip></Grid>
                     <Grid item xs={6}></Grid>
                 </Grid>
-                {/* </header> */}               
+                
+                {click&&open&&(<Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+        {!isFlipped?"User does not exist":"Email or password is wrong"}</Alert>
+      </Snackbar>)} 
+
         </div>
     )
 }
