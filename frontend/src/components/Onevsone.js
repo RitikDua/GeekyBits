@@ -45,6 +45,7 @@ function Onevsone() {
                 <Grid item xs={7}>
                     {register && contest &&
                     <div>
+                        <div style={{display:"flex"}}><div style={{fontSize:"15px",marginBottom:"20px"}}><span>Share the Register URL with your friend and click on the Contest URL after your friend registers for the contest.</span></div></div>
                         <div style={{display:"flex"}}><div style={{fontSize:"25px"}}><span>Contest-URL: &nbsp;&nbsp;</span></div><div onClick={()=>handleRedirect()} style={{backgroundColor:"#F5F5F5",width:"550px",padding:"1% 2%"}}><span>{contest}</span></div></div><br/>
                         <div style={{display:"flex"}}><div style={{fontSize:"25px"}}><span>Register-URL: &nbsp;</span></div><CopyToClipboard text={register}
           onCopy={() => setcopy(true)}><div onClick={()=>handlecopy2()} style={{backgroundColor:"#F5F5F5",width:"550px",padding:"1% 2%"}}><span>{register}</span></div></CopyToClipboard></div>
