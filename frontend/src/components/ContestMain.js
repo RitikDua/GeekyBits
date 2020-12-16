@@ -60,7 +60,7 @@ function ContestMain(props) {
 		  method: 'POST',
 		  url: '/compile',
 		  data: {
-		    lang: "C",
+		    lang: lang,
 		    code: val,
 		    input: (stdin)
 		  }
@@ -85,6 +85,7 @@ function ContestMain(props) {
 	const onLangSelectHandler = (e) => {
 		console.log(e.target.value);
 		const lang = e.target.value
+		setLang(lang);
 		if(lang==="java"){
 			setcodelang("java");
 		}
@@ -104,7 +105,7 @@ function ContestMain(props) {
   }
   const userExecuted=async ()=>{    
 	console.log(contest,code);
-	const {data}=await axios({method:'POST',url:`/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:'C',attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
+	const {data}=await axios({method:'POST',url:`/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:lang,attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
 	console.log(data);
     await  axios({method:'POST',url:`${localStorage.getItem('contest-url')}`,data:{ attemptId:data.data.attempt._id},withCredentials:true});
     socket.emit('code_executed',{roomId,userId:user,message:{

@@ -164,7 +164,7 @@ export default function CustomPaginationActionsTable(props) {
             ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : data
           ;
-  if(!data) return "loading..";
+  if(!data||data.length==0) return "";
   return (
     <TableContainer style={{marginTop:"90px"}} component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">

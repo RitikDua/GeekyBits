@@ -33,7 +33,10 @@ const COLORS={
   "compiler error":"#a5a09e",
   "runtime error":"#f7750f"
 }
-  if(!data) return "loading...";
+
+   if(!data||data.length==0) return (
+       <div >
+       </div>);
   return  (
   <ResponsiveContainer width="100%" height={350} style={{paddingRight:"30px"}}>
     <PieChart height={250}>
