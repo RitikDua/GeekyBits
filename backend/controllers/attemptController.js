@@ -65,26 +65,25 @@ exports.submitAttempt = catchAsyncError(async (request, response, next) => {
     const codingProblem = await CodingProblems.findById(subItemId);
     const { testCases, correctOutput } = codingProblem;
     let arr = [];
-    let testEnv;
+    let testEnv,options={};
     switch (attemptLanguage.toLowerCase()) {
       case "c":
         testEnv = c;
         break;
-      case "c++":
+      case "cpp":
         testEnv = cpp;
         break;
       case "java":
         testEnv = java;
         break;
       case "python":
-        testEnv = python;
+        {testEnv = python;options.executionPath ='python3';}
         break;
     }
     testCases.forEach((testCase) => {
+      options.stdin=decodeURIComponent(testCase);
       arr.push(
-        testEnv.runSource(attemptString, {
-          stdin: decodeURIComponent(testCase),
-        })
+        testEnv.runSource(decodeURIComponent(attemptString),options)
       );
     });
     // let error="";
@@ -123,7 +122,7 @@ exports.submitAttempt = catchAsyncError(async (request, response, next) => {
       // const outcome=(result[i].output===decodeURIComponent(correctOutput[i]));
       checkStatus += outcome;
       checkTestCases.push(outcome);
-      arr.push(result[i].stdout ? result[i].stdout : result[i].stderr);
+      arr.push(result[i].stdout ? result[i].stdout : `${result[i].errorType}\n${result[i].stderr}\nError: ${result[i].signal} with exit code ${result[i].exitCode}`);
     }
     //     arr.push(result[i].output);
     // }
