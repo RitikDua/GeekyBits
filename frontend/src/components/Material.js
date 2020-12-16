@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Box, Button, List, ListItem } from '@material-ui/core';
+import { Box, Button, List, ListItem, ListItemText } from '@material-ui/core';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import AssignmentIcon from '@material-ui/icons/Assignment';
@@ -27,8 +28,11 @@ import MCQ from './Content/Tutorial/MCQ';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import {
-  HashRouter as
+  HashRouter as Router,
+  Switch,
+  Route,
   Link,
+  Redirect,
 } from 'react-router-dom';
 
 const drawerWidth = 370;
@@ -67,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
   },
@@ -96,13 +101,17 @@ const getName=()=>{
   }
 }
 function ResponsiveDrawer(props) {
-  const myName=props.name?props.name:"username";
+  const myName=props.name?props.name:getName();
+  const { window } = props;
   const [progress, setProgress] = useState(0)
   const classes = useStyles();
   const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [expanded, setExpanded] = React.useState('panel1');
   const [data, setData] = useState({})
+  const [course, setcourse] = useState(["asd"]);
   const [subItems, setSubItems] = useState({})
+  const [item, setitem] = useState([])
   const [currIndex, setCurrIndex] = useState("")
   const [currComponent, setCurrComponent] = useState({}) 
   const [open, setOpen] = React.useState(false);
@@ -130,10 +139,23 @@ function ResponsiveDrawer(props) {
      }
      fun();
   }, []);
+  const showSubItemsData=(index)=>{
+    if(!subItems[index]) return <CircularProgress />;
+    else
+    {
+      let temp="";
+      for(let i of subItems[index]){
+        temp+="*"+i.subItemType+"\n";
+      }
+
+      return temp;
+    }
+  }
   const showAccordianData=async (index,value)=>{
   await Axios.get(`/courseItems/${value._id}`, {withCredentials: true})
         .then((res)=>{
           console.log("setSubItems");
+          let indexStr=""+index;
           console.log(res.data.data.courseItem.subItems);  
           
           let items=Object.assign({},subItems);
@@ -148,6 +170,10 @@ function ResponsiveDrawer(props) {
     const fun=async()=>setCurrComponent(subItems[parentIndex][index]);
     fun().then(()=>setCurrIndex(parentIndex+" "+index));
     console.log(currComponent);
+  }
+  const check=(index)=>{
+    if(subItems[index]) return true;
+    return 
   }
   const drawer = (
     <div>
@@ -184,7 +210,7 @@ function ResponsiveDrawer(props) {
               // console.log(subItems);
               return (
                 <ListItem style={{width:"1200px"}} key={index} button  onClick={(e)=>changeMainComponent(parentIndex,index)}>
-                  <div style={{fontSize:"17px",padding:"1%"}}>{val.subItemType==='Tutorial'?<MenuBookIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType==='MCQ'?<PlaylistAddCheckIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType==='CodingProblem'?<AssignmentIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</div>
+                  <div style={{fontSize:"17px",padding:"1%"}}>{val.subItemType=='Tutorial'?<MenuBookIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='MCQ'?<PlaylistAddCheckIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>}{val.subItemType=='CodingProblem'?<AssignmentIcon style={{paddingRight:"1%",fontSize:"18px"}}/>:<span></span>} {decodeURIComponent(val.subItemTitle)}</div>
                 </ListItem>)              
              })):<CircularProgress />
            }
@@ -216,6 +242,7 @@ function ResponsiveDrawer(props) {
         return <CodingProblem queryId={currComponent._id} courseId={courseId}/>
     }
   }
+  const container = window !== undefined ? () => window().document.body : undefined;
   const paginationUtil=()=>{
     let indexes=currIndex.split(" ").map((val,index)=>  parseInt(val));
     console.log(indexes);

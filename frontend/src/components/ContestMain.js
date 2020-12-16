@@ -3,6 +3,7 @@ import {io} from 'socket.io-client';
 import axios from 'axios';
 import Countdown from "react-countdown";
 import { Dialog, DialogContent, DialogContentText, DialogTitle, Grid, LinearProgress, Paper } from '@material-ui/core';
+import CodeEditor from './Content/Tutorial/CodeEditor';
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/theme-xcode";
 import "ace-builds/src-noconflict/mode-java";
@@ -27,6 +28,7 @@ function ContestMain(props) {
   const [Data, setData] = useState("");
   const [testcases, settestcases] = useState("")
   const [timeLeft,settimeLeft]=useState('');
+  const [startat, setstartat] = useState("");
   const [winner, setwinner] = useState([]);
   const [open, setopen] = useState(false);
 
@@ -39,9 +41,11 @@ function ContestMain(props) {
 
 
   const [code, setCode] = useState("");
+	const [lang,setLang]=useState("C");
 	const [output, setOutput] = useState("")
 	const [stdin,setStdin] = useState("")
 	const [submitExecution,setSubmitExec]=useState(false);
+	const [check, setCheck] = useState([])
 	const [val, setval] = useState(props.attempt?props.attemptData.attemptString:cod["cpp"]);
 	const [codelang, setcodelang] = useState("c_cpp");
 	const [state, setState] = React.useState({
@@ -54,6 +58,12 @@ function ContestMain(props) {
 		setState({ ...state, [event.target.name]: event.target.checked });
 		setswt(!swt);
 	  };
+	const getDefaultCode=()=>{
+		switch(lang){
+			case 'C':
+				return decodeURIComponent("%23include%3Cstdio.h%3E%20%20int%20main()%20%7B%20%20%20%7D");
+		}
+	}
 	const executeCode=async ()=>{
 	 console.log(parseInt(stdin));
 	 const options = {
@@ -78,6 +88,9 @@ function ContestMain(props) {
 	const getOutput=()=>{
 		return output
 	}
+	const editorDidMount = (e) => {
+        console.log("EDITOR MOUNTED")
+	}
 	const changedata=(code,e)=>{
 		setCode(code);
 		setval(code);
@@ -95,14 +108,39 @@ function ContestMain(props) {
 		else if(lang==="python"){
 			setcodelang("python");
 		}
+        // this.setState({
+        //     lang,
+        //     code: code[lang]
+		// })
 		setval(cod[lang]);
 		console.log(cod[lang]);
     }
+	const options = {
+		selectOnLineNumbers: true,
+		renderIndentGuides: true,
+		colorDecorators: true,
+		cursorBlinking: "blink",
+		autoClosingQuotes: "always",
+		find: {
+			autoFindInSelection: "always"
+		},
+		snippetSuggestions: "inline"
+	  };
+
+
+
+
+
+
+
+
+
 
 
   const joinRoom=async ()=>{
     socket.emit('participant_connected',{id:socket.id,roomId,userId:user});
   }
+  const Completionist = () => <span>You are good to go!</span>;
   const userExecuted=async ()=>{    
 	console.log(contest,code);
 	const {data}=await axios({method:'POST',url:`/attempts`,data:{ attemptType:'CodingProblem', attemptString:code, attemptLanguage:lang,attemptTitle:decodeURIComponent(contest.problem.problemTitle),subItemId:contest.problem._id},withCredentials:true})
@@ -136,6 +174,7 @@ try{
 
   setdat(data);
   settimeLeft(new Date(data.data.contest.startedAt));
+//   setstartat(Date.parse(data.data.contest.startedAt));
 	console.log(data);
 	const contest=data.data.contest;
 	const startAt=contest.startedAt;
@@ -172,6 +211,7 @@ catch(err) {
 	  declareWinner(roomId,user,{winningMessage:' won the match.'});
 	  return <span>Contest Finished</span>;
 	} else {
+	  // Render a countdown
 	  return <span>{hours}:{minutes}:{seconds}</span>;
 	}
   };
@@ -225,6 +265,12 @@ catch(err) {
   }
   return (
     <div className="App" style={{height:"100vh"}}>
+      {/* <h1 className="title">1 vs 1 challenge</h1>
+      <textarea rows='10' cols='30' onChange={e=>setCode(e.target.value)} placeholder='Enter code'></textarea>
+      <div className="output"></div>
+      <button className="execute" onClick={()=>userExecuted()}>Execute Code</button>
+      <button className="winner" onClick={()=>declareWinner()}>Declare Winner</button> */}
+	  {/* timeLeft.getTime()-Date.now()>0 */}
 	  {console.log(timeLeft)}
 		{timeLeft?<div style={{backgroundColor:"#111",color:"white",width:"100px",padding:"1% 2%"}}><Countdown date={Date.now()+timeLeft.getTime()+30*60000-Date.now()} renderer={renderer}/></div>:null}
         <Grid container spacing={2}>
@@ -306,9 +352,9 @@ catch(err) {
 					</div>
 					<div className="row">
 					<Button onClick={()=>executeCode()} style={{color:"#0275d8",borderColor:"#0275d8"}} variant="outlined" color="primary">Execute</Button>
-						&nbsp;&nbsp;
+						{/* <button>Execute</button> */}&nbsp;&nbsp;
 					<Button onClick={()=>userExecuted()} style={{color:"green",borderColor:"green"}} variant="outlined">Submit</Button>
-					 
+					 {/* <button onClick={()=>submitCode()}>Submit</button> */}
 						
 					</div><br/>
 					{testcases.length!==0 && testcases.map((t,idx)=>(
