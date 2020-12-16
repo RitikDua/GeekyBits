@@ -73,7 +73,7 @@ const COLORS={
               textAnchor={x > cx ? "start" : "end"}
               dominantBaseline="central"
             >
-              {data[index].name} ({`${(percent * 100).toFixed(0)}%`})
+              {data[index].name} ({`${Math.round((percent * 100).toFixed(1))}%`})
             </text>
           );
         }}
