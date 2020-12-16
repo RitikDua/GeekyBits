@@ -17,7 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {getUserId} from '../utils/utils';
 import { Link } from 'react-router-dom';
 function ContestMain(props) {
-  const [socket,setSocket]= useState(io('https://geekyapi.herokuapp.com'));
+  const [socket,setSocket]= useState(io('http://localhost:3000'));
   const [user,setUser]=useState(getUserId());
   const [contest,setContest]=useState(null);
   const url=localStorage.getItem("contest-url").split('/');
@@ -212,7 +212,7 @@ catch(err) {
 				<span style={{fontSize:"20px"}}>Contest Will Start at {timeLeft.length!==0 && timeLeft.getTime()-Date.now()>0 && timeLeft.toTimeString()}</span>
 			</div><br/>
 			<div>
-				<span style={{fontSize:"15px"}}>Time for Completing the Test is 30 minutes</span><br/>
+				<span style={{fontSize:"15px"}}>Time for Completing the Contest is 30 minutes</span><br/>
 			</div>
 			<br/>
 			<div>

@@ -50,7 +50,7 @@ export default function CodeEditor(props) {
 		  method: 'POST',
 		  url: '/compile',
 		  data: {
-		    lang: "C",
+		    lang: lang,
 		    code: val,
 		    input: (stdin)
 		  }
@@ -79,7 +79,7 @@ export default function CodeEditor(props) {
 			  url: '/attempts',
 			  data: {
 			  	attemptType:"CodingProblem",
-			    attemptLanguage: "C",
+			    attemptLanguage: lang,
 			    attemptString: val,courseId:props.courseId,
 			    attemptTitle:props.data.title,
 			    userId:localStorage.getItem("userId"),
@@ -111,11 +111,13 @@ export default function CodeEditor(props) {
 	const onLangSelectHandler = (e) => {
 		console.log(e.target.value);
 		const lang = e.target.value
+		setLang(lang);
 		if(lang==="java"){
 			setcodelang("java");
 		}
 		else if(lang==="c" || lang==="cpp"){
 			setcodelang("c_cpp")
+
 		}
 		else if(lang==="python"){
 			setcodelang("python");
