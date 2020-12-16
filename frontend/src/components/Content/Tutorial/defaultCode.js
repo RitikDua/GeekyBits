@@ -8,9 +8,9 @@ int main() {
  const cpp = `#include<bits/stdc++.h> \nusing namespace std;\n\nint main() {\n\t//Your Code will come here\n\treturn 0;\n}
 `
 
-const java = `import java.util.*
+const java = `import java.util.*;
 
-class MyClass {
+public class MyClass {
     public static void main(String args[]){
         // Your Code will come here
     }

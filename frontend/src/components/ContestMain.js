@@ -18,7 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {getUserId} from '../utils/utils';
 import { Link } from 'react-router-dom';
 function ContestMain(props) {
-  const [socket,setSocket]= useState(io('http://localhost:3000'));
+  const [socket,setSocket]= useState(io('http://localhost:4000'));
   const [user,setUser]=useState(getUserId());
   const [contest,setContest]=useState(null);
   const url=localStorage.getItem("contest-url").split('/');
@@ -233,7 +233,7 @@ catch(err) {
 	  console.log(finalmessage);
 	  setwinner(finalmessage);
 	  setopen(true);
-	  socket.disconnect();
+	  setTimeout(()=>socket.disconnect(),3000);
 	// if(open===false){
 	// 	 window.location.href="/";
 	// }
