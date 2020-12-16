@@ -14,18 +14,19 @@ const deleteFile = (filename) => {
         console.log('File deleted!');
     }); 
 }
-exports.codeCompile=catchAsyncError(async (request,response,next)=>{    
-    const {code,input,lang}=request.body;
-    let testEnv;
+exports.codeCompile = catchAsyncError(async (request, response, next) => {
+    const { code, input, lang } = request.body;
+    let testEnv,options={stdin:input};
+    console.log(code, input, lang);
     switch (lang.toLowerCase()) {
-        case 'c':testEnv=c;break;
-        case 'c++':testEnv=cpp;break;
-        case 'java':testEnv=java;break;
-        case 'python':testEnv=python;break;
-    }
-    const data=await testEnv.runSource(code,{stdin:input});
+        case "c":testEnv = c;break;
+        case "cpp":testEnv = cpp;break;
+        case "java":testEnv = java;break;
+        case "python":{testEnv = python;options.executionPath='python3';};break;
+    }    
+    const data = await testEnv.runSource(decodeURIComponent(code),options);        
     response.status(200).json({
-        output:data.stdout?data.stdout:(data.stderr?data.stderr:`Error: ${data.signal} with exit code ${data.exitCode}`)
+        output: data.stderr||data.signal||data.errorType ?`${data.errorType}\n${data.stderr}\nError: ${data.signal} with exit code ${data.exitCode}`:data.stdout
     });
 });
 exports.compileCode=catchAsyncError(async (request,response,next)=>{
