@@ -23,8 +23,8 @@ exports.codeCompile = catchAsyncError(async (request, response, next) => {
         case "cpp":testEnv = cpp;break;
         case "java":testEnv = java;break;
         case "python":{testEnv = python;options.executionPath='python3';};break;
-    }    
-    const data = await testEnv.runSource(decodeURIComponent(code),options);        
+    }      
+    const data = await testEnv.runSource(code,options);        
     response.status(200).json({
         output: data.stderr||data.signal||data.errorType ?`${data.errorType}\n${data.stderr}\nError: ${data.signal} with exit code ${data.exitCode}`:data.stdout
     });

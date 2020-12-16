@@ -65,7 +65,7 @@ exports.submitAttempt = catchAsyncError(async (request, response, next) => {
     const codingProblem = await CodingProblems.findById(subItemId);
     const { testCases, correctOutput } = codingProblem;
     let arr = [];
-    let testEnv,options={};
+    let testEnv;
     switch (attemptLanguage.toLowerCase()) {
       case "c":
         testEnv = c;
@@ -77,13 +77,12 @@ exports.submitAttempt = catchAsyncError(async (request, response, next) => {
         testEnv = java;
         break;
       case "python":
-        {testEnv = python;options.executionPath ='python3';}
+        testEnv = python;
         break;
     }
-    testCases.forEach((testCase) => {
-      options.stdin=decodeURIComponent(testCase);
+    testCases.forEach((testCase) => {   
       arr.push(
-        testEnv.runSource(decodeURIComponent(attemptString),options)
+        testEnv.runSource(attemptString,attemptLanguage.toLowerCase()==='python'?{stdin:decodeURIComponent(testCase),executionPath:'python3'}:{stdin:decodeURIComponent(testCase)})
       );
     });
     // let error="";
@@ -109,8 +108,7 @@ exports.submitAttempt = catchAsyncError(async (request, response, next) => {
     let checkStatus = 0,
       errorType = "";
     for (let i = 0; i < result.length; i++) {
-      let outcome;
-      // console.log(result[i]);
+      let outcome;      
       if (result[i].stderr || result[i].signal || result[i].exitCode) {
         errorType =
           result[i].errorType === "run-time" || result[i].signal

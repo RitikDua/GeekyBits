@@ -21,7 +21,7 @@ exports.startSocket=server=>{
 		const user=await getUser(userId);
 		if(user){
 			const {name}=user;
-			io.to(roomId).emit(event,{name,message});
+			io.in(roomId).emit(event,{name,message});
 		}
 		else{
 			console.log(`User-${userId} not found`)
@@ -36,7 +36,7 @@ exports.startSocket=server=>{
 		}
 		else{
 			socket.join(roomId);
-			io.to(roomId).emit('joined_contest_room',{status:'success',message:`User->${id} successfully joined the room(${roomId})`});
+			io.in(roomId).emit('joined_contest_room',{status:'success',message:`User->${id} successfully joined the room(${roomId})`});
 			socket.on('code_executed',({roomId,userId,message})=>sendResponse('code_executed_server',roomId,userId,message));
 			socket.on('winner_declared',({roomId,userId,message})=>sendResponse('winner_declared_server',roomId,userId,message));			
 		}		
