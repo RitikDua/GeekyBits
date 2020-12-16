@@ -41,7 +41,7 @@ function ContestMain(props) {
 
 
   const [code, setCode] = useState("");
-	const [lang,setLang]=useState("C");
+	const [lang,setLang]=useState("cpp");
 	const [output, setOutput] = useState("")
 	const [stdin,setStdin] = useState("")
 	const [submitExecution,setSubmitExec]=useState(false);
@@ -191,7 +191,7 @@ try{
 	setContest(data.data.contest);
 }
 catch(err) {
-	console.log(err.response.data);
+	console.log(err);
 }
   }
   const declareWinner=async (roomId,userId,message)=>{
